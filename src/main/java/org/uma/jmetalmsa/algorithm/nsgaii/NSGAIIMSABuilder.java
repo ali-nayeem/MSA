@@ -2,6 +2,7 @@ package org.uma.jmetalmsa.algorithm.nsgaii;
 
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII45;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.problem.Problem;
@@ -43,6 +44,11 @@ public class NSGAIIMSABuilder extends NSGAIIBuilder<MSASolution> {
       
         algorithm = new ssNSGAIIMSA((MSAProblem) getProblem(), getMaxIterations(), getPopulationSize(), getCrossoverOperator(),
                       getMutationOperator(), getSelectionOperator(), getSolutionListEvaluator() );
+    
+    } else if (Variant.equals(NSGAIIVariant.NSGAII45)) {
+      
+//        algorithm = new NSGAII45MSA((MSAProblem) getProblem(), getMaxIterations(), getPopulationSize(), getCrossoverOperator(),
+//                      getMutationOperator(), getSelectionOperator(), getSolutionListEvaluator() );
     
     }
     return algorithm ;

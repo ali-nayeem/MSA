@@ -16,8 +16,9 @@ public class EntropyScore implements Score
     @Override
     public <S extends MSASolution> double compute(S solution, char[][] decodedSequences)
     {
-        double totalEntropy = 0;
         int numberOfColumns = decodedSequences[0].length;
+        double totalEntropy = 0;
+        boolean hasConservedColumn = false;
         char residue;
         Boolean isGapFree;
         for (int i = 0; i < numberOfColumns; i++)
@@ -37,6 +38,7 @@ public class EntropyScore implements Score
 
             if (isGapFree)
             {
+                hasConservedColumn = true;
                 for (int freq : columnMap.values())
                 {
                     double pr = freq * 1.0 / decodedSequences.length;
@@ -44,9 +46,12 @@ public class EntropyScore implements Score
                 }
             }
         }
-
-        double result = totalEntropy / numberOfColumns;
-        return result;
+        if (hasConservedColumn)
+        {
+            double result = totalEntropy / numberOfColumns;
+            return result;
+        }
+        else return numberOfColumns;
     }
 
     public double log2(double n)
