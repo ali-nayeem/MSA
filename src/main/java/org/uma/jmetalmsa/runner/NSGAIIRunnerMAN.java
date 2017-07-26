@@ -79,7 +79,15 @@ public class NSGAIIRunnerMAN {
     Integer populationSize = 200;
     int div1 = 12;
     int div2 = 0;
-    int numberOfCores = 2;//Runtime.getRuntime().availableProcessors();
+    int numberOfCores;
+    if (args.length != 0) {
+      numberOfCores = Integer.parseInt(args[0]) ;
+    }
+    else
+    {
+        numberOfCores = Runtime.getRuntime().availableProcessors();
+    }
+    
 
     crossover = new SPXMSACrossover(0.8);
     mutation = new ShiftClosedGapsMSAMutation(0.2);

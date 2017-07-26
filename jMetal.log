@@ -2,8 +2,8 @@
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
 <record>
-  <date>2017-07-20T10:51:15</date>
-  <millis>1500526275420</millis>
+  <date>2017-07-26T20:47:12</date>
+  <millis>1501080432671</millis>
   <sequence>0</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -13,19 +13,19 @@
   <message>Loggers configured with null</message>
 </record>
 <record>
-  <date>2017-07-20T10:51:15</date>
-  <millis>1500526275711</millis>
+  <date>2017-07-26T20:47:12</date>
+  <millis>1501080432972</millis>
   <sequence>1</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
   <class>org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator</class>
   <method>&lt;init&gt;</method>
   <thread>1</thread>
-  <message>Number of cores: 2</message>
+  <message>Number of cores: 3</message>
 </record>
 <record>
-  <date>2017-07-20T10:51:15</date>
-  <millis>1500526275734</millis>
+  <date>2017-07-26T20:47:12</date>
+  <millis>1501080432972</millis>
   <sequence>2</sequence>
   <logger>org.uma.jmetal.util.JMetalLogger</logger>
   <level>INFO</level>
@@ -33,16 +33,5 @@
   <method>&lt;init&gt;</method>
   <thread>1</thread>
   <message>rpssize: 91</message>
-</record>
-<record>
-  <date>2017-07-20T10:53:04</date>
-  <millis>1500526384769</millis>
-  <sequence>3</sequence>
-  <logger>org.uma.jmetal.util.JMetalLogger</logger>
-  <level>INFO</level>
-  <class>org.uma.jmetalmsa.runner.NSGAIIRunnerMAN</class>
-  <method>main</method>
-  <thread>1</thread>
-  <message>Total execution time: 108959ms</message>
 </record>
 </log>
