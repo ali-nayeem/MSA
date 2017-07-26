@@ -11,12 +11,12 @@ mvn clean compile assembly:single
 java -cp ./target/JMetalMSA1.2-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.jmetalmsa.runner.TestObjetivesMAN
 ```
 
-##Hard reset
-
+## Hard reset
+Setting your branch to exactly match the remote branch can be done in two steps:
 ```
-git reset --hard
+git fetch origin
+git reset --hard origin/master
 ```
-completely remove all staged and unstaged changes to tracked files. Like "just undo everything like if I had done a complete re-clone from the remote".
 
 # Inherited with gratitude from jMetalMSA: a framework for solving Multiple Sequence Alignment problems with Multi-Objective metaheuristics
 
