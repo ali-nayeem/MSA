@@ -1,4 +1,17 @@
-# jMetalMSA: a framework for solving Multiple Sequence Alignment problems with Multi-Objective metaheuristics
+# Many-objective analysis for solving Phylogeny-aware Multiple Sequence Alignment
+
+## Build with dependencies
+
+```
+mvn clean compile assembly:single
+```
+## Execute a class from inside root
+
+```
+java -cp ./target/JMetalMSA1.2-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.jmetalmsa.runner.TestObjetivesMAN
+```
+
+# Inherited with gratitude from jMetalMSA: a framework for solving Multiple Sequence Alignment problems with Multi-Objective metaheuristics
 
 jMetalMSA is an Open source software tool aimed at solving multiple sequence alignment (MSA) problems by using multi-objective metaheuristics. It is based on the jMetal multi-objective framework, which is extended with an encoding for representing MSA solutions. 
 
