@@ -37,7 +37,7 @@ import org.uma.jmetalmsa.score.impl.StrikeScore;
 import org.uma.jmetalmsa.score.impl.AffineGapPenaltyScore;
 import org.uma.jmetalmsa.score.impl.EntropyScore;
 import org.uma.jmetalmsa.score.impl.SumOfPairsScore;
-import org.uma.jmetalmsa.problem.BAliBASE_MSAProblem;
+import org.uma.jmetalmsa.problem.SATE_MSAProblem;
 import org.uma.jmetalmsa.problem.MSAProblem;
 import org.uma.jmetalmsa.problem.Standard_MSAProblem;
 import org.uma.jmetalmsa.solution.MSASolution;
@@ -46,6 +46,8 @@ import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII45;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.uma.jmetal.util.pseudorandom.JMetalRandom;
+import org.uma.jmetal.util.pseudorandom.impl.MersenneTwisterGenerator;
 import org.uma.jmetalmsa.algorithm.nsgaIII.NSGAIIIMSABuilder;
 import org.uma.jmetalmsa.algorithm.nsgaIII.NSGAIIIYYMSA;
 import org.uma.jmetalmsa.algorithm.nsgaii.NSGAII45MSA;
@@ -63,6 +65,7 @@ public class NSGAIIRunnerMAN {
    * @param args Command line arguments.
    */
   public static void main(String[] args) throws Exception {
+    JMetalRandom.getInstance().setRandomGenerator(new MersenneTwisterGenerator(1234));
     MSAProblem problem;
     Algorithm<List<MSASolution>> algorithm;
     CrossoverOperator<MSASolution> crossover;
@@ -73,10 +76,10 @@ public class NSGAIIRunnerMAN {
     //  throw new JMetalException("Wrong number of arguments") ;
    // }
 
-    String problemName = "BB40049"; //BB30009, BB11001
-    String dataDirectory = "example";
-    Integer maxEvaluations = 40000;
-    Integer populationSize = 200;
+    String problemName = "R0"; //BB30009, BB11001
+    String dataDirectory = "dataset/100S";
+    Integer maxEvaluations = 60;
+    Integer populationSize = 20;
     int div1 = 12;
     int div2 = 0;
     int numberOfCores;
@@ -85,7 +88,7 @@ public class NSGAIIRunnerMAN {
     }
     else
     {
-        numberOfCores = Runtime.getRuntime().availableProcessors();
+        numberOfCores = 1;
     }
     
 
@@ -95,11 +98,11 @@ public class NSGAIIRunnerMAN {
 
     List<Score> scoreList = new ArrayList<>();
 
-    scoreList.add(new AffineGapPenaltyScore());
     scoreList.add(new EntropyScore());
     scoreList.add(new PercentageOfAlignedColumnsScore());
+    scoreList.add(new AffineGapPenaltyScore());
 
-    problem = new BAliBASE_MSAProblem(problemName, dataDirectory, scoreList);
+    problem = new SATE_MSAProblem(problemName, dataDirectory, scoreList);
 
     SolutionListEvaluator<MSASolution> evaluator;
 
@@ -120,7 +123,7 @@ public class NSGAIIRunnerMAN {
             .build();
     
     algorithm = new NSGAII45MSA(problem, maxEvaluations, populationSize, crossover, mutation, selection, evaluator );
-    algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, populationSize, div1, div2, true, crossover, mutation, selection, evaluator );
+    algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, populationSize, div1, div2, false, crossover, mutation, selection, evaluator );
 
 
     AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
@@ -130,6 +133,12 @@ public class NSGAIIRunnerMAN {
     long computingTime = algorithmRunner.getComputingTime();
 
     JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
+    
+    DefaultFileOutputContext funFilePre = new  DefaultFileOutputContext("FUN." + problemName +"." + algorithm.getName()+ "_pre.tsv");
+    funFilePre.setSeparator("\t");
+    new SolutionListOutput(population)
+            .setFunFileOutputContext(funFilePre)
+            .print();
     
     for (MSASolution solution : population) {
       for (int i = 0; i < problem.getNumberOfObjectives(); i++) {

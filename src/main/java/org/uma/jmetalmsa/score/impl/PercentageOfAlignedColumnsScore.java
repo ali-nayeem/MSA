@@ -41,7 +41,7 @@ public class PercentageOfAlignedColumnsScore implements Score {
 
   @Override
   public String getName() {
-    return "TC";
+    return "PTC";
   }
 
   @Override

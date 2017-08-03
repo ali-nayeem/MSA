@@ -12,6 +12,7 @@ import org.uma.jmetalmsa.score.impl.PercentageOfNonGapsScore;
 import org.uma.jmetalmsa.score.impl.EntropyScore;
 import org.uma.jmetalmsa.problem.MAN_MSAProblem;
 import org.uma.jmetalmsa.problem.MSAProblem;
+import org.uma.jmetalmsa.problem.SATE_MSAProblem;
 import org.uma.jmetalmsa.solution.MSASolution;
 import org.uma.jmetalmsa.solution.util.ArrayChar;
 import org.uma.jmetalmsa.score.Score;
@@ -24,9 +25,9 @@ public class TestObjetivesMAN
 {
 
     static MSAProblem problem;
-    static String path = "example/MAN/";
+    static String path = "dataset/100S/R0/";
     static String seq = "seq.txt";
-    static String align = "demo_align.txt";
+    static String align = "test.fasta";
 
     public static void main(String[] args) throws Exception
     {
@@ -48,7 +49,7 @@ public class TestObjetivesMAN
             scoreList.add(new EntropyScore());
             scoreList.add(new PercentageOfAlignedColumnsScore());
             scoreList.add(new PercentageOfNonGapsScore());
-            problem = new MAN_MSAProblem(scoreList, path + seq);
+            problem = new SATE_MSAProblem("R0", "dataset/100S", scoreList);
 
             EvaluaAlig(path + Instance_);
 
@@ -61,7 +62,7 @@ public class TestObjetivesMAN
         MSASolution s = new MSASolution(strAlignment, problem);
 
         problem.evaluate(s);
-        System.out.println(Fichero + "\t" + s.getObjective(0) * -1 + "\t" + +s.getObjective(1) * -1 + "\t"
+        System.out.println(Fichero + "\t" + s.getObjective(0)  + "\t" + +s.getObjective(1) * -1 + "\t"
                 + s.getObjective(2) * -1 + "\t");
 
     }
