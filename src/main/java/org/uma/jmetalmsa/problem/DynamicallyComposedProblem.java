@@ -8,6 +8,7 @@ import org.uma.jmetalmsa.score.Score;
 
 public abstract class DynamicallyComposedProblem<S extends MSASolution> extends AbstractGenericProblem<S> {
   private List<Score> scoreList ;
+  //public int count = 0;
 
   public DynamicallyComposedProblem(List<Score> scoreList) {
     this.scoreList = scoreList ;
@@ -16,6 +17,8 @@ public abstract class DynamicallyComposedProblem<S extends MSASolution> extends 
 
   @Override
   public void evaluate(S solution) {
+    //count++;
+    //System.out.println(count);
     solution.removeGapColumns();
 
     char [][]decodedSequences= solution.decodeToMatrix() ;

@@ -31,12 +31,7 @@ import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
 import org.uma.jmetalmsa.algorithm.nsgaii.NSGAIIMSABuilder;
 import org.uma.jmetalmsa.crossover.SPXMSACrossover;
 import org.uma.jmetalmsa.mutation.ShiftClosedGapsMSAMutation;
-import org.uma.jmetalmsa.score.impl.PercentageOfAlignedColumnsScore;
-import org.uma.jmetalmsa.score.impl.PercentageOfNonGapsScore;
-import org.uma.jmetalmsa.score.impl.StrikeScore;
-import org.uma.jmetalmsa.score.impl.AffineGapPenaltyScore;
-import org.uma.jmetalmsa.score.impl.EntropyScore;
-import org.uma.jmetalmsa.score.impl.SumOfPairsScore;
+import org.uma.jmetalmsa.score.impl.*;
 import org.uma.jmetalmsa.problem.SATE_MSAProblem;
 import org.uma.jmetalmsa.problem.MSAProblem;
 import org.uma.jmetalmsa.problem.Standard_MSAProblem;
@@ -78,17 +73,17 @@ public class NSGAIIRunnerMAN {
 
     String problemName = "R0"; //BB30009, BB11001
     String dataDirectory = "dataset/100S";
-    Integer maxEvaluations = 60;
-    Integer populationSize = 20;
-    int div1 = 12;
-    int div2 = 0;
+    Integer maxEvaluations = 7800;
+    Integer populationSize = 78;
+    int div1 = 3;
+    int div2 = 2;
     int numberOfCores;
     if (args.length != 0) {
       numberOfCores = Integer.parseInt(args[0]) ;
     }
     else
     {
-        numberOfCores = 1;
+        numberOfCores = Runtime.getRuntime().availableProcessors();
     }
     
 
@@ -99,8 +94,11 @@ public class NSGAIIRunnerMAN {
     List<Score> scoreList = new ArrayList<>();
 
     scoreList.add(new EntropyScore());
-    scoreList.add(new PercentageOfAlignedColumnsScore());
-    scoreList.add(new AffineGapPenaltyScore());
+    scoreList.add(new NumberOfAlignedColumnsScore());
+    scoreList.add(new NumberOfGapsScore());
+    scoreList.add(new SimilarityGapsScore());
+    scoreList.add(new SimilarityNonGapsScore());
+    scoreList.add(new GapConcentrationScore());
 
     problem = new SATE_MSAProblem(problemName, dataDirectory, scoreList);
 
@@ -113,17 +111,24 @@ public class NSGAIIRunnerMAN {
       evaluator = new MultithreadedSolutionListEvaluator(numberOfCores, problem);
     }
 
-    algorithm = new NSGAIIIMSABuilder(problem)
-            .setCrossoverOperator(crossover)
-            .setMutationOperator(mutation)
+//    algorithm = new NSGAIIIMSABuilder(problem)
+//            .setCrossoverOperator(crossover)
+//            .setMutationOperator(mutation)
+//            .setSelectionOperator(selection)
+//            .setMaxIterations(maxEvaluations/populationSize)
+//            .setPopulationSize(populationSize)
+//            .setSolutionListEvaluator(evaluator)
+//            .build();
+    
+    algorithm = new NSGAIIMSABuilder(problem, crossover, mutation, NSGAIIVariant.NSGAII)
             .setSelectionOperator(selection)
-            .setMaxIterations(maxEvaluations/populationSize)
+            .setMaxEvaluations(maxEvaluations)
             .setPopulationSize(populationSize)
             .setSolutionListEvaluator(evaluator)
-            .build();
+            .build();    
     
-    algorithm = new NSGAII45MSA(problem, maxEvaluations, populationSize, crossover, mutation, selection, evaluator );
-    algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, populationSize, div1, div2, false, crossover, mutation, selection, evaluator );
+    //algorithm = new NSGAII45MSA(problem, maxEvaluations, populationSize, crossover, mutation, selection, evaluator );
+    //algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, populationSize, div1, div2, true, crossover, mutation, selection, evaluator );
 
 
     AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
@@ -134,19 +139,19 @@ public class NSGAIIRunnerMAN {
 
     JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
     
-    DefaultFileOutputContext funFilePre = new  DefaultFileOutputContext("FUN." + problemName +"." + algorithm.getName()+ "_pre.tsv");
-    funFilePre.setSeparator("\t");
-    new SolutionListOutput(population)
-            .setFunFileOutputContext(funFilePre)
-            .print();
+//    DefaultFileOutputContext funFilePre = new  DefaultFileOutputContext("FUN." + problemName +"." + algorithm.getName()+ "_pre.tsv");
+//    funFilePre.setSeparator("\t");
+//    new SolutionListOutput(population)
+//            .setFunFileOutputContext(funFilePre)
+//            .print();
     
-    for (MSASolution solution : population) {
-      for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
-        if (!scoreList.get(i).isAMinimizationScore()) {
-          solution.setObjective(i, -1.0 * solution.getObjective(i));
-        }
-      }
-    }
+//    for (MSASolution solution : population) {
+//      for (int i = 0; i < problem.getNumberOfObjectives(); i++) {
+//        if (!scoreList.get(i).isAMinimizationScore()) {
+//          solution.setObjective(i, -1.0 * solution.getObjective(i));
+//        }
+//      }
+//    }
        
     DefaultFileOutputContext varFile = new  DefaultFileOutputContext("VAR." + problemName +"." + algorithm.getName()+ ".tsv");
     varFile.setSeparator("\n");

@@ -12,6 +12,7 @@ import org.uma.jmetalmsa.solution.util.ArrayChar;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -120,6 +121,20 @@ public class MSAProblem extends DynamicallyComposedProblem<MSASolution> {
 
     LinkedHashMap<String, ProteinSequence>
             sequences = FastaReaderHelper.readFastaProteinSequence(new File(dataFile));
+
+    for (Map.Entry<String, ProteinSequence> entry : sequences.entrySet()) {
+      sequenceList.add(new ArrayChar(entry.getValue().getSequenceAsString()));
+    }
+
+    return sequenceList;
+  }
+    //MAN
+    public List<ArrayChar> readDataFromInputStream(InputStream is) throws IOException, CompoundNotFoundException {
+
+    List<ArrayChar> sequenceList = new ArrayList<>();
+
+    LinkedHashMap<String, ProteinSequence>
+            sequences = FastaReaderHelper.readFastaProteinSequence(is);
 
     for (Map.Entry<String, ProteinSequence> entry : sequences.entrySet()) {
       sequenceList.add(new ArrayChar(entry.getValue().getSequenceAsString()));
