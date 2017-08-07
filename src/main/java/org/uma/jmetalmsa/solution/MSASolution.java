@@ -258,9 +258,12 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
 
           if (varIndex == numberOfVariables - 2) {
             if (gapColumnsIndexGG.size() > 0) {
-              for (k = gapColumnsIndexGG.get(0); k <= gapColumnsIndexGG.get(1); k++) {
-                gapColumnsIndex.add(k);
-              }
+                for (int man = 0; man < gapColumnsIndexGG.size() - 1; man += 2)
+                {
+                     for (k = gapColumnsIndexGG.get(man); k <= gapColumnsIndexGG.get(man+1); k++) {
+                        gapColumnsIndex.add(k);
+                     }
+                }
             }
           } else {
             for (k = 0; k < gapColumnsIndexGG.size(); k++) {

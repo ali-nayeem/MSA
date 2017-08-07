@@ -7,37 +7,38 @@ import org.uma.jmetalmsa.score.Score;
 /**
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class NumberOfAlignedColumnsScore implements Score {
+public class NumberOfGapsScore implements Score {
   @Override
-  public <S extends MSASolution> double compute(S solution,char [][]decodedSequences) {
+  public <S extends MSASolution> double compute(S solution, char [][]decodedSequences) {
     //int testOrder = (Integer) solution.getAttribute("testOrder");
-    //if(testOrder != 1)
+    //if(testOrder != 2)
     //{
-    //    System.out.println("Trouble@TC");
+    //    System.out.println("Trouble@"+getName());
     //    System.exit(0);
     //}
     //solution.setAttribute("testOrder", testOrder+1);  
-    
-      return (double)solution.getAttribute("AlignedColumnCount");
+      
+    double numberOfGaps = solution.getNumberOfGaps();
+    return numberOfGaps;
   }
 
   @Override
   public boolean isAMinimizationScore() {
-    return false;
+    return true;
   }
 
   @Override
   public String getName() {
-    return "TC";
+    return "NumGaps";
   }
 
   @Override
   public String getDescription() {
-    return "Number of aligned columns in a multiple sequence";
+    return "Number of gaps in a multiple sequence";
   }
   
   public static int getDependency()
   {
-    return EntropyScore.getDependency()+1;
-  }
+      return 0;
+  } 
 }
