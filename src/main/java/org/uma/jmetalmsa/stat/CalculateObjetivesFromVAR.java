@@ -5,27 +5,20 @@
  */
 package org.uma.jmetalmsa.stat;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
-import java.io.Reader;
-import org.uma.jmetalmsa.runner.*;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import org.apache.commons.io.FileUtils;
-import org.biojava.nbio.core.sequence.ProteinSequence;
-import org.biojava.nbio.core.sequence.io.FastaReaderHelper;
+import org.uma.jmetal.util.SolutionListUtils;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
+import org.uma.jmetal.util.solutionattribute.Ranking;
+import org.uma.jmetal.util.solutionattribute.impl.DominanceRanking;
 import org.uma.jmetalmsa.score.impl.PercentageOfAlignedColumnsScore;
 import org.uma.jmetalmsa.score.impl.PercentageOfNonGapsScore;
 import org.uma.jmetalmsa.score.impl.EntropyScore;
@@ -52,7 +45,7 @@ public class CalculateObjetivesFromVAR
     static String path = "dataset/100S";
     static String seq = "seq.txt";
     static String instance = "R0";
-    static String varFilePath = "VAR.R0.NSGAIIIYY.tsv";
+    static String varFilePath = "VAR.R0.NSGAIIIYY_test.tsv";
     static int numOfSeq;
 
     public <P extends MSAProblem> List<MSASolution> createPopulationFromVarFile(String varFilePath, P problem) throws Exception
@@ -134,16 +127,28 @@ public class CalculateObjetivesFromVAR
             }
         }
     }
+    
+    public List<MSASolution> getNonDominatedSolutions(List<MSASolution> pop)
+    {
+         return SolutionListUtils.getNondominatedSolutions(pop);
+    }
+    
+    public List<MSASolution> getFirstFront(List<MSASolution> pop)
+    {
+        Ranking<MSASolution> ranking = new DominanceRanking<>();
+        ranking.computeRanking(pop);
+        return ranking.getSubfront(0);
+    }
 
     public static void main(String[] args) throws Exception
     {
         List<Score> scoreList = new ArrayList<>();
         scoreList.add(new EntropyScore());
-        scoreList.add(new NumberOfAlignedColumnsScore());
+        //scoreList.add(new NumberOfAlignedColumnsScore());
         scoreList.add(new NumberOfGapsScore());
         scoreList.add(new SimilarityGapsScore());
-        scoreList.add(new SimilarityNonGapsScore());
-        scoreList.add(new GapConcentrationScore());
+        //scoreList.add(new SimilarityNonGapsScore());
+        //scoreList.add(new GapConcentrationScore());
 
         problem = new SATE_MSAProblem(instance, path, scoreList);
         
@@ -151,6 +156,7 @@ public class CalculateObjetivesFromVAR
 
         CalculateObjetivesFromVAR ob = new CalculateObjetivesFromVAR();
         List<MSASolution> pop = ob.createPopulationFromVarFile(varFilePath, problem);
+        pop = ob.getFirstFront(pop);
         ob.evaluatePopulationToFile(pop, "FUN." + problem.getName() + ".MAN", 0);
         
         ob.varifySolutions(pop);

@@ -41,6 +41,7 @@ import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII45;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.uma.jmetal.operator.impl.selection.RandomSelection;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 import org.uma.jmetal.util.pseudorandom.impl.MersenneTwisterGenerator;
 import org.uma.jmetalmsa.algorithm.nsgaIII.NSGAIIIMSABuilder;
@@ -73,8 +74,8 @@ public class NSGAIIRunnerMAN {
 
     String problemName = "R0"; //BB30009, BB11001
     String dataDirectory = "dataset/100S";
-    Integer maxEvaluations = 7800;
-    Integer populationSize = 78;
+    Integer maxEvaluations = 50000;
+    Integer populationSize = 100;
     int div1 = 3;
     int div2 = 2;
     int numberOfCores;
@@ -94,10 +95,10 @@ public class NSGAIIRunnerMAN {
     List<Score> scoreList = new ArrayList<>();
 
     scoreList.add(new EntropyScore());
-    scoreList.add(new NumberOfAlignedColumnsScore());
+    //scoreList.add(new NumberOfAlignedColumnsScore());
     scoreList.add(new NumberOfGapsScore());
-    scoreList.add(new SimilarityGapsScore());
-    scoreList.add(new SimilarityNonGapsScore());
+    //scoreList.add(new SimilarityGapsScore());
+    //scoreList.add(new SimilarityNonGapsScore());
     scoreList.add(new GapConcentrationScore());
 
     problem = new SATE_MSAProblem(problemName, dataDirectory, scoreList);
@@ -128,7 +129,7 @@ public class NSGAIIRunnerMAN {
             .build();    
     
     //algorithm = new NSGAII45MSA(problem, maxEvaluations, populationSize, crossover, mutation, selection, evaluator );
-    algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, populationSize, div1, div2, true, crossover, mutation, selection, evaluator );
+    //algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, populationSize, div1, div2, true, crossover, mutation, new RandomSelection<>(), evaluator );
 
 
     AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)

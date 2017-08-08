@@ -8,9 +8,9 @@ import org.uma.jmetalmsa.solution.MSASolution;
 import java.util.List;
 
 public class MultipleMSAMutation implements MutationOperator<MSASolution> {
-  private double mutationProbability;
-  private JMetalRandom randomGenerator;
- private List<MutationOperator<MSASolution>> mutationOperatorList ;
+  double mutationProbability;
+  JMetalRandom randomGenerator;
+  List<MutationOperator<MSASolution>> mutationOperatorList ;
 
 
   public MultipleMSAMutation(double mutationProbability,  
