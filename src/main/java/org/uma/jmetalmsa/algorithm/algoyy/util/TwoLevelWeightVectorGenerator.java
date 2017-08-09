@@ -8,7 +8,7 @@ public class TwoLevelWeightVectorGenerator extends VectorGenerator {
 	
 	int m;
 	
-	static int gn;
+	private int gn;
 	
 	public TwoLevelWeightVectorGenerator(int div1, int div2, int m){
 		this.div1 = div1;
@@ -94,7 +94,7 @@ public class TwoLevelWeightVectorGenerator extends VectorGenerator {
 
 	}
 
-	static void Traverse(double[][] z, int[] tr, int m, int i, int divisions) {
+	private void Traverse(double[][] z, int[] tr, int m, int i, int divisions) {
 		if (i == (m - 1)) {
 			tr[i] = divisions;
 			for (int k = 0; k < m; k++) {

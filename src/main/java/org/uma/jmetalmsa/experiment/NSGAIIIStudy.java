@@ -62,9 +62,9 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class NSGAIIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAIII" ;
-    static String problemName[] = {"R4", "R9", "R14", "R15", "R19"};
+    static String problemName[] = {"R0", "R4", "R9", "R14", "R15", "R19"};
     static String dataDirectory = "dataset/100S";
-    static Integer maxEvaluations[] = {39000, 53000 };
+    static Integer maxEvaluations[] = {156000, 212000 };
     static Integer populationSize = 78; //106
     //static int div1 = 3;
     //static int div2 = 2;
@@ -110,7 +110,7 @@ public class NSGAIIIStudy {
             configureAlgorithmList(problemList);
 
     Experiment<MSASolution, List<MSASolution>> experiment =
-        new ExperimentBuilder<MSASolution, List<MSASolution>>("NSGAIIIStudy")
+        new ExperimentBuilder<MSASolution, List<MSASolution>>("NSGAIIIStudy2000Eval")
             .setAlgorithmList(algorithmList)
             .setProblemList(problemList)
             .setExperimentBaseDirectory(experimentBaseDirectory)
