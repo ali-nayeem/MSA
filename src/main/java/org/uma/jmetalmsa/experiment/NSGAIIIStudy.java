@@ -62,7 +62,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class NSGAIIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAIII" ;
-    static String problemName = "R0"; 
+    static String problemName[] = {"R4", "R9", "R14", "R15", "R19"};
     static String dataDirectory = "dataset/100S";
     static Integer maxEvaluations[] = {39000, 53000 };
     static Integer populationSize = 78; //106
@@ -90,7 +90,9 @@ public class NSGAIIIStudy {
     int scoreCombination[ ][ ] = { { 1, 2, 3, 4, 5, 6 }, { 1, 2, 3, 4, 6 }};
 
     List<ExperimentProblem<MSASolution>> problemList = new ArrayList<>();
-    
+
+    for(int probIndex = 0; probIndex < problemName.length; probIndex++)
+    {    
       for (int i = 0; i < scoreCombination.length; i++)
       {
           List<Score> localScoreList = new ArrayList<>();
@@ -98,9 +100,10 @@ public class NSGAIIIStudy {
           {
               localScoreList.add(scoreList.get(scoreCombination[i][j]-1));
           }
-          problemList.add(new ExperimentProblem<>(new SATE_MSAProblem(problemName, dataDirectory, localScoreList)));
+          problemList.add(new ExperimentProblem<>(new SATE_MSAProblem(problemName[probIndex], dataDirectory, localScoreList)));
           
       }
+    }
 
 
     List<ExperimentAlgorithm<MSASolution, List<MSASolution>>> algorithmList =
@@ -119,7 +122,7 @@ public class NSGAIIIStudy {
                 //new PISAHypervolume<DoubleSolution>(),
                 //new InvertedGenerationalDistance<DoubleSolution>(), new InvertedGenerationalDistancePlus<DoubleSolution>()))
             .setIndependentRuns(INDEPENDENT_RUNS)
-            .setNumberOfCores(1)
+            .setNumberOfCores(6)
             .build();
 
     new ExecuteAlgorithms<>(experiment).run();
@@ -147,7 +150,7 @@ public class NSGAIIIStudy {
     SelectionOperator selection = new RandomSelection();
     if (numberOfCores == 0)
     {
-       numberOfCores = Runtime.getRuntime().availableProcessors();
+       numberOfCores = 7;
     }
     SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();;
    
@@ -157,7 +160,7 @@ public class NSGAIIIStudy {
        {
            evaluator = new MultithreadedSolutionListEvaluator(numberOfCores, problemList.get(i).getProblem());
        }
-       Algorithm<List<MSASolution>> algorithm = new NSGAIIIYYMSA(problemList.get(i).getProblem(), maxEvaluations[i], populationSize, div[i][0], div[i][1], true, crossover, mutation, selection, evaluator );
+       Algorithm<List<MSASolution>> algorithm = new NSGAIIIYYMSA(problemList.get(i).getProblem(), maxEvaluations[i%2], populationSize, div[i%2][0], div[i%2][1], true, crossover, mutation, selection, evaluator );
        algorithms.add(new ExperimentAlgorithmMSA(algorithm, "NSGAIII", problemList.get(i).getTag()));
     }
 

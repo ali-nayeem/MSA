@@ -62,7 +62,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class NSGAIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAII" ;
-    static String problemName = "R0"; 
+    static String problemName[] = {"R4", "R9", "R14", "R15", "R19"}; 
     static String dataDirectory = "dataset/100S";
     static Integer maxEvaluations = 500;
     static Integer populationSize = 100;
@@ -86,7 +86,8 @@ public class NSGAIIStudy {
     int scoreCombination[ ][ ] = { { 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }};
 
     List<ExperimentProblem<MSASolution>> problemList = new ArrayList<>();
-    
+    for(int probIndex = 0; probIndex < problemName.length; probIndex++)
+    {
       for (int i = 0; i < scoreCombination.length; i++)
       {
           List<Score> localScoreList = new ArrayList<>();
@@ -94,10 +95,10 @@ public class NSGAIIStudy {
           {
               localScoreList.add(scoreList.get(scoreCombination[i][j]-1));
           }
-          problemList.add(new ExperimentProblem<>(new SATE_MSAProblem(problemName, dataDirectory, localScoreList)));
+          problemList.add(new ExperimentProblem<>(new SATE_MSAProblem(problemName[probIndex], dataDirectory, localScoreList)));
           
       }
-
+    }
 
     List<ExperimentAlgorithm<MSASolution, List<MSASolution>>> algorithmList =
             configureAlgorithmList(problemList);
