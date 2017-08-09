@@ -9,13 +9,14 @@ import java.util.List;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
+import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 
 /**
  * Created by ajnebro on 21/10/16.
  */
 public class NSGAIIIYYMSA extends NSGAIIIYY<MSASolution> {
-  public NSGAIIIYYMSA(MSAProblem problem, int maxIterations, int populationSize, int div1, int div2, boolean normalize,
+  public NSGAIIIYYMSA(Problem<MSASolution> problem, int maxIterations, int populationSize, int div1, int div2, boolean normalize,
                    CrossoverOperator<MSASolution> crossoverOperator,
                    MutationOperator<MSASolution> mutationOperator,
                    SelectionOperator<List<MSASolution>, MSASolution> selectionOperator,

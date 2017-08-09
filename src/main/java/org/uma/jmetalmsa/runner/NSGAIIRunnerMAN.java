@@ -76,8 +76,8 @@ public class NSGAIIRunnerMAN {
     String dataDirectory = "dataset/100S";
     Integer maxEvaluations = 50000;
     Integer populationSize = 100;
-    int div1 = 3;
-    int div2 = 2;
+    int div1 = 4;
+    int div2 = 3;
     int numberOfCores;
     if (args.length != 0) {
       numberOfCores = Integer.parseInt(args[0]) ;
@@ -95,10 +95,10 @@ public class NSGAIIRunnerMAN {
     List<Score> scoreList = new ArrayList<>();
 
     scoreList.add(new EntropyScore());
-    //scoreList.add(new NumberOfAlignedColumnsScore());
-    scoreList.add(new NumberOfGapsScore());
-    //scoreList.add(new SimilarityGapsScore());
-    //scoreList.add(new SimilarityNonGapsScore());
+    scoreList.add(new NumberOfAlignedColumnsScore());
+    //scoreList.add(new NumberOfGapsScore());
+    scoreList.add(new SimilarityGapsScore());
+    scoreList.add(new SimilarityNonGapsScore());
     scoreList.add(new GapConcentrationScore());
 
     problem = new SATE_MSAProblem(problemName, dataDirectory, scoreList);
@@ -129,7 +129,7 @@ public class NSGAIIRunnerMAN {
             .build();    
     
     //algorithm = new NSGAII45MSA(problem, maxEvaluations, populationSize, crossover, mutation, selection, evaluator );
-    //algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, populationSize, div1, div2, true, crossover, mutation, new RandomSelection<>(), evaluator );
+    algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, populationSize, div1, div2, true, crossover, mutation, new RandomSelection<>(), evaluator );
 
 
     AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
