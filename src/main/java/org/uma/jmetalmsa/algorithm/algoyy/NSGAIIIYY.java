@@ -48,8 +48,8 @@ public class NSGAIIIYY<S extends Solution<?>> implements Algorithm<List<S>>
 
     protected final SolutionListEvaluator<S> evaluator_;
 
-    protected int generations_;
-    protected int evaluations_ = 0;
+    //protected int generations_;
+    protected int evaluations_;
 
     protected CrossoverOperator<S> crossover_;
     protected MutationOperator<S> mutation_;
@@ -59,14 +59,14 @@ public class NSGAIIIYY<S extends Solution<?>> implements Algorithm<List<S>>
 
     protected boolean normalize_; // do normalization or not
 
-    public NSGAIIIYY(Problem<S> problem, int maxEvaluations, int populationSize, int div1, int div2, boolean normalize,
+    public NSGAIIIYY(Problem<S> problem, int maxEvaluations, int div1, int div2, boolean normalize,
             CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
             SelectionOperator<List<S>, S> selectionOperator, SolutionListEvaluator<S> evaluator)
     {
         super();
         this.problem_ = problem;
         this.maxEvaluations_ = maxEvaluations;
-        this.populationSize_ = populationSize;
+        //this.populationSize_ = populationSize;
         this.div1_ = div1;
         this.div2_ = div2;
         this.normalize_ = normalize;
@@ -94,7 +94,9 @@ public class NSGAIIIYY<S extends Solution<?>> implements Algorithm<List<S>>
     {
         //int maxGenerations_;
 
-        generations_ = 0;
+        //generations_ = 0;
+        evaluations_ = 0;
+        
 
         VectorGenerator vg = new TwoLevelWeightVectorGenerator(div1_, div2_,
                 problem_.getNumberOfObjectives());
@@ -172,7 +174,7 @@ public class NSGAIIIYY<S extends Solution<?>> implements Algorithm<List<S>>
                 remain = 0;
             }
 
-            generations_++;
+            //generations_++;
 
         }
 

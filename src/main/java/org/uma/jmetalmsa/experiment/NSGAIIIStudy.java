@@ -62,14 +62,14 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class NSGAIIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAIII" ;
-    static String problemName[] = {"R0", "R4", "R9", "R14", "R15", "R19"};
+    static String problemName[] = {"R0"};//, "R4", "R9", "R14", "R15", "R19"};
     static String dataDirectory = "dataset/100S";
-    static Integer maxEvaluations[] = {156000, 212000 };
-    static Integer populationSize = 78; //106
+    static Integer maxEvaluations[] = {39000, 53000};
+    //static Integer populationSize = 78; //106
     //static int div1 = 3;
     //static int div2 = 2;
     static int div[ ][ ] = { { 3, 2}, { 4, 3}};
-    private static final int INDEPENDENT_RUNS = 50 ;
+    private static final int INDEPENDENT_RUNS = 30 ;
     static int numberOfCores = 0;
 
   public static void main(String[] args) throws Exception {
@@ -110,7 +110,7 @@ public class NSGAIIIStudy {
             configureAlgorithmList(problemList);
 
     Experiment<MSASolution, List<MSASolution>> experiment =
-        new ExperimentBuilder<MSASolution, List<MSASolution>>("NSGAIIIStudy2000Eval")
+        new ExperimentBuilder<MSASolution, List<MSASolution>>("NSGAIIIStudy")
             .setAlgorithmList(algorithmList)
             .setProblemList(problemList)
             .setExperimentBaseDirectory(experimentBaseDirectory)
@@ -160,7 +160,7 @@ public class NSGAIIIStudy {
        {
            evaluator = new MultithreadedSolutionListEvaluator(numberOfCores, problemList.get(i).getProblem());
        }
-       Algorithm<List<MSASolution>> algorithm = new NSGAIIIYYMSA(problemList.get(i).getProblem(), maxEvaluations[i%2], populationSize, div[i%2][0], div[i%2][1], true, crossover, mutation, selection, evaluator );
+       Algorithm<List<MSASolution>> algorithm = new NSGAIIIYYMSA(problemList.get(i).getProblem(), maxEvaluations[i%2], div[i%2][0], div[i%2][1], true, crossover, mutation, selection, evaluator );
        algorithms.add(new ExperimentAlgorithmMSA(algorithm, "NSGAIII", problemList.get(i).getTag()));
     }
 

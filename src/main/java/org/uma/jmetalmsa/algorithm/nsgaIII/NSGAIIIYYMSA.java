@@ -16,12 +16,12 @@ import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
  * Created by ajnebro on 21/10/16.
  */
 public class NSGAIIIYYMSA extends NSGAIIIYY<MSASolution> {
-  public NSGAIIIYYMSA(Problem<MSASolution> problem, int maxIterations, int populationSize, int div1, int div2, boolean normalize,
+  public NSGAIIIYYMSA(Problem<MSASolution> problem, int maxIterations, int div1, int div2, boolean normalize,
                    CrossoverOperator<MSASolution> crossoverOperator,
                    MutationOperator<MSASolution> mutationOperator,
                    SelectionOperator<List<MSASolution>, MSASolution> selectionOperator,
                    SolutionListEvaluator<MSASolution> evaluator) {
-      super(problem, maxIterations, populationSize, div1, div2, normalize, crossoverOperator, mutationOperator, selectionOperator, evaluator);
+      super(problem, maxIterations, div1, div2, normalize, crossoverOperator, mutationOperator, selectionOperator, evaluator);
 
   }
 

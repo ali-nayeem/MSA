@@ -129,7 +129,7 @@ public class NSGAIIRunnerMAN {
             .build();    
     
     //algorithm = new NSGAII45MSA(problem, maxEvaluations, populationSize, crossover, mutation, selection, evaluator );
-    algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, populationSize, div1, div2, true, crossover, mutation, new RandomSelection<>(), evaluator );
+    algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, div1, div2, true, crossover, mutation, new RandomSelection<>(), evaluator );
 
 
     AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
