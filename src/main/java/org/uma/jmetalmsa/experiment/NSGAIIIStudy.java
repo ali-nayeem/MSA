@@ -69,14 +69,14 @@ public class NSGAIIIStudy {
     //static int div1 = 3;
     //static int div2 = 2;
     static int div[ ][ ] = { { 3, 2}, { 4, 3}};
-    private static final int INDEPENDENT_RUNS = 30 ;
+    private static final int INDEPENDENT_RUNS = 10 ;
     static int numberOfCores = 0;
 
   public static void main(String[] args) throws Exception {
     if (args.length > 0) {
       numberOfCores = Integer.parseInt(args[0]) ;
     }
-    JMetalRandom.getInstance().setRandomGenerator(new MersenneTwisterGenerator(1234));
+    JMetalRandom.getInstance().setRandomGenerator(new MersenneTwisterGenerator(4321));
     
     List<Score> scoreList = new ArrayList<>();
 
