@@ -74,7 +74,7 @@ public class NSGAIIRunnerMAN {
 
     String problemName = "R0"; //BB30009, BB11001
     String dataDirectory = "dataset/100S";
-    Integer maxEvaluations = 50000;
+    Integer maxEvaluations = 500;
     Integer populationSize = 100;
     int div1 = 4;
     int div2 = 3;

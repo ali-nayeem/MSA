@@ -468,5 +468,23 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
   public boolean isGap(char symbol) {
     return symbol == GAP_IDENTIFIER;
   }
+  
+  //MAN
+    public String getEncodedAlignment() {
+    String encodedAlignment = "<";
+    encodedAlignment += "\n";
+    
+    for (int i = 0; i < getNumberOfVariables(); i++)
+        {
+            List<Integer> gapGroupList = getVariableListInteger(i); 
+            for (int j = 0; j < gapGroupList.size(); j++)
+            {
+                encodedAlignment += gapGroupList.get(j) + "," ;
+            }
+            encodedAlignment += "\n";
+        }
+        encodedAlignment += ">";
+     return encodedAlignment;
+  }
 }
 
