@@ -6,7 +6,7 @@
 package org.uma.jmetalmsa.stat;
 
 import java.io.BufferedReader;
-import java.io.IOException;
+//import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import org.uma.jmetalmsa.score.impl.GapConcentrationScore;
 import org.uma.jmetalmsa.score.impl.NumberOfAlignedColumnsScore;
 import org.uma.jmetalmsa.score.impl.SimilarityGapsScore;
 import org.uma.jmetalmsa.score.impl.SimilarityNonGapsScore;
-import static org.uma.jmetalmsa.stat.CalculateObjetivesFromVAR.instance;
+//import static org.uma.jmetalmsa.stat.CalculateObjetivesFromVAR.instance;
 
 /**
  *
@@ -33,26 +33,30 @@ public class SearchAndEncodeVAR_Linux
     static String instancePath = "dataset/100S";
     static String instanceName = "R0";
 
-    public List<String> getPathListOfDirs(String rootPath) throws Exception
+    public List<String> getPathList(String rootPath, String fileName) throws Exception
     {
-        List<String> dirPathList = new ArrayList<>();
-        String fileNameSuffix = "0.tsv";
-        String command = "find " + root + "-type f -name " + varFileName + fileNameSuffix;
+        List<String> pathList = new ArrayList<>();
+        String command = "find " + root + " -type f -name " + fileName;
         BufferedReader reader = runBashCommand(command);
         
         String line = "";
         while ((line = reader.readLine()) != null)
         {
-            line = line.substring(0, line.length() - fileNameSuffix.length());
-            dirPathList.add(line);
+            line = line.substring(0, line.length() - fileName.length());
+            pathList.add(line);
         }
 
-        return dirPathList;
+        return pathList;
     }
 
-    public List<String> getPathListOfVarFiles()
+    public List<String> getPathListOfVarFiles(String rootPath) throws Exception
     {
         List<String> varpathList = new ArrayList<>();
+        String fileName = varFileName + "*.tsv";
+        String command = "find " + root + " -type f -name " + fileName;
+        BufferedReader reader = runBashCommand(command);
+        
+        
 
         return varpathList;
     }
@@ -76,5 +80,13 @@ public class SearchAndEncodeVAR_Linux
         scoreList.add(new GapConcentrationScore());
 
         MSAProblem problem = new SATE_MSAProblem(instanceName, instancePath, scoreList);
+        
+        SearchAndEncodeVAR_Linux obj = new SearchAndEncodeVAR_Linux();
+        List<String> dirPathList = obj.getPathList(root, varFileName + "0.tsv");
+        
+        for(String dirPath : dirPathList)
+        {
+            List<String> varPathList = obj.getPathList(root, varFileName + "*.tsv"); 
+        }
     }
 }
