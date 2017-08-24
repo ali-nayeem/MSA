@@ -28,7 +28,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
 public class SearchAndEncodeVAR_Linux
 {
 
-    static String root = "/home/ali_nayeem/data/";
+    static String root = "/home/ali_nayeem/NetBeansProjects/MSA/experiment/"; //"/home/ali_nayeem/data/";
     static String varFileName = "VAR";
     static String pattern = "VAR";
     static String instancePath = "dataset/100S";

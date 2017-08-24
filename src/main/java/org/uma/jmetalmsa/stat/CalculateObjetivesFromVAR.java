@@ -58,7 +58,8 @@ public class CalculateObjetivesFromVAR
 
         while (br.ready())
         {
-            String oneVar = "";
+            List<ArrayChar> sequenceList = new ArrayList<>();
+            //String oneVar = "";
             String oneLine = "";
 
             do
@@ -68,7 +69,11 @@ public class CalculateObjetivesFromVAR
 
             while (oneLine != null && !oneLine.isEmpty())
             {
-                oneVar += oneLine + "\n";
+                //oneVar += oneLine + "\n";
+                if (!oneLine.startsWith(">"))
+                {
+                    sequenceList.add(new ArrayChar(oneLine));
+                }
                 oneLine = br.readLine();
             }
 
@@ -78,8 +83,9 @@ public class CalculateObjetivesFromVAR
             }
             //br.readLine();
             //br.readLine();
-            InputStream is = new ByteArrayInputStream(oneVar.getBytes());
-            MSASolution sol = new MSASolution(problem.readDataFromInputStream(is), problem);
+            //InputStream is = new ByteArrayInputStream(oneVar.getBytes());
+            //MSASolution sol = new MSASolution(problem.readDataFromInputStream(is), problem);
+            MSASolution sol = new MSASolution(sequenceList, problem);
             pop.add(sol);
         }
         br.close();
@@ -110,7 +116,7 @@ public class CalculateObjetivesFromVAR
                 {
                     break;
                 }
-                
+
                 List<Integer> oneGapList = new ArrayList<>();
                 if (!oneLine.isEmpty())
                 {
@@ -220,7 +226,6 @@ public class CalculateObjetivesFromVAR
         MSAProblem problem = new SATE_MSAProblem(instance, path, scoreList);
 
         //numOfSeq = problem.getNumberOfVariables();
-
         CalculateObjetivesFromVAR ob = new CalculateObjetivesFromVAR();
         List<MSASolution> pop = ob.createPopulationFromVarFile(varFilePath, problem);
         //pop = ob.getFirstFront(pop);
