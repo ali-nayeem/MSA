@@ -167,7 +167,7 @@ public class CalculateObjetivesFromVAR
 
     public void printPopulationToEncodedvarFile(List<MSASolution> pop, String filepath) throws IOException
     {
-        DefaultFileOutputContext outFile = new DefaultFileOutputContext(filepath + ".txt");
+        DefaultFileOutputContext outFile = new DefaultFileOutputContext(filepath);
         BufferedWriter bufferedWriter = outFile.getFileWriter();
         for (MSASolution sol : pop)
         {
