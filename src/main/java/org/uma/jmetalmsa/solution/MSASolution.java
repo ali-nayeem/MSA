@@ -470,21 +470,48 @@ public class MSASolution extends AbstractGenericSolution<List<Integer>, MSAProbl
   }
   
   //MAN
-    public String getEncodedAlignment() {
-    String encodedAlignment = "<";
-    encodedAlignment += "\n";
-    
-    for (int i = 0; i < getNumberOfVariables(); i++)
-        {
-            List<Integer> gapGroupList = getVariableListInteger(i); 
-            for (int j = 0; j < gapGroupList.size(); j++)
-            {
-                encodedAlignment += gapGroupList.get(j) + "," ;
-            }
-            encodedAlignment += "\n";
+//    public String getEncodedAlignment() {
+//    String encodedAlignment = "<";
+//    encodedAlignment += "\n";
+//    
+//    for (int i = 0; i < getNumberOfVariables(); i++)
+//        {
+//            List<Integer> gapGroupList = getVariableListInteger(i); 
+//            for (int j = 0; j < gapGroupList.size(); j++)
+//            {
+//                encodedAlignment += gapGroupList.get(j) + "," ;
+//            }
+//            encodedAlignment += "\n";
+//        }
+//        encodedAlignment += ">";
+//     return encodedAlignment;
+//  }
+  
+      public String getEncodedAlignment() {
+        int cap=0;
+        for (int i = 0; i < getNumberOfVariables(); i++) {
+            cap += getNumberOfGaps(i);
         }
-        encodedAlignment += ">";
-     return encodedAlignment;
-  }
+
+        StringBuilder encodedAlignment = new StringBuilder(cap*2);
+        //String encodedAlignment = "<";
+        //encodedAlignment += "\n";
+        encodedAlignment.append("<\n");
+
+        for (int i = 0; i < getNumberOfVariables(); i++)
+            {
+                List<Integer> gapGroupList = getVariableListInteger(i); 
+                for (int j = 0; j < gapGroupList.size(); j++)
+                {
+                    //encodedAlignment += gapGroupList.get(j) + "," ;
+                    encodedAlignment.append(gapGroupList.get(j)).append(",");
+                }
+                //encodedAlignment += "\n";
+                encodedAlignment.append("\n");
+            }
+            //encodedAlignment += ">";
+            encodedAlignment.append(">");
+         return encodedAlignment.toString();
+      }
 }
 

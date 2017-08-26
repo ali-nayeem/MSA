@@ -8,9 +8,12 @@ package org.uma.jmetalmsa.stat;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import org.uma.jmetal.util.SolutionListUtils;
@@ -171,16 +174,36 @@ public class CalculateObjetivesFromVAR
         evaluator.shutdown();
     }
 
+//    public void printPopulationToEncodedvarFile(List<MSASolution> pop, String filepath) throws IOException
+//    {
+//        DefaultFileOutputContext outFile = new DefaultFileOutputContext(filepath);
+//        BufferedWriter bufferedWriter = outFile.getFileWriter();
+//        for (MSASolution sol : pop)
+//        {
+//            bufferedWriter.write(sol.getEncodedAlignment());
+//            bufferedWriter.newLine();
+//        }
+//        bufferedWriter.close();
+//    }
     public void printPopulationToEncodedvarFile(List<MSASolution> pop, String filepath) throws IOException
     {
-        DefaultFileOutputContext outFile = new DefaultFileOutputContext(filepath);
-        BufferedWriter bufferedWriter = outFile.getFileWriter();
+        FileOutputStream stream = new FileOutputStream(filepath);
+        FileChannel channel = stream.getChannel();
+        byte[] strBytes;
+        ByteBuffer buffer;
+        
         for (MSASolution sol : pop)
         {
-            bufferedWriter.write(sol.getEncodedAlignment());
-            bufferedWriter.newLine();
+            strBytes = (sol.getEncodedAlignment() + "\n").getBytes();
+            buffer = ByteBuffer.allocate(strBytes.length);
+            buffer.put(strBytes);
+            buffer.flip();
+            channel.write(buffer);
+
         }
-        bufferedWriter.close();
+
+        stream.close();
+        channel.close();
     }
 
     public void varifySolutions(List<MSASolution> pop)
@@ -233,7 +256,7 @@ public class CalculateObjetivesFromVAR
 
         //ob.varifySolutions(pop);
         ob.printPopulationToEncodedvarFile(pop, varFilePath + "_encoded");
-        pop = ob.createPopulationFromEncodedVarFile(varFilePath + "_encoded.txt", problem);
+        pop = ob.createPopulationFromEncodedVarFile(varFilePath + "_encoded", problem);
         ob.evaluatePopulationToFile(pop, "FUN." + problem.getName() + ".MAN", 0, problem);
 
     }

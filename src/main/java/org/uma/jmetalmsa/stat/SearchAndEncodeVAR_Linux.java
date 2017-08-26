@@ -28,7 +28,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
 public class SearchAndEncodeVAR_Linux
 {
 
-    static String root = "/home/ali_nayeem/NetBeansProjects/MSA/experiment/"; //"/home/ali_nayeem/data/";
+    static String root = "/home/ali_nayeem/data/"; //"/home/ali_nayeem/data/" "/home/ali_nayeem/NetBeansProjects/MSA/experiment/"
     static String varFileName = "VAR";
     static String pattern = "VAR";
     static String instancePath = "dataset/100S";
@@ -91,6 +91,7 @@ public class SearchAndEncodeVAR_Linux
 
         for (String dirPath : dirPathList)
         {
+            System.out.println("Now working at "+ dirPath);
             List<String> varPathList = selfObj.getPathList(dirPath, varFileName + "*.tsv");
             List<MSASolution> combinedPop = new ArrayList<>();
             for(String varPath : varPathList)
