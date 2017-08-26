@@ -1,0 +1,5 @@
+find /home/ali_nayeem/NetBeansProjects/MSA/experiment/ -type f -name AllEncodedVAR -exec cat {} >> ./CombinedEncodedVAR \;
+find /home/ali_nayeem/data/cloud/ -type f -name AllEncodedVAR -exec cat {} >> ./CombinedEncodedVAR \;
+find /home/ali_nayeem/MSA/experiment/ -type f -name AllEncodedVAR -exec cat {} >> ./CombinedEncodedVAR \;
+find /home/ali_nayeem/data/ -type f -name CombinedEncodedVAR -exec cat {} >> ./FinalCombinedEncodedVAR \;
+
