@@ -28,7 +28,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
 public class SearchAndEncodeVAR_Linux
 {
 
-    static String root = "/home/ali_nayeem/data/"; //"/home/ali_nayeem/data/" "/home/ali_nayeem/NetBeansProjects/MSA/experiment/"
+    static String root = "/home/ali_nayeem/MSA/experiment/"; //"/home/ali_nayeem/data/" "/home/ali_nayeem/NetBeansProjects/MSA/experiment/"
     static String varFileName = "VAR";
     static String pattern = "VAR";
     static String instancePath = "dataset/100S";
@@ -99,7 +99,7 @@ public class SearchAndEncodeVAR_Linux
                 combinedPop.addAll(obj.createPopulationFromVarFile(varPath, problem));
             }
             obj.printPopulationToEncodedvarFile(combinedPop, dirPath+encodedvarFileName);
-            System.exit(0);
+            //System.exit(0);
             
         }
     }
