@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,11 +35,13 @@ import static org.uma.jmetalmsa.stat.SearchAndEncodeVAR_Linux.instanceName;
 public class FindUniqueEncodedVAR
 {
 
-    static int approxLineLength = 1200; 
+    static int approxLineLength = 1200;
     static String instancePath = "dataset/100S";
     static String instanceName = "R0";
     static String encodedVarFileName = "/home/ali_nayeem/MSA/experiment/FinalCombinedEncodedVAR";
     static String uniqueVarFileName = "/home/ali_nayeem/MSA/experiment/uniqueVAR";
+    static String shuffledVarFileName = "/home/ali_nayeem/MSA/experiment/shuffledVAR";
+    
 
     public Set<String> getUniqueEncodedVarFile(String encodedVarFilePath, MSAProblem problem) throws Exception
     {
@@ -79,12 +82,33 @@ public class FindUniqueEncodedVAR
             allCount++;
         }
         br.close();
-        System.out.println("Total: "+allCount);
-        System.out.println("Unique:"+uniqueAlignments.size());
+        System.out.println("Total: " + allCount);
+        System.out.println("Unique:" + uniqueAlignments.size());
         return uniqueAlignments;
     }
 
     public void printUniqueEncodedVarToFile(Set<String> allVar, String filepath) throws IOException
+    {
+        FileOutputStream stream = new FileOutputStream(filepath);
+        FileChannel channel = stream.getChannel();
+        byte[] strBytes;
+        ByteBuffer buffer;
+
+        for (String var : allVar)
+        {
+            strBytes = (var + "\n").getBytes();
+            buffer = ByteBuffer.allocate(strBytes.length);
+            buffer.put(strBytes);
+            buffer.flip();
+            channel.write(buffer);
+
+        }
+
+        stream.close();
+        channel.close();
+    }
+
+    public void printUniqueEncodedVarToFile(List<String> allVar, String filepath) throws IOException
     {
         FileOutputStream stream = new FileOutputStream(filepath);
         FileChannel channel = stream.getChannel();
@@ -118,13 +142,17 @@ public class FindUniqueEncodedVAR
         MSAProblem problem = new SATE_MSAProblem(instanceName, instancePath, scoreList);
         FindUniqueEncodedVAR selfObj = new FindUniqueEncodedVAR();
         Set<String> uniqueVar = selfObj.getUniqueEncodedVarFile(encodedVarFileName, problem);
-        selfObj.printUniqueEncodedVarToFile(uniqueVar, uniqueVarFileName);
+        //selfObj.printUniqueEncodedVarToFile(uniqueVar, uniqueVarFileName);
         
+        List<String> listOfVar = new ArrayList<>(uniqueVar);
+        Collections.shuffle(listOfVar);
+        selfObj.printUniqueEncodedVarToFile(listOfVar, shuffledVarFileName);
+
+
         //CalculateObjetivesFromVAR obj = new CalculateObjetivesFromVAR();
         //ob.printPopulationToEncodedvarFile(pop, uniqueVarFileName);
         //List <MSASolution> pop = obj.createPopulationFromEncodedVarFile(uniqueVarFileName, problem);
         //obj.evaluatePopulationToFile(pop, "FUN." + problem.getName() + ".unique", 1, problem);
-
     }
 
 }
