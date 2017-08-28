@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.uma.jmetalmsa.experiment;
+package org.uma.jmetalmsa.stat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,6 @@ import org.uma.jmetalmsa.score.impl.EntropyScore;
 //import org.uma.jmetalmsa.score.impl.SimilarityGapsScore;
 //import org.uma.jmetalmsa.score.impl.SimilarityNonGapsScore;
 import org.uma.jmetalmsa.solution.MSASolution;
-import org.uma.jmetalmsa.stat.CalculateObjetivesFromVAR;
 
 /**
  *
