@@ -35,7 +35,7 @@ public class SearchAndEncodeVAR_Linux
     static String instanceName = "R0";
     static String encodedvarFileName = "AllEncodedVAR";
 
-    public List<String> getPathList(String rootPath, String fileName) throws Exception
+    public static List<String> getPathList(String rootPath, String fileName) throws Exception
     {
         List<String> pathList = new ArrayList<>();
         String command = "find " + rootPath + " -type f -name " + fileName;
@@ -54,17 +54,17 @@ public class SearchAndEncodeVAR_Linux
         return pathList;
     }
 
-    public List<String> getPathListOfVarFiles(String rootPath) throws Exception
-    {
-        List<String> varpathList = new ArrayList<>();
-        String fileName = varFileName + "*.tsv";
-        String command = "find " + root + " -type f -name " + fileName;
-        BufferedReader reader = runBashCommand(command);
+//    public List<String> getPathListOfVarFiles(String rootPath) throws Exception
+//    {
+//        List<String> varpathList = new ArrayList<>();
+//        String fileName = varFileName + "*.tsv";
+//        String command = "find " + root + " -type f -name " + fileName;
+//        BufferedReader reader = runBashCommand(command);
+//
+//        return varpathList;
+//    }
 
-        return varpathList;
-    }
-
-    public BufferedReader runBashCommand(String command) throws Exception
+    public static BufferedReader runBashCommand(String command) throws Exception
     {
         Process p = Runtime.getRuntime().exec(command);
         p.waitFor();
@@ -85,7 +85,7 @@ public class SearchAndEncodeVAR_Linux
         MSAProblem problem = new SATE_MSAProblem(instanceName, instancePath, scoreList);
 
         SearchAndEncodeVAR_Linux selfObj = new SearchAndEncodeVAR_Linux();
-        List<String> dirPathList = selfObj.getPathList(root, varFileName + "0.tsv");
+        List<String> dirPathList = SearchAndEncodeVAR_Linux.getPathList(root, varFileName + "0.tsv");
         
         CalculateObjetivesFromVAR obj = new CalculateObjetivesFromVAR();
 
