@@ -6,7 +6,11 @@
 package org.uma.jmetalmsa.stat;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,7 +25,7 @@ import org.uma.jmetalmsa.score.impl.GapConcentrationScore;
 import org.uma.jmetalmsa.score.impl.NumberOfAlignedColumnsScore;
 import org.uma.jmetalmsa.score.impl.SimilarityGapsScore;
 import org.uma.jmetalmsa.score.impl.SimilarityNonGapsScore;
-import static org.uma.jmetalmsa.stat.SearchAndEncodeVAR_Linux.instanceName;
+//import static org.uma.jmetalmsa.stat.SearchAndEncodeVAR_Linux.instanceName;
 
 /**
  *
@@ -37,7 +41,8 @@ public class MapEncodedVARFileToAlgo
     static String instanceName = "R0";
     static String singleVarFileName = "AllEncodedVAR";
     static String refVarFile = "/home/ali_nayeem/data/shortShuffledVAR";
-    static int[][] algoWiseVarCount = new int[10000][7];
+    static int[][] algoWiseVarCount = new int[100][7];
+    static String algoWiseVarCountFileName = "/home/ali_nayeem/data/shortAlgoWiseVARCount";
 
     //static int approxLineLength = 1200;
     public Map<String, Integer> getEncodedVarWithCountFromFile(Map<String, Integer> alignmentToCount, String encodedVarFilePath, MSAProblem problem) throws Exception
@@ -93,7 +98,7 @@ public class MapEncodedVARFileToAlgo
         StringBuilder encodedAlignment = new StringBuilder(problem.getNumberOfVariables() * 1000);
         int refAlignmentId = 0;
 
-        while (br.ready())
+        for (int i = 0; i < algoWiseVarCount.length; i++)
         {
             String oneLine = "";
             encodedAlignment.setLength(0);
@@ -124,11 +129,45 @@ public class MapEncodedVARFileToAlgo
             encodedAlignment.append(">");
             String encodedAlignmentString = encodedAlignment.toString();
             int encodedAlignmentCount = algoAlignmentToCount.getOrDefault(encodedAlignmentString, 0);
-            algoWiseVarCount[algoId][refAlignmentId] += encodedAlignmentCount;
+            algoWiseVarCount[refAlignmentId][algoId] += encodedAlignmentCount;
             refAlignmentId++;
-            
+
         }
         br.close();
+    }
+
+    public static void printAlgoWiseVarCountToFile(String filepath, String header) throws Exception
+    {
+        FileOutputStream stream = new FileOutputStream(filepath);
+        FileChannel channel = stream.getChannel();
+        byte[] strBytes;
+        ByteBuffer buffer;
+        
+        strBytes = (header + "\n").getBytes();
+        buffer = ByteBuffer.allocate(strBytes.length);
+        buffer.put(strBytes);
+        buffer.flip();
+        channel.write(buffer);
+        
+        StringBuilder line = new StringBuilder(algoWiseVarCount[0].length * 2);
+        for (int i = 0; i < algoWiseVarCount.length; i++)
+        {
+            line.setLength(0);
+            for (int j = 0; j < algoWiseVarCount[i].length; j++)
+            {
+                line.append(algoWiseVarCount[i][j]).append("\t");
+            }
+            line.append("\n");
+
+            strBytes = line.toString().getBytes();
+            buffer = ByteBuffer.allocate(strBytes.length);
+            buffer.put(strBytes);
+            buffer.flip();
+            channel.write(buffer);
+        }
+
+        stream.close();
+        channel.close();
     }
 
     public static void main(String[] arg) throws Exception
@@ -148,6 +187,7 @@ public class MapEncodedVARFileToAlgo
             algoId.put(algoName, algoId.getOrDefault(algoName, algoId.size()));
             Map<String, Integer> algoAlignmentToCount = selfobj.getEncodedVarWithCountFromFile(new HashMap<>(), path, problem);
             updateAlgoWiseAlignmentCount(algoId.get(algoName), algoAlignmentToCount, refVarFile, problem);
+            algoAlignmentToCount = null;
         }
 //        String[] algoNameArray = new String[algoNameToVarMap.size()];
 //        int algoId = 0;
@@ -156,5 +196,13 @@ public class MapEncodedVARFileToAlgo
 //            System.out.println(algoName + " => " + algoId);
 //            algoNameArray[algoId++] = algoName;
 //        }
+        String header = "";
+        for (Map.Entry<String, Integer> e : algoId.entrySet())
+        {
+            System.out.println(e.getKey() + "=>" + e.getValue());
+            header += e.getKey() + '\t';
+
+        }
+
     }
 }
