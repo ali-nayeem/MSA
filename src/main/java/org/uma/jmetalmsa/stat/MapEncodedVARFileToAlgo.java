@@ -7,12 +7,21 @@ package org.uma.jmetalmsa.stat;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.uma.jmetalmsa.problem.MSAProblem;
+import org.uma.jmetalmsa.problem.SATE_MSAProblem;
+import org.uma.jmetalmsa.score.Score;
+import org.uma.jmetalmsa.score.impl.EntropyScore;
+import org.uma.jmetalmsa.score.impl.GapConcentrationScore;
+import org.uma.jmetalmsa.score.impl.NumberOfAlignedColumnsScore;
+import org.uma.jmetalmsa.score.impl.SimilarityGapsScore;
+import org.uma.jmetalmsa.score.impl.SimilarityNonGapsScore;
+import static org.uma.jmetalmsa.stat.SearchAndEncodeVAR_Linux.instanceName;
 
 /**
  *
@@ -28,18 +37,20 @@ public class MapEncodedVARFileToAlgo
     static String instanceName = "R0";
     static String singleVarFileName = "AllEncodedVAR";
     static String refVarFile = "/home/ali_nayeem/data/shortShuffledVAR";
-    //static int approxLineLength = 1200;
+    static int[][] algoWiseVarCount = new int[10000][7];
 
-    public Map<String, Integer> getUniqueEncodedVarFile(Map<String, Integer> alignmentToCount, String encodedVarFilePath, MSAProblem problem) throws Exception
+    //static int approxLineLength = 1200;
+    public Map<String, Integer> getEncodedVarWithCountFromFile(Map<String, Integer> alignmentToCount, String encodedVarFilePath, MSAProblem problem) throws Exception
     {
         int allCount = 0;
         BufferedReader br = new BufferedReader(new FileReader(encodedVarFilePath));
         //Map<String, Integer> AlignmentToCount = new HashMap<>();
+        StringBuilder encodedAlignment = new StringBuilder(problem.getNumberOfVariables() * 1000);
 
         while (br.ready())
         {
             String oneLine = "";
-            StringBuilder encodedAlignment = new StringBuilder(problem.getNumberOfVariables() * problem.originalSequences.get(0).getSize());
+            encodedAlignment.setLength(0);
             encodedAlignment.append("<\n");
 
             do
@@ -76,21 +87,74 @@ public class MapEncodedVARFileToAlgo
         return alignmentToCount;
     }
 
+    public static void updateAlgoWiseAlignmentCount(int algoId, Map<String, Integer> algoAlignmentToCount, String encodedVarFilePath, MSAProblem problem) throws Exception
+    {
+        BufferedReader br = new BufferedReader(new FileReader(encodedVarFilePath));
+        StringBuilder encodedAlignment = new StringBuilder(problem.getNumberOfVariables() * 1000);
+        int refAlignmentId = 0;
+
+        while (br.ready())
+        {
+            String oneLine = "";
+            encodedAlignment.setLength(0);
+            encodedAlignment.append("<\n");
+
+            do
+            {
+                oneLine = br.readLine();
+            } while (oneLine != null && !oneLine.startsWith("<"));
+
+            while (oneLine != null)
+            {
+                oneLine = br.readLine();
+                if (oneLine.startsWith(">"))
+                {
+                    break;
+                }
+
+                encodedAlignment.append(oneLine).append("\n");
+
+            }
+
+            if (oneLine == null)
+            {
+                break;
+            }
+
+            encodedAlignment.append(">");
+            String encodedAlignmentString = encodedAlignment.toString();
+            int encodedAlignmentCount = algoAlignmentToCount.getOrDefault(encodedAlignmentString, 0);
+            algoWiseVarCount[algoId][refAlignmentId] += encodedAlignmentCount;
+            refAlignmentId++;
+            
+        }
+        br.close();
+    }
+
     public static void main(String[] arg) throws Exception
     {
-        List<String> singleVarPathList = SearchAndEncodeVAR_Linux.getPathList(searchRoot, singleVarFileName);
-        Map<String, Map> algoNameToVarMap = new HashMap<>();
+        List<Score> scoreList = new ArrayList<>();
+        scoreList.add(new EntropyScore());
+        MSAProblem problem = new SATE_MSAProblem(instanceName, instancePath, scoreList);
+        MapEncodedVARFileToAlgo selfobj = new MapEncodedVARFileToAlgo();
+        List<String> singleVarPathList = SearchAndEncodeVAR_Linux.getPathList(searchRoot, singleVarFileName + "*");
+        //Map<String, Map> algoNameToVarMap = new HashMap<>();
+        Map<String, Integer> algoId = new HashMap<>();
         for (String path : singleVarPathList)
         {
             String[] pathSegments = path.split("/");
             String algoName = pathSegments[pathSegments.length - 3] + "/" + pathSegments[pathSegments.length - 2];
-            algoNameToVarMap.put(algoName, algoNameToVarMap.getOrDefault(algoName, new HashMap<>()));
+            //algoNameToVarMap.put(algoName, getEncodedVarWithCountFromFile(algoNameToVarMap.getOrDefault(algoName, new HashMap<>()), path, problem));
+            algoId.put(algoName, algoId.getOrDefault(algoName, algoId.size()));
+            Map<String, Integer> algoAlignmentToCount = selfobj.getEncodedVarWithCountFromFile(new HashMap<>(), path, problem);
+            updateAlgoWiseAlignmentCount(algoId.get(algoName), algoAlignmentToCount, refVarFile, problem);
         }
-        String[] algoNameArray = new String[algoNameToVarMap.size()];
-        for (String algoName : algoNameToVarMap.keySet())
-        {
-            System.out.println(algoName + " => " + algoNameArray.length);
-            algoNameArray[algoNameArray.length] = algoName;
-        }
+//        String[] algoNameArray = new String[algoNameToVarMap.size()];
+//        int algoId = 0;
+//        for (String algoName : algoNameToVarMap.keySet())
+//        {
+//            System.out.println(algoName + " => " + algoId);
+//            algoNameArray[algoId++] = algoName;
+//        }
     }
 }
