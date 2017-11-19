@@ -41,7 +41,7 @@ public class MapEncodedVARFileToAlgo
     static String instanceName = "R0";
     static String singleVarFileName = "AllEncodedVAR";
     static String refVarFile = "/home/ali_nayeem/data/shortShuffledVAR";
-    static int[][] algoWiseVarCount = new int[100][7];
+    static int[][] algoWiseVarCount = new int[10000][7];
     static String algoWiseVarCountFileName = "/home/ali_nayeem/data/shortAlgoWiseVARCount";
 
     //static int approxLineLength = 1200;
@@ -203,6 +203,8 @@ public class MapEncodedVARFileToAlgo
             header += e.getKey() + '\t';
 
         }
+        
+        printAlgoWiseVarCountToFile(algoWiseVarCountFileName, header);
 
     }
 }

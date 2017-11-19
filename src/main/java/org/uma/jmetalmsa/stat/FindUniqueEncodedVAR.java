@@ -14,6 +14,7 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import org.uma.jmetalmsa.problem.MSAProblem;
@@ -38,15 +39,15 @@ public class FindUniqueEncodedVAR
     static int approxLineLength = 1200;
     static String instancePath = "dataset/100S";
     static String instanceName = "R0";
-    static String encodedVarFileName = "/home/ali_nayeem/MSA/experiment/FinalCombinedEncodedVAR";
-    //static String uniqueVarFileName = "/home/ali_nayeem/MSA/experiment/uniqueVAR";
-    static String shuffledVarFileName = "/home/ali_nayeem/MSA/experiment/shuffledVAR";
+    static String encodedVarFileName = "/home/ali_nayeem/data/6-OBJ-Alignments/combined";
+    static String uniqueVarFileName = "/home/ali_nayeem/data/6-OBJ-Alignments/uniqueCombined";
+    //static String shuffledVarFileName = "/home/ali_nayeem/MSA/experiment/shuffledVAR";
 
     public Set<String> getUniqueEncodedVarFile(String encodedVarFilePath, MSAProblem problem) throws Exception
     {
         int allCount = 0;
         BufferedReader br = new BufferedReader(new FileReader(encodedVarFilePath));
-        Set<String> uniqueAlignments = new HashSet<>();
+        Set<String> uniqueAlignments = new LinkedHashSet<>();
 
         while (br.ready())
         {
@@ -150,11 +151,11 @@ public class FindUniqueEncodedVAR
         MSAProblem problem = new SATE_MSAProblem(instanceName, instancePath, scoreList);
         FindUniqueEncodedVAR selfObj = new FindUniqueEncodedVAR();
         Set<String> uniqueVar = selfObj.getUniqueEncodedVarFile(encodedVarFileName, problem);
-        //selfObj.printUniqueEncodedVarToFile(uniqueVar, uniqueVarFileName);
+        selfObj.printUniqueEncodedVarToFile(uniqueVar, uniqueVarFileName);
 
-        List<String> listOfVar = new ArrayList<>(uniqueVar);
-        Collections.shuffle(listOfVar);
-        selfObj.printUniqueEncodedVarToFile(listOfVar, shuffledVarFileName);
+        //List<String> listOfVar = new ArrayList<>(uniqueVar);
+        //Collections.shuffle(listOfVar);
+        //selfObj.printUniqueEncodedVarToFile(listOfVar, shuffledVarFileName);
 
         //CalculateObjetivesFromVAR obj = new CalculateObjetivesFromVAR();
         //ob.printPopulationToEncodedvarFile(pop, uniqueVarFileName);
