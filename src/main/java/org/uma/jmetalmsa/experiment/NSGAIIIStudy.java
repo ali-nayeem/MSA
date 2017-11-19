@@ -62,14 +62,14 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class NSGAIIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAIII" ;
-    static String problemName[] = {"R0"};//, "R4", "R9", "R14", "R15", "R19"};
+    static String problemName[] = {"R4"};//, "R4", "R9", "R14", "R19"};
     static String dataDirectory = "dataset/100S";
     static Integer maxEvaluations[] = {39000, 53000};
     //static Integer populationSize = 78; //106
     //static int div1 = 3;
     //static int div2 = 2;
     static int div[ ][ ] = { { 3, 2}, { 4, 3}};
-    private static final int INDEPENDENT_RUNS = 10 ;
+    private static final int INDEPENDENT_RUNS = 40 ;
     static int numberOfCores = 0;
 
   public static void main(String[] args) throws Exception {
@@ -87,7 +87,7 @@ public class NSGAIIIStudy {
     scoreList.add(new NumberOfGapsScore());
     scoreList.add(new GapConcentrationScore());
     
-    int scoreCombination[ ][ ] = { { 1, 2, 3, 4, 5, 6 }, { 1, 2, 3, 4, 6 }};
+    int scoreCombination[ ][ ] = { { 1, 2, 3, 4, 5, 6 }}; //, { 1, 2, 3, 4, 6 }};
 
     List<ExperimentProblem<MSASolution>> problemList = new ArrayList<>();
 
