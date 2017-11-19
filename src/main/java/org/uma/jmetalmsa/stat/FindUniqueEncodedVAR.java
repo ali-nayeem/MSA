@@ -39,9 +39,8 @@ public class FindUniqueEncodedVAR
     static String instancePath = "dataset/100S";
     static String instanceName = "R0";
     static String encodedVarFileName = "/home/ali_nayeem/MSA/experiment/FinalCombinedEncodedVAR";
-    static String uniqueVarFileName = "/home/ali_nayeem/MSA/experiment/uniqueVAR";
+    //static String uniqueVarFileName = "/home/ali_nayeem/MSA/experiment/uniqueVAR";
     static String shuffledVarFileName = "/home/ali_nayeem/MSA/experiment/shuffledVAR";
-    
 
     public Set<String> getUniqueEncodedVarFile(String encodedVarFilePath, MSAProblem problem) throws Exception
     {
@@ -51,6 +50,7 @@ public class FindUniqueEncodedVAR
 
         while (br.ready())
         {
+            allCount++;
             String oneLine = "";
             StringBuilder encodedAlignment = new StringBuilder(problem.getNumberOfVariables() * approxLineLength);
             encodedAlignment.append("<\n");
@@ -78,8 +78,16 @@ public class FindUniqueEncodedVAR
             }
 
             encodedAlignment.append(">");
-            uniqueAlignments.add(encodedAlignment.toString());
-            allCount++;
+            String encodedAlignmentStr = encodedAlignment.toString();
+            
+            if (uniqueAlignments.contains(encodedAlignmentStr))
+            {
+                System.out.println(allCount);
+            } 
+            else
+            {
+                uniqueAlignments.add(encodedAlignmentStr);
+            }
         }
         br.close();
         System.out.println("Total: " + allCount);
@@ -143,11 +151,10 @@ public class FindUniqueEncodedVAR
         FindUniqueEncodedVAR selfObj = new FindUniqueEncodedVAR();
         Set<String> uniqueVar = selfObj.getUniqueEncodedVarFile(encodedVarFileName, problem);
         //selfObj.printUniqueEncodedVarToFile(uniqueVar, uniqueVarFileName);
-        
+
         List<String> listOfVar = new ArrayList<>(uniqueVar);
         Collections.shuffle(listOfVar);
         selfObj.printUniqueEncodedVarToFile(listOfVar, shuffledVarFileName);
-
 
         //CalculateObjetivesFromVAR obj = new CalculateObjetivesFromVAR();
         //ob.printPopulationToEncodedvarFile(pop, uniqueVarFileName);

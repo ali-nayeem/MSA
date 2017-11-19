@@ -63,7 +63,7 @@ public class ExperimentAlgorithmMSA extends ExperimentAlgorithm<MSASolution, Lis
     getAlgorithm().run();
     List<MSASolution> population = getAlgorithm().getResult();
 
-    new SolutionListOutput(population)
+    new SolutionListOutputMSA(population)
             .setVarFileOutputContext(varFile)
             .setFunFileOutputContext(funFile)
             .print();
