@@ -27,9 +27,9 @@ import static org.uma.jmetalmsa.stat.DecodeVAR.instancePath;
 public class GenerateFUN
 {
     static String instancePath = "dataset/100S";
-    static String instanceName = "R0";
-    static String encodedVarFileName = "/home/ali_nayeem/MSA/experiment/shuffledVAR";
-    static String FUNFileName = "/home/ali_nayeem/MSA/experiment/shuffledFUN";
+    static String instanceName = "R4";
+    static String encodedVarFileName = "/home/ali_nayeem/MSA/experiment/uniqueCombined";
+    static String FUNFileName = "/home/ali_nayeem/MSA/experiment/uniqueCombinedFUN_R4";
     //static String shuffledVarFileName = "/home/ali_nayeem/MSA/experiment/shuffledVAR";
     public static void main(String[] args) throws Exception
     {
@@ -39,7 +39,7 @@ public class GenerateFUN
             numberOfCores = Integer.parseInt(args[0]);
         } else
         {
-            numberOfCores = Runtime.getRuntime().availableProcessors();
+            numberOfCores = Runtime.getRuntime().availableProcessors()/2;
         }
         //String instanceName = args[0];//args[0]; "R-1"
         //String inputFilePath = args[1];//args[1]; "input"
