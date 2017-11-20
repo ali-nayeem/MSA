@@ -62,7 +62,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class NSGAIIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAIII" ;
-    static String problemName[] = {"R9"};//, "R4", "R9", "R14", "R19"};
+    static String problemName[] = {"R14", "R19"};//, "R4", "R9", "R14", "R19"};
     static String dataDirectory = "dataset/100S";
     static Integer maxEvaluations[] = {39000, 53000};
     //static Integer populationSize = 78; //106
@@ -122,7 +122,7 @@ public class NSGAIIIStudy {
                 //new PISAHypervolume<DoubleSolution>(),
                 //new InvertedGenerationalDistance<DoubleSolution>(), new InvertedGenerationalDistancePlus<DoubleSolution>()))
             .setIndependentRuns(INDEPENDENT_RUNS)
-            .setNumberOfCores(3)
+            .setNumberOfCores(8)
             .build();
 
     new ExecuteAlgorithms<>(experiment).run();
@@ -150,7 +150,7 @@ public class NSGAIIIStudy {
     SelectionOperator selection = new RandomSelection();
     if (numberOfCores == 0)
     {
-       numberOfCores = 3;
+       numberOfCores = 7;
     }
     SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();;
    
