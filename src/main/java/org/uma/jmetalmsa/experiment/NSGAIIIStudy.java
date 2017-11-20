@@ -62,13 +62,15 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class NSGAIIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAIII" ;
-    static String problemName[] = {"R14", "R19"};//, "R4", "R9", "R14", "R19"};
+    static String problemName[] = { "R19"};//, "R4", "R9", "R14", "R19"};
     static String dataDirectory = "dataset/100S";
-    static Integer maxEvaluations[] = {39000, 53000};
+    //static Integer maxEvaluations[] = {39000, 53000};
+    static Integer maxEvaluations = 39000;
     //static Integer populationSize = 78; //106
     //static int div1 = 3;
     //static int div2 = 2;
-    static int div[ ][ ] = { { 3, 2}, { 4, 3}};
+    //static int div[ ][ ] = { { 3, 2}, { 4, 3}};
+    static int div[ ] = { 3, 2};
     private static final int INDEPENDENT_RUNS = 40 ;
     static int numberOfCores = 0;
 
@@ -122,7 +124,7 @@ public class NSGAIIIStudy {
                 //new PISAHypervolume<DoubleSolution>(),
                 //new InvertedGenerationalDistance<DoubleSolution>(), new InvertedGenerationalDistancePlus<DoubleSolution>()))
             .setIndependentRuns(INDEPENDENT_RUNS)
-            .setNumberOfCores(8)
+            .setNumberOfCores(4)
             .build();
 
     new ExecuteAlgorithms<>(experiment).run();
@@ -150,7 +152,7 @@ public class NSGAIIIStudy {
     SelectionOperator selection = new RandomSelection();
     if (numberOfCores == 0)
     {
-       numberOfCores = 7;
+       numberOfCores = 3;
     }
     SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();;
    
@@ -160,7 +162,7 @@ public class NSGAIIIStudy {
        {
            evaluator = new MultithreadedSolutionListEvaluator(numberOfCores, problemList.get(i).getProblem());
        }
-       Algorithm<List<MSASolution>> algorithm = new NSGAIIIYYMSA(problemList.get(i).getProblem(), maxEvaluations[i%2], div[i%2][0], div[i%2][1], true, crossover, mutation, selection, evaluator );
+       Algorithm<List<MSASolution>> algorithm = new NSGAIIIYYMSA(problemList.get(i).getProblem(), maxEvaluations, div[0], div[1], true, crossover, mutation, selection, evaluator );
        algorithms.add(new ExperimentAlgorithmMSA(algorithm, "NSGAIII", problemList.get(i).getTag()));
     }
 
