@@ -29,9 +29,10 @@ public class SimilarityNonGapsScore implements Score
         {
             new EntropyScore().compute(solution, decodedSequences);
         }
-
-        return (double) solution.getAttribute("similarityNG");
-
+        double similarityNG = (double) solution.getAttribute("similarityNG");
+        solution.setAttribute("similarityNG",null);
+        
+        return similarityNG;
     }
 
     @Override

@@ -32,6 +32,8 @@ public class SimilarityGapsScore implements Score
         }
 
         List<Integer> GapIndexList = (List<Integer>) solution.getAttribute("GapIndexList");
+        solution.setAttribute("GapIndexList", null);
+        
         char residue;
         int numberOfRows = decodedSequences.length;
         double similarityG = 0;
