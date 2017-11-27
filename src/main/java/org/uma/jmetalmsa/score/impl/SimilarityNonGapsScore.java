@@ -14,6 +14,7 @@ import org.uma.jmetalmsa.score.Score;
  */
 public class SimilarityNonGapsScore implements Score
 {
+
     @Override
     public <S extends MSASolution> double compute(S solution, char[][] decodedSequences)
     {
@@ -24,9 +25,13 @@ public class SimilarityNonGapsScore implements Score
         //    System.exit(0);
         //}
         //solution.setAttribute("testOrder", testOrder+1);
+        if (solution.getAttribute("similarityNG") == null)
+        {
+            new EntropyScore().compute(solution, decodedSequences);
+        }
 
-        return (double)solution.getAttribute("similarityNG");
-        
+        return (double) solution.getAttribute("similarityNG");
+
     }
 
     @Override
@@ -46,13 +51,12 @@ public class SimilarityNonGapsScore implements Score
     {
         return "Similarity of non-gap columns in a multiple sequence";
     }
-    
+
     public static int getDependency()
     {
-        return EntropyScore.getDependency()+1;
-    }    
+        return EntropyScore.getDependency() + 1;
+    }
 }
-
 
 //        List <HashMap< Character, Integer>> NonGapColumnMapList = (List <HashMap< Character, Integer>>) solution.getAttribute("NonGapColumnMapList");
 //        if (NonGapColumnMapList.isEmpty())

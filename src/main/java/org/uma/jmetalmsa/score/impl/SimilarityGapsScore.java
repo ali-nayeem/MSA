@@ -25,6 +25,11 @@ public class SimilarityGapsScore implements Score
         //    System.exit(0);
         //}
         //solution.setAttribute("testOrder", testOrder+1);
+        
+        if (solution.getAttribute("GapIndexList") == null)
+        {
+            new EntropyScore().compute(solution, decodedSequences);
+        }
 
         List<Integer> GapIndexList = (List<Integer>) solution.getAttribute("GapIndexList");
         char residue;

@@ -62,11 +62,11 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class NSGAIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAII" ;
-    static String problemName[] = {"R0"};//, "R4", "R9", "R14", "R15", "R19"}; 
+    static String problemName[] = {"R0", "R4", "R9", "R14", "R19"}; 
     static String dataDirectory = "dataset/100S";
-    static Integer maxEvaluations = 50000;
-    static Integer populationSize = 100;
-    private static final int INDEPENDENT_RUNS = 30 ;
+    static Integer maxEvaluations = 50000; //50000
+    static Integer populationSize = 100; //100
+    private static final int INDEPENDENT_RUNS = 20 ;
 
   public static void main(String[] args) throws Exception {
 //    if (args.length != 1) {
@@ -76,14 +76,14 @@ public class NSGAIIStudy {
     
     List<Score> scoreList = new ArrayList<>();
 
-    scoreList.add(new EntropyScore());
-    scoreList.add(new NumberOfAlignedColumnsScore());
-    scoreList.add(new SimilarityGapsScore());
-    scoreList.add(new SimilarityNonGapsScore());
-    scoreList.add(new NumberOfGapsScore());
-    scoreList.add(new GapConcentrationScore());
+    scoreList.add(new EntropyScore()); //1
+    scoreList.add(new NumberOfAlignedColumnsScore()); //2
+    scoreList.add(new SimilarityGapsScore()); //3
+    scoreList.add(new SimilarityNonGapsScore()); //4
+    scoreList.add(new NumberOfGapsScore()); //5
+    scoreList.add(new GapConcentrationScore()); //6
     
-    int scoreCombination[ ][ ] = { { 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }};
+    int scoreCombination[ ][ ] = { { 3, 4 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
 
     List<ExperimentProblem<MSASolution>> problemList = new ArrayList<>();
     for(int probIndex = 0; probIndex < problemName.length; probIndex++)
@@ -104,7 +104,7 @@ public class NSGAIIStudy {
             configureAlgorithmList(problemList);
 
     Experiment<MSASolution, List<MSASolution>> experiment =
-        new ExperimentBuilder<MSASolution, List<MSASolution>>("NSGAIIStudy")
+        new ExperimentBuilder<MSASolution, List<MSASolution>>("NSGAIIStudyStage2")
             .setAlgorithmList(algorithmList)
             .setProblemList(problemList)
             .setExperimentBaseDirectory(experimentBaseDirectory)
@@ -116,7 +116,7 @@ public class NSGAIIStudy {
                 //new PISAHypervolume<DoubleSolution>(),
                 //new InvertedGenerationalDistance<DoubleSolution>(), new InvertedGenerationalDistancePlus<DoubleSolution>()))
             .setIndependentRuns(INDEPENDENT_RUNS)
-            .setNumberOfCores(6)
+            .setNumberOfCores(8)
             .build();
 
     new ExecuteAlgorithms<>(experiment).run();
