@@ -116,7 +116,7 @@ public class NSGAIIStudy {
                 //new PISAHypervolume<DoubleSolution>(),
                 //new InvertedGenerationalDistance<DoubleSolution>(), new InvertedGenerationalDistancePlus<DoubleSolution>()))
             .setIndependentRuns(INDEPENDENT_RUNS)
-            .setNumberOfCores(11)
+            .setNumberOfCores(8)
             .build();
 
     new ExecuteAlgorithms<>(experiment).run();
@@ -142,7 +142,7 @@ public class NSGAIIStudy {
     CrossoverOperator<MSASolution> crossover = new SPXMSACrossover(0.8);
     MutationOperator<MSASolution> mutation = new ShiftClosedGapsMSAMutation(0.2);
     SelectionOperator selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
-    int numberOfCores = 1;//Runtime.getRuntime().availableProcessors();
+    int numberOfCores = 7;//Runtime.getRuntime().availableProcessors();
     SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();;
    
 
