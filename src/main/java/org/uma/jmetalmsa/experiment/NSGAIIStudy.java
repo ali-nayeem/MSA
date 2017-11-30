@@ -63,7 +63,7 @@ import org.uma.jmetalmsa.util.distancematrix.impl.NUC44;
  */
 public class NSGAIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAII" ;
-    static String problemName[] = {"R0"} ; //, "R4", "R9", "R14", "R19"}; 
+    static String problemName[] = {"R4"} ; //, "R4", "R9", "R14", "R19"}; 
     static String dataDirectory = "dataset/100S";
     static Integer maxEvaluations = 50000; //50000
     static Integer populationSize = 100; //100
@@ -118,7 +118,7 @@ public class NSGAIIStudy {
                 //new PISAHypervolume<DoubleSolution>(),
                 //new InvertedGenerationalDistance<DoubleSolution>(), new InvertedGenerationalDistancePlus<DoubleSolution>()))
             .setIndependentRuns(INDEPENDENT_RUNS)
-            .setNumberOfCores(3)
+            .setNumberOfCores(4)
             .build();
 
     new ExecuteAlgorithms<>(experiment).run();
@@ -144,7 +144,7 @@ public class NSGAIIStudy {
     CrossoverOperator<MSASolution> crossover = new SPXMSACrossover(0.8);
     MutationOperator<MSASolution> mutation = new ShiftClosedGapsMSAMutation(0.2);
     SelectionOperator selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
-    int numberOfCores = 3;//Runtime.getRuntime().availableProcessors();
+    int numberOfCores = 6;//Runtime.getRuntime().availableProcessors();
     SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();;
    
 
