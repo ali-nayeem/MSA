@@ -12,45 +12,45 @@ import org.biojava.nbio.alignment.SubstitutionMatrixHelper;
 /**
  */
 
-public class NUC44 implements DistanceMatrix {
+public class NUC44_V1 implements DistanceMatrix {
   private static final short DEFAULT_GAP_PENALTY = -4 ;
   private short g;// GAP PENALTY
 
-  public int[][] NUC44 ;//= SubstitutionMatrixHelper.getNuc4_4().getMatrix();
+  public short[][] NUC44 = SubstitutionMatrixHelper.getNuc4_4().getMatrix();
   //SubstitutionMatrix<NucleotideCompound> NUC44 = SubstitutionMatrixHelper.getNuc4_4();
 
   public static Map<Character, Integer> map = new HashMap<>() ;
 
-  public NUC44(short gapPenalty) {
+  public NUC44_V1(short gapPenalty) {
     g = gapPenalty ;
-    short [][] NUC_bj = SubstitutionMatrixHelper.getNuc4_4().getMatrix();
-    int row = NUC_bj.length;
-    int col = NUC_bj[0].length;
-    NUC44 = new int[row+1][col+1]; //1 extra for gap
-    for (int i = 0; i < row; i++)
-    {
-        for (int j = 0; j < col; j++)
-        {
-            NUC44[i][j] = NUC_bj[i][j];
-        }
-    }
-    
-    for (int i = 0; i < (NUC44.length - 1); i++) {
-      NUC44[i][col] = g ;
+    /*for (int i = 0; i < (NUC44.length - 1); i++) {
+      NUC44[i][23] = g ;
     }
 
     for (int i = 0; i < (NUC44.length - 1); i++) {
-      NUC44[row][i] = g ;
-    }
-    NUC44[row][col] = 1 ;
+      NUC44[23][i] = g ;
+    }*/
   }
 
-  public NUC44() {
+  public NUC44_V1() {
     this(DEFAULT_GAP_PENALTY) ;
   }
 
   @Override
   public int getDistance(char a1, char a2) {
+    if(a1 == '-' || a2 == '-')
+    {
+        if( (a2^a1) == 0)
+        {
+            return 1;
+        }
+        else
+        {
+            return g; 
+        }
+        
+    }
+   
     return NUC44[get(a1)][get(a2)] ;
   }
 
@@ -65,7 +65,6 @@ public class NUC44 implements DistanceMatrix {
       case 'T': return 1 ;
       case 'G': return 2 ;
       case 'C': return 3 ;
-      case '-': return 15;
       case 'S': return 4 ;
       case 'W': return 5 ;
       case 'R': return 6 ;
@@ -123,7 +122,7 @@ public class NUC44 implements DistanceMatrix {
   {
       String a = "ATCG-";
       String b = "ATCG-";
-      NUC44 nuc = new NUC44();
+      NUC44_V1 nuc = new NUC44_V1();
       for (int i = 0; i < a.length(); i++)
       {
           for (int j = 0; j < b.length(); j++)

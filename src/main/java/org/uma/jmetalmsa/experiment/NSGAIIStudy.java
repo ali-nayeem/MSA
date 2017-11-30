@@ -37,7 +37,7 @@ import org.uma.jmetalmsa.problem.SATE_MSAProblem;
 import org.uma.jmetalmsa.score.Score;
 import org.uma.jmetalmsa.score.impl.*;
 import org.uma.jmetalmsa.solution.MSASolution;
-import org.uma.jmetalmsa.util.distancematrix.impl.NUC44;
+import org.uma.jmetalmsa.util.distancematrix.impl.*;
 
 
 /**
@@ -83,7 +83,7 @@ public class NSGAIIStudy {
     scoreList.add(new SimilarityNonGapsScore()); //4
     scoreList.add(new NumberOfGapsScore()); //5 Gap
     scoreList.add(new GapConcentrationScore()); //6
-    scoreList.add(new SumOfPairsScore(new NUC44())); //7 SOP
+    scoreList.add(new SumOfPairsScore(new NUC44_V1())); //7 SOP
     
     int scoreCombination[ ][ ] = { { 2, 7 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
 
