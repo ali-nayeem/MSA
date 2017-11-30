@@ -21,8 +21,10 @@ public class NumberOfAlignedColumnsScore implements Score {
       {
           new EntropyScore().compute(solution, decodedSequences);
       }
-    
-      return (double)solution.getAttribute("AlignedColumnCount");
+      double alignedColumnCount = (double)solution.getAttribute("AlignedColumnCount");
+      solution.setAttribute("AlignedColumnCount",null);
+      
+      return alignedColumnCount;
   }
 
   @Override
