@@ -41,6 +41,7 @@ public class WeightedSumOfPairsScore implements Score {
 
   @Override
   public <S extends MSASolution> double compute(S solution,char [][]decodedSequences) {
+    initializeWeightMatrix(solution.getOriginalSequences());  
     int lengthSequences = solution.getAlignmentLength();
     int numberOfVariables = solution.getNumberOfVariables();
 
