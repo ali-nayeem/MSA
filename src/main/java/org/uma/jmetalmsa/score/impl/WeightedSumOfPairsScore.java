@@ -17,8 +17,8 @@ public class WeightedSumOfPairsScore implements Score {
   public DistanceMatrix sustitutionMatrix;
   public MSADistance distanceMatrix;
   public double[][] weightMatrix;
-  public double weightGapOpen ;
-  public double weightGapExtend;
+  public double weightGapOpen = 6;
+  public double weightGapExtend = 0.85;;
   double wSOP = Double.MIN_VALUE;
 
   public WeightedSumOfPairsScore(DistanceMatrix sustitutionMatrix, double weightGapOpen, double weightGapExtend) {
@@ -26,6 +26,13 @@ public class WeightedSumOfPairsScore implements Score {
     distanceMatrix = new MSADistance();
     this.weightGapOpen = weightGapOpen;
     this.weightGapExtend = weightGapExtend;
+  }
+  
+  public WeightedSumOfPairsScore(DistanceMatrix sustitutionMatrix) {
+    this.sustitutionMatrix = sustitutionMatrix;
+    distanceMatrix = new MSADistance();
+    //this.weightGapOpen = weightGapOpen;
+    //this.weightGapExtend = weightGapExtend;
   }
 
   public void initializeWeightMatrix(List<ArrayChar> originalSequences) {

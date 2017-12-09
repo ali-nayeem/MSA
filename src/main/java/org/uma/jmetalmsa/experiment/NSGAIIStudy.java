@@ -63,7 +63,7 @@ import org.uma.jmetalmsa.util.distancematrix.impl.*;
  */
 public class NSGAIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAII" ;
-    static String problemName[] = {"R0"} ; //, "R4", "R9", "R14", "R19"}; 
+    static String problemName[] = {"R0", "R4", "R9", "R14", "R19"} ; //, "R4", "R9", "R14", "R19"}; 
     static String dataDirectory = "dataset/100S";
     static Integer maxEvaluations = 50000; //50000
     static Integer populationSize = 100; //100
@@ -84,8 +84,9 @@ public class NSGAIIStudy {
     scoreList.add(new NumberOfGapsScore()); //5 Gap
     scoreList.add(new GapConcentrationScore()); //6
     scoreList.add(new SumOfPairsScore(new NUC44_V1())); //7 SOP
+    scoreList.add(new WeightedSumOfPairsScore(new NUC44_V1())); //8 wSOP
     
-    int scoreCombination[ ][ ] = { { 2, 7 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
+    int scoreCombination[ ][ ] = { { 2, 8 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
 
     List<ExperimentProblem<MSASolution>> problemList = new ArrayList<>();
     for(int probIndex = 0; probIndex < problemName.length; probIndex++)
