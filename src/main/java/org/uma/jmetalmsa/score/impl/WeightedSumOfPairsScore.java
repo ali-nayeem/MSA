@@ -1,5 +1,6 @@
 package org.uma.jmetalmsa.score.impl;
 
+import java.util.HashMap;
 import org.uma.jmetalmsa.problem.DynamicallyComposedProblem;
 import org.uma.jmetalmsa.util.distancematrix.DistanceMatrix;
 import org.uma.jmetalmsa.solution.MSASolution;
@@ -16,7 +17,8 @@ import org.uma.jmetalmsa.score.Score;
 public class WeightedSumOfPairsScore implements Score {
   public DistanceMatrix sustitutionMatrix;
   public MSADistance distanceMatrix;
-  public double[][] weightMatrix;
+  //public double[][] weightMatrix;
+  private HashMap<String, double[][]> probToWeightMat = new HashMap<>();
   public double weightGapOpen = 6;
   public double weightGapExtend = 0.85;;
   double wSOP = Double.MIN_VALUE;
@@ -35,13 +37,26 @@ public class WeightedSumOfPairsScore implements Score {
     //this.weightGapExtend = weightGapExtend;
   }
 
-  public void initializeWeightMatrix(List<ArrayChar> originalSequences) {
-    weightMatrix = getWMatrix(originalSequences);
+  private synchronized double[][] setWeightMatrix(String problemNameWithScoreList, List<ArrayChar> originalSequences)
+  {
+      String probName = (problemNameWithScoreList.split("_"))[0]; //R0_TC_SimGap => R0
+      double[][] RetrivedWeightMatrix = probToWeightMat.get(probName);
+      if (RetrivedWeightMatrix == null)
+      {
+          RetrivedWeightMatrix = initializeWeightMatrix(originalSequences);
+          probToWeightMat.put(probName, RetrivedWeightMatrix);
+          System.out.println("###########Calling initWeightMat for "+probName+ "  #############");
+      }
+      return RetrivedWeightMatrix;
+  }
+  public double[][] initializeWeightMatrix(List<ArrayChar> originalSequences) {
+    return getWMatrix(originalSequences);
   }
 
   @Override
   public <S extends MSASolution> double compute(S solution,char [][]decodedSequences) {
-    initializeWeightMatrix(solution.getOriginalSequences());  
+    double[][] weightMatrix = setWeightMatrix(solution.getMSAProblem().getName(), solution.getOriginalSequences());  
+    
     int lengthSequences = solution.getAlignmentLength();
     int numberOfVariables = solution.getNumberOfVariables();
 
