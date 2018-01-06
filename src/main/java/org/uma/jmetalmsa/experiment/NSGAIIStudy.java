@@ -63,7 +63,7 @@ import org.uma.jmetalmsa.util.distancematrix.impl.*;
  */
 public class NSGAIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAII" ;
-    static String problemName[] = {"R9", "R14", "R19"} ; //, "R4", "R9", "R14", "R19"}; 
+    static String problemName[] = {"R0", "R4", "R9", "R14", "R19"} ; //, "R4", "R9", "R14", "R19"}; 
     static String dataDirectory = "dataset/100S";
     static Integer maxEvaluations = 50000; //50000
     static Integer populationSize = 100; //100
@@ -85,8 +85,11 @@ public class NSGAIIStudy {
     scoreList.add(new GapConcentrationScore()); //6
     scoreList.add(new SumOfPairsScore(new NUC44_V1())); //7 SOP
     scoreList.add(new WeightedSumOfPairsScore(new NUC44_V1())); //8 wSOP
+    double weightGapExtend, weightGapOpen;
+    scoreList.add(new SumOfPairMinusAffineGapPenaltyScore(new NUC44_V1(),  weightGapOpen=10,  weightGapExtend=1)); //9
+    scoreList.add(new SumOfPairMinusAffineGapPenaltyScore(new NUC44_V1(),  weightGapOpen=8,  weightGapExtend=12)); //10
     
-    int scoreCombination[ ][ ] = { { 2, 8 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
+    int scoreCombination[ ][ ] = { { 9, 10 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
 
     List<ExperimentProblem<MSASolution>> problemList = new ArrayList<>();
     for(int probIndex = 0; probIndex < problemName.length; probIndex++)
@@ -119,7 +122,7 @@ public class NSGAIIStudy {
                 //new PISAHypervolume<DoubleSolution>(),
                 //new InvertedGenerationalDistance<DoubleSolution>(), new InvertedGenerationalDistancePlus<DoubleSolution>()))
             .setIndependentRuns(INDEPENDENT_RUNS)
-            .setNumberOfCores(3)
+            .setNumberOfCores(2)
             .build();
 
     new ExecuteAlgorithms<>(experiment).run();
@@ -145,7 +148,7 @@ public class NSGAIIStudy {
     CrossoverOperator<MSASolution> crossover = new SPXMSACrossover(0.8);
     MutationOperator<MSASolution> mutation = new ShiftClosedGapsMSAMutation(0.2);
     SelectionOperator selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
-    int numberOfCores = 4;//Runtime.getRuntime().availableProcessors();
+    int numberOfCores = 2;//Runtime.getRuntime().availableProcessors();
     SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();;
    
 
