@@ -39,7 +39,7 @@ public class FindUniqueEncodedVAR
     static int approxLineLength = 1200;
     static String instancePath = "dataset/100S";
     static String instanceName = "R19";
-    static String root = "TC_wSOP/";
+    static String root = "SOP-AGP_SOP-AGP/";
     static String encodedVarFileName = "/home/ali_nayeem/data/" + root + instanceName +"/combinedVAR";
     static String uniqueVarFileName = "/home/ali_nayeem/data/" + root  +"/uniqueCombined"+"_"+instanceName;
     //static String shuffledVarFileName = "/home/ali_nayeem/MSA/experiment/shuffledVAR";
