@@ -37,6 +37,7 @@ import org.uma.jmetalmsa.problem.SATE_MSAProblem;
 import org.uma.jmetalmsa.score.Score;
 import org.uma.jmetalmsa.score.impl.*;
 import org.uma.jmetalmsa.solution.MSASolution;
+import org.uma.jmetalmsa.util.distancematrix.impl.NUC44_V1;
 
 
 /**
@@ -62,16 +63,16 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class NSGAIIIStudy {
     static String experimentBaseDirectory = "experiment/NSGAIII" ;
-    static String problemName[] = { "R19"};//, "R4", "R9", "R14", "R19"};
+    static String problemName[] = { "R0","R4", "R9"};//, "R4", "R9", "R14", "R19"};
     static String dataDirectory = "dataset/100S";
     //static Integer maxEvaluations[] = {39000, 53000};
-    static Integer maxEvaluations = 39000;
+    static Integer maxEvaluations = 60000; //39000;
     //static Integer populationSize = 78; //106
     //static int div1 = 3;
     //static int div2 = 2;
     //static int div[ ][ ] = { { 3, 2}, { 4, 3}};
-    static int div[ ] = { 3, 2};
-    private static final int INDEPENDENT_RUNS = 40 ;
+    static int div[ ] = { 7, 0}; //{ 3, 2}
+    private static final int INDEPENDENT_RUNS = 25 ;
     static int numberOfCores = 0;
 
   public static void main(String[] args) throws Exception {
@@ -82,14 +83,16 @@ public class NSGAIIIStudy {
     
     List<Score> scoreList = new ArrayList<>();
 
-    scoreList.add(new EntropyScore());
-    scoreList.add(new NumberOfAlignedColumnsScore());
-    scoreList.add(new SimilarityGapsScore());
-    scoreList.add(new SimilarityNonGapsScore());
-    scoreList.add(new NumberOfGapsScore());
-    scoreList.add(new GapConcentrationScore());
+    scoreList.add(new EntropyScore()); //1
+    scoreList.add(new NumberOfAlignedColumnsScore()); //2 TC
+    scoreList.add(new SimilarityGapsScore()); //3
+    scoreList.add(new SimilarityNonGapsScore()); //4
+    scoreList.add(new NumberOfGapsScore()); //5 Gap
+    scoreList.add(new GapConcentrationScore()); //6
+    scoreList.add(new SumOfPairsScore(new NUC44_V1())); //7 SOP
+    scoreList.add(new WeightedSumOfPairsScore(new NUC44_V1())); //8 wSOP
     
-    int scoreCombination[ ][ ] = { { 1, 2, 3, 4, 5, 6 }}; //, { 1, 2, 3, 4, 6 }};
+    int scoreCombination[ ][ ] = { { 2,5,7,8 }}; //, { 1, 2, 3, 4, 6 }};
 
     List<ExperimentProblem<MSASolution>> problemList = new ArrayList<>();
 
@@ -124,7 +127,7 @@ public class NSGAIIIStudy {
                 //new PISAHypervolume<DoubleSolution>(),
                 //new InvertedGenerationalDistance<DoubleSolution>(), new InvertedGenerationalDistancePlus<DoubleSolution>()))
             .setIndependentRuns(INDEPENDENT_RUNS)
-            .setNumberOfCores(4)
+            .setNumberOfCores(3)
             .build();
 
     new ExecuteAlgorithms<>(experiment).run();
@@ -152,7 +155,7 @@ public class NSGAIIIStudy {
     SelectionOperator selection = new RandomSelection();
     if (numberOfCores == 0)
     {
-       numberOfCores = 3;
+       numberOfCores = 12;
     }
     SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();;
    
