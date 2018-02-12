@@ -22,6 +22,7 @@ public class NSGAIIMSABuilder extends NSGAIIBuilder<MSASolution> {
    * @param mutationOperator
    */
   NSGAIIVariant Variant;
+  boolean removePrecomputerSolutions = false;
     
   public NSGAIIMSABuilder(Problem<MSASolution> problem,
       CrossoverOperator<MSASolution> crossoverOperator,
@@ -31,14 +32,31 @@ public class NSGAIIMSABuilder extends NSGAIIBuilder<MSASolution> {
     Variant = _Variant;
 
   }
+  
+  public NSGAIIMSABuilder(Problem<MSASolution> problem,
+      CrossoverOperator<MSASolution> crossoverOperator,
+      MutationOperator<MSASolution> mutationOperator, NSGAIIVariant _Variant, boolean removePrecomputed) {
+    super(problem, crossoverOperator, mutationOperator);
+    
+    Variant = _Variant;
+    removePrecomputerSolutions = removePrecomputed;
+  }
 
   public NSGAII<MSASolution>  build() {
     NSGAII<MSASolution> algorithm = null ;
     
     if (Variant.equals(NSGAIIVariant.NSGAII)) {
-    
-        algorithm = new NSGAIIMSA((MSAProblem) getProblem(), getMaxIterations(), getPopulationSize(), getCrossoverOperator(),
+        if (removePrecomputerSolutions)
+        {
+            algorithm = new NSGAIIMSA((MSAProblem) getProblem(), getMaxIterations(), getPopulationSize(), getCrossoverOperator(),
+                      getMutationOperator(), getSelectionOperator(), getSolutionListEvaluator(), removePrecomputerSolutions);
+        }
+        else
+        {
+            algorithm = new NSGAIIMSA((MSAProblem) getProblem(), getMaxIterations(), getPopulationSize(), getCrossoverOperator(),
                       getMutationOperator(), getSelectionOperator(), getSolutionListEvaluator());
+        }
+        
     
     } else if (Variant.equals(NSGAIIVariant.SteadyStateNSGAII)) {
       

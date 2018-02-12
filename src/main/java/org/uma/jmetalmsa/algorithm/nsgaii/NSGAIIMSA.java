@@ -25,6 +25,7 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
 
   private BasicMeasure<List<MSASolution>> solutionListMeasure;
   private BasicMeasure<Integer> numberOfNonDominatedSolutionsInPopulation;
+  boolean removePrecomputed = false;
 
   /**
    * Constructor
@@ -39,10 +40,37 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
 
     initMeasures();
   }
+  
+  public NSGAIIMSA(MSAProblem problem, int maxIterations, int populationSize,
+                   CrossoverOperator<MSASolution> crossoverOperator,
+                   MutationOperator<MSASolution> mutationOperator,
+                   SelectionOperator<List<MSASolution>, MSASolution> selectionOperator,
+                   SolutionListEvaluator<MSASolution> evaluator, boolean removePre) {
+    super(problem, maxIterations, populationSize, crossoverOperator, mutationOperator, selectionOperator, evaluator);
+    removePrecomputed = removePre;
+
+    initMeasures();
+  }
 
   @Override
   protected List<MSASolution> createInitialPopulation() {
-    return ((MSAProblem) getProblem()).createInitialPopulation(getMaxPopulationSize());
+    //return ((MSAProblem) getProblem()).createInitialPopulation(getMaxPopulationSize());
+      if (removePrecomputed)
+      {
+          int numOfPrecomputerSol = ((MSAProblem) getProblem()).getNumberOfPrecomputerSol();
+          List<MSASolution> initPop = ((MSAProblem) getProblem()).createInitialPopulation(getMaxPopulationSize() + numOfPrecomputerSol);
+                    
+          for (int i = 0; i < numOfPrecomputerSol; i++)
+          {
+            initPop.remove(0);
+          }
+          
+          return initPop;
+      }
+      else
+      {
+          return ((MSAProblem) getProblem()).createInitialPopulation(getMaxPopulationSize());
+      }
   }
 
   /* Measures code */

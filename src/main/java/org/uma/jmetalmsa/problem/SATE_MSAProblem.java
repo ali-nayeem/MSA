@@ -152,5 +152,76 @@ public class SATE_MSAProblem extends MSAProblem
         }
         return population;
     }
+    
+    /*public List<MSASolution> createInitialPopulation(int Size, boolean removePrecomputed)
+    {
+        if (removePrecomputed)
+        {
+            Size += listOfPrecomputedStringAlignments.size();
+        }
+        List<MSASolution> population = new ArrayList<>(Size);
 
+        JMetalRandom randomGenerator = JMetalRandom.getInstance();
+
+        for (List<ArrayChar> sequenceList : listOfPrecomputedStringAlignments)
+        {
+
+            MSASolution newIndividual = new MSASolution(sequenceList, this);
+            population.add(newIndividual);
+        }
+
+        int parent1, parent2;
+        List<MSASolution> children, parents;
+        SPXMSACrossover crossover = new SPXMSACrossover(1);
+        
+        InsertARandomGapMSAMutation mut1 = new InsertARandomGapMSAMutation(1.0);
+        MergeAdjunctedGapsGroupsMSAMutation mut2 = new MergeAdjunctedGapsGroupsMSAMutation(1.0);
+        ShiftClosedGapsMSAMutation mut3 = new ShiftClosedGapsMSAMutation(1.0);
+        SplitANonGapsGroupMSAMutation mut4 = new SplitANonGapsGroupMSAMutation(1.0);
+        List<MutationOperator<MSASolution>> mutList1 = new ArrayList<>();
+        mutList1.add(mut1);
+        mutList1.add(mut2);
+        mutList1.add(mut3);
+        mutList1.add(mut4);
+        MultipleShuffledMSAMutation mut5 = new MultipleShuffledMSAMutation(1.0, mutList1);
+        
+        List<MutationOperator<MSASolution>> mutList2 = new ArrayList<>();
+        mutList2.add(mut1);
+        mutList2.add(mut2);
+        mutList2.add(mut3);
+        mutList2.add(mut4);
+        mutList2.add(mut5);
+        
+        RandomMSAMutation finalMut = new RandomMSAMutation(0.6, mutList2);
+
+        while (population.size() < Size)
+        {
+            parents = new ArrayList<>();
+
+            parent1 = randomGenerator.nextInt(0, population.size() - 1);
+            do
+            {
+                parent2 = randomGenerator.nextInt(0, population.size() - 1);
+            } while (parent1 == parent2);
+            parents.add(population.get(parent1));
+            parents.add(population.get(parent2));
+
+            children = crossover.execute(parents);
+            
+            finalMut.execute(children.get(0));
+            finalMut.execute(children.get(1));
+            
+            population.add(children.get(0));
+            population.add(children.get(1));
+
+        }
+        if (removePrecomputed)
+        {
+            for (int i = 0; i < listOfPrecomputedStringAlignments.size(); i++)
+            {
+              population.remove(i);
+            }
+        }
+        return population;
+    }*/
 }

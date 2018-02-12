@@ -174,4 +174,9 @@ public class MSAProblem extends DynamicallyComposedProblem<MSASolution> {
 
     FastaWriterHelper.writeProteinSequence(new File(fileName), proteinSequences);
   }
+     
+  public int getNumberOfPrecomputerSol()
+  {
+      return listOfPrecomputedStringAlignments.size();
+  }
 }
