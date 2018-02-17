@@ -10,7 +10,9 @@ import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.problem.Problem;
+import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
+import org.uma.jmetalmsa.problem.SATE_MSAProblem;
 
 /**
  * Created by ajnebro on 21/10/16.
@@ -40,7 +42,11 @@ public class NSGAIIIYYMSA extends NSGAIIIYY<MSASolution> {
     //List<MSASolution> initPop = ((MSAProblem) problem_).createInitialPopulation(populationSize_);
       if (removePrecomputedSolutions)
       {
-          int numOfPrecomputerSol = ((MSAProblem) problem_).getNumberOfPrecomputerSol();
+          if(problem_ instanceof SATE_MSAProblem)
+            return ((SATE_MSAProblem)problem_).createInitialPopulationRandomly(populationSize_);
+          else
+              throw new JMetalException("No suitable random init method.");
+          /*int numOfPrecomputerSol = ((MSAProblem) problem_).getNumberOfPrecomputerSol();
           List<MSASolution> initPop = ((MSAProblem) problem_).createInitialPopulation(populationSize_ + numOfPrecomputerSol);
                     
           for (int i = 0; i < numOfPrecomputerSol; i++)
@@ -48,7 +54,7 @@ public class NSGAIIIYYMSA extends NSGAIIIYY<MSASolution> {
             initPop.remove(0);
           }
           
-          return initPop;
+          return initPop;*/
       }
       else
       {

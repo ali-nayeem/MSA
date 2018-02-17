@@ -72,7 +72,7 @@ public class NSGAIIRunnerMAN {
     //  throw new JMetalException("Wrong number of arguments") ;
    // }
 
-    String problemName = "R0"; //BB30009, BB11001
+    String problemName = "23S.E"; //BB30009, BB11001
     String dataDirectory = "dataset/100S";
     Integer maxEvaluations = 500;
     Integer populationSize = 100;
@@ -129,7 +129,7 @@ public class NSGAIIRunnerMAN {
             .build();    
     
     //algorithm = new NSGAII45MSA(problem, maxEvaluations, populationSize, crossover, mutation, selection, evaluator );
-    algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, div1, div2, true, crossover, mutation, new RandomSelection<>(), evaluator );
+    //algorithm = new NSGAIIIYYMSA(problem, maxEvaluations, div1, div2, true, crossover, mutation, new RandomSelection<>(), evaluator );
 
 
     AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)

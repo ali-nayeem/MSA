@@ -13,6 +13,8 @@ import org.uma.jmetalmsa.problem.MSAProblem;
 import org.uma.jmetalmsa.solution.MSASolution;
 
 import java.util.List;
+import org.uma.jmetal.util.JMetalException;
+import org.uma.jmetalmsa.problem.SATE_MSAProblem;
 
 /**
  * @author Antonio J. Nebro
@@ -55,9 +57,14 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
   @Override
   protected List<MSASolution> createInitialPopulation() {
     //return ((MSAProblem) getProblem()).createInitialPopulation(getMaxPopulationSize());
+      
       if (removePrecomputed)
       {
-          int numOfPrecomputerSol = ((MSAProblem) getProblem()).getNumberOfPrecomputerSol();
+          if(getProblem() instanceof SATE_MSAProblem)
+            return ((SATE_MSAProblem)getProblem()).createInitialPopulationRandomly(getMaxPopulationSize());
+          else
+              throw new JMetalException("No suitable random init method.");
+          /*int numOfPrecomputerSol = ((MSAProblem) getProblem()).getNumberOfPrecomputerSol();
           List<MSASolution> initPop = ((MSAProblem) getProblem()).createInitialPopulation(getMaxPopulationSize() + numOfPrecomputerSol);
                     
           for (int i = 0; i < numOfPrecomputerSol; i++)
@@ -65,7 +72,7 @@ public class NSGAIIMSA extends NSGAIIMeasures<MSASolution> {
             initPop.remove(0);
           }
           
-          return initPop;
+          return initPop;*/
       }
       else
       {

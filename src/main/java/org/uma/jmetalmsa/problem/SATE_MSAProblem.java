@@ -8,6 +8,7 @@ import java.util.List;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
+import org.uma.jmetalmsa.algorithm.algoyy.util.PseudoRandom;
 import org.uma.jmetalmsa.crossover.SPXMSACrossover;
 import org.uma.jmetalmsa.mutation.InsertARandomGapMSAMutation;
 import org.uma.jmetalmsa.mutation.MergeAdjunctedGapsGroupsMSAMutation;
@@ -153,6 +154,125 @@ public class SATE_MSAProblem extends MSAProblem
         return population;
     }
     
+    public List<MSASolution> createInitialPopulationRandomly(int Size)
+    {
+        List<MSASolution> population = new ArrayList<>(Size);
+        int longestSeqLength = getLongestSeqLength();
+        GenerateSingleSolutionRandomly gen = new GenerateSingleSolutionRandomly(longestSeqLength, this);
+        
+        for (int i = 0; i < Size; i++)
+        {
+            population.add(gen.generateOneSol());
+            //System.out.println(population.get(i).toString());
+        }
+        
+        return population;
+    }
+    
+    public int getLongestSeqLength()
+    {
+        int longestSeqLength = -1;
+        
+        for (int i = 0; i < originalSequences.size(); i++)
+        {
+            if (originalSequences.get(i).getSize() > longestSeqLength) 
+            {
+                longestSeqLength = originalSequences.get(i).getSize();
+            }
+        }
+        return longestSeqLength;
+    }
+    
+    class GenerateSingleSolutionRandomly
+    {
+            final double normalMeanFrac = 4;
+            final double normalStdDev95Frac = 8;
+            final double gapLowerFrac = 0.1;
+            final double gapUpperFrac = 0.5;
+            MSAProblem msa;
+            JMetalRandom randomGenerator = JMetalRandom.getInstance();
+            int longestSeqLength;
+            
+            GenerateSingleSolutionRandomly(int longestSeqLength, MSAProblem msa)
+            {
+                this.msa = msa;
+                this.longestSeqLength = longestSeqLength;
+            }
+            
+            public MSASolution generateOneSol()
+            {
+                List<List<Integer>> gapsGroups = new ArrayList<>();
+                double GapPerc = 1.0+randomGenerator.nextDouble(gapLowerFrac, gapUpperFrac);
+                int maxLength = (int) Math.ceil(GapPerc * longestSeqLength);
+                
+                for (int i = 0; i < msa.getNumberOfVariables(); i++)
+                {
+                    gapsGroups.add(generateOneSeq(maxLength, i));
+                }
+                
+                
+                return new MSASolution(msa, gapsGroups);
+            }
+
+        private List<Integer> generateOneSeq(int maxLength, int seqId)
+        {
+            int totalGap = maxLength - msa.originalSequences.get(seqId).getSize();
+            List<Integer> oneGapList = null;
+            int assignedGap = 0;
+            double mean = totalGap / normalMeanFrac;
+            double stdDev = (mean -  totalGap / normalStdDev95Frac)/2;
+             while(assignedGap != totalGap)
+             {
+                 assignedGap = 0;
+                 oneGapList = new ArrayList<>();
+                 for (int i = 0; i < maxLength && assignedGap < totalGap; i++)
+                 {
+                     int gapLen = (int)PseudoRandom.randNormal(mean, stdDev);
+                     double expectedPick =  totalGap/mean;//(totalGap - assignedGap)/gapLen;//((i+1.0)/maxLength) * (totalGap/(assignedGap+1));  //
+                     double adjPickProb = expectedPick /maxLength;
+                     double RandUpLim = (maxLength-i)*1.0/maxLength;
+                     if (randomGenerator.nextDouble(0,RandUpLim) <= adjPickProb)
+                     {
+                         
+                         gapLen = (gapLen < 1) ? 1: gapLen;
+                         gapLen = ( (assignedGap + gapLen) > totalGap) ? (totalGap - assignedGap) : gapLen;
+                         if (i+gapLen > maxLength)
+                         {
+                             break;
+                         }
+                         int size = oneGapList.size();
+                         if ( size > 1 && (i - oneGapList.get(size-1)) == 1) 
+                         {
+                             oneGapList.set(size-1, i+gapLen-1);
+                         }
+                         else
+                         {
+                             oneGapList.add(i);
+                             oneGapList.add(i+gapLen-1);
+                         }
+                         
+                         i += (gapLen-1);
+                         assignedGap += gapLen;
+                     }
+                 }
+             }
+            //compressOneGapList(oneGapList);
+            return oneGapList;
+        }
+
+        private void compressOneGapList(List<Integer> oneGapList)
+        {
+            for (int i = 1; i < oneGapList.size()-1; i+=2)
+            {
+                if ( (oneGapList.get(i+1) - oneGapList.get(i)) == 1)
+                {
+                    oneGapList.remove(i);
+                    oneGapList.remove(i);
+                    i-=2;
+                }
+            }
+        }
+    }
     /*public List<MSASolution> createInitialPopulation(int Size, boolean removePrecomputed)
     {
         if (removePrecomputed)

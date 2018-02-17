@@ -76,6 +76,11 @@ public class MSAProblem extends DynamicallyComposedProblem<MSASolution> {
   public List<List<ArrayChar>> readPreComputedAlignments(List<String> dataFiles) {
     List<List<ArrayChar>> listPreAlignments = new ArrayList<>();
     for (String dataFile : dataFiles) {
+      File f = new File(dataFile); //Added by MAN
+      if (!f.exists())
+      {
+         continue;
+      }                            //Added by MAN
       try {
           
         List<ArrayChar> seqAligned =readDataFromFastaFile(dataFile);
@@ -174,7 +179,7 @@ public class MSAProblem extends DynamicallyComposedProblem<MSASolution> {
 
     FastaWriterHelper.writeProteinSequence(new File(fileName), proteinSequences);
   }
-     
+  //Added by MAN
   public int getNumberOfPrecomputerSol()
   {
       return listOfPrecomputedStringAlignments.size();
