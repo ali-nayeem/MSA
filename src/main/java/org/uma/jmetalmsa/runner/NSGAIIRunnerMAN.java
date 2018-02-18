@@ -49,7 +49,6 @@ import org.uma.jmetalmsa.algorithm.nsgaIII.NSGAIIIYYMSA;
 import org.uma.jmetalmsa.algorithm.nsgaii.NSGAII45MSA;
 import org.uma.jmetalmsa.score.Score;
 
-
 /**
  * Class to configure and run the MOSAStrE (NSGA-II) algorithm
  *
@@ -62,6 +61,8 @@ public class NSGAIIRunnerMAN {
    */
   public static void main(String[] args) throws Exception {
     JMetalRandom.getInstance().setRandomGenerator(new MersenneTwisterGenerator(1234));
+    //JMetalRandom.getInstance().setRandomGenerator(SynchronizedMersenneTwister.getInstance());
+    //JMetalRandom.getInstance().setSeed(1234);  
     MSAProblem problem;
     Algorithm<List<MSASolution>> algorithm;
     CrossoverOperator<MSASolution> crossover;
@@ -72,7 +73,7 @@ public class NSGAIIRunnerMAN {
     //  throw new JMetalException("Wrong number of arguments") ;
    // }
 
-    String problemName = "23S.E"; //BB30009, BB11001
+    String problemName = "R0"; //BB30009, BB11001 23S.E
     String dataDirectory = "dataset/100S";
     Integer maxEvaluations = 500;
     Integer populationSize = 100;
@@ -121,7 +122,7 @@ public class NSGAIIRunnerMAN {
 //            .setSolutionListEvaluator(evaluator)
 //            .build();
     
-    algorithm = new NSGAIIMSABuilder(problem, crossover, mutation, NSGAIIVariant.NSGAII)
+    algorithm = new NSGAIIMSABuilder(problem, crossover, mutation, NSGAIIVariant.NSGAII, true)
             .setSelectionOperator(selection)
             .setMaxEvaluations(maxEvaluations)
             .setPopulationSize(populationSize)

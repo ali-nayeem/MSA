@@ -20,6 +20,7 @@ import org.uma.jmetalmsa.mutation.SplitANonGapsGroupMSAMutation;
 import org.uma.jmetalmsa.score.Score;
 import org.uma.jmetalmsa.solution.MSASolution;
 import org.uma.jmetalmsa.solution.util.ArrayChar;
+import org.uma.jmetalmsa.util.SynchronizedMersenneTwister;
 
 public class SATE_MSAProblem extends MSAProblem
 {
@@ -156,6 +157,7 @@ public class SATE_MSAProblem extends MSAProblem
     
     public List<MSASolution> createInitialPopulationRandomly(int Size)
     {
+        System.out.println(getName() + " :Generating init pop randomly############################################");
         List<MSASolution> population = new ArrayList<>(Size);
         int longestSeqLength = getLongestSeqLength();
         GenerateSingleSolutionRandomly gen = new GenerateSingleSolutionRandomly(longestSeqLength, this);
@@ -190,7 +192,7 @@ public class SATE_MSAProblem extends MSAProblem
             final double gapLowerFrac = 0.1;
             final double gapUpperFrac = 0.5;
             MSAProblem msa;
-            JMetalRandom randomGenerator = JMetalRandom.getInstance();
+            final JMetalRandom randomGenerator = JMetalRandom.getInstance();
             int longestSeqLength;
             
             GenerateSingleSolutionRandomly(int longestSeqLength, MSAProblem msa)
@@ -203,11 +205,14 @@ public class SATE_MSAProblem extends MSAProblem
             {
                 List<List<Integer>> gapsGroups = new ArrayList<>();
                 double GapPerc = 1.0+randomGenerator.nextDouble(gapLowerFrac, gapUpperFrac);
-                int maxLength = (int) Math.ceil(GapPerc * longestSeqLength);
+                int maxLength = (int) Math.round(GapPerc * longestSeqLength);
                 
                 for (int i = 0; i < msa.getNumberOfVariables(); i++)
                 {
-                    gapsGroups.add(generateOneSeq(maxLength, i));
+                    synchronized(randomGenerator)  //bcoz MersenneTwister is not thread-safe, generate exception when working with multiple dataset
+                    {
+                        gapsGroups.add(generateOneSeq(maxLength, i));
+                    }
                 }
                 
                 
@@ -260,7 +265,7 @@ public class SATE_MSAProblem extends MSAProblem
             return oneGapList;
         }
 
-        private void compressOneGapList(List<Integer> oneGapList)
+        /*private void compressOneGapList(List<Integer> oneGapList)
         {
             for (int i = 1; i < oneGapList.size()-1; i+=2)
             {
@@ -271,7 +276,7 @@ public class SATE_MSAProblem extends MSAProblem
                     i-=2;
                 }
             }
-        }
+        }*/
     }
     /*public List<MSASolution> createInitialPopulation(int Size, boolean removePrecomputed)
     {
