@@ -61,6 +61,7 @@ public class testObjetives {
             EvaluaAlig(problem.PreComputedPath + ".tfa_mafft");
             EvaluaAlig(problem.PreComputedPath + ".tfa_fsa");
             EvaluaAlig(problem.PreComputedPath + ".msf_tfa");
+            EvaluaAlig(problem.PreComputedPath + ".tfa_pasta");
      }
     }
                 

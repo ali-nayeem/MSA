@@ -5,5 +5,11 @@ find /home/ali_nayeem/data/ -type f -name CombinedEncodedVAR -exec cat {} >> ./F
 Result of find unique
 Total: 28060
 Unique:24776
+to extract first 5000 var each with 102 lines:
+head -n 510000 shuffledVAR > shortShuffledVAR
+
+head -n 1020000 shuffledVAR > shortShuffledVAR
+
+
 
 
