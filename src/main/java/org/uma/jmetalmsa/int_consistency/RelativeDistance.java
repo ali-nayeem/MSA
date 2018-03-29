@@ -5,6 +5,7 @@
  */
 package org.uma.jmetalmsa.int_consistency;
 
+import com.aparapi.Kernel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +37,7 @@ public class RelativeDistance
         dist = new double[size];
     }
 
-    public void generateRelativeDist(char[][] msa, PairwiseDistance getDist)
+    public void generateRelativeDist(byte[][] msa, PairwiseDistance getDist)
     {
         for (int i = 0; i < dist.length; i++)
         {
@@ -150,20 +151,20 @@ public class RelativeDistance
 
     public static void main(String[] arg) throws Exception
     {
-        String instancePath = "dataset/100S";
-        String instanceName = "R0";
-        String inputFilePath = "F:\\Phd@CSE,BUET\\Com. Biology\\MSA\\Dataset\\scripts\\input\\NumGaps_SOP\\precomputedInit\\uniqueCombined_R0Small";
-        List<Score> scoreList = new ArrayList<>();
-        scoreList.add(new EntropyScore());
-        MSAProblem problem = new SATE_MSAProblem(instanceName, instancePath, scoreList);
-        //numOfSeq = problem.getNumberOfVariables();
-        CalculateObjetivesFromVAR ob = new CalculateObjetivesFromVAR();
-        List<MSASolution> pop = ob.createPopulationFromEncodedVarFile(inputFilePath, problem);
-        char[][] msa = pop.get(4).decodeToMatrix();
-        RelativeDistance self = new RelativeDistance(5, pop.get(0).getMSAProblem().getNumberOfVariables());
-        self.generateRelativeDist(msa, new PairwiseDistance());
-        List<Neighbor> neighborList = self.calculateSortedNeighbor();
-        System.out.println(neighborList.get(3));
+//        String instancePath = "dataset/100S";
+//        String instanceName = "R0";
+//        String inputFilePath = "F:\\Phd@CSE,BUET\\Com. Biology\\MSA\\Dataset\\scripts\\input\\NumGaps_SOP\\precomputedInit\\uniqueCombined_R0Small";
+//        List<Score> scoreList = new ArrayList<>();
+//        scoreList.add(new EntropyScore());
+//        MSAProblem problem = new SATE_MSAProblem(instanceName, instancePath, scoreList);
+//        //numOfSeq = problem.getNumberOfVariables();
+//        CalculateObjetivesFromVAR ob = new CalculateObjetivesFromVAR();
+//        List<MSASolution> pop = ob.createPopulationFromEncodedVarFile(inputFilePath, problem);
+//        char[][] msa = pop.get(4).decodeToMatrix();
+//        RelativeDistance self = new RelativeDistance(5, pop.get(0).getMSAProblem().getNumberOfVariables());
+//        self.generateRelativeDist(msa, new PairwiseDistance());
+//        List<Neighbor> neighborList = self.calculateSortedNeighbor();
+//        System.out.println(neighborList.get(3));
     }
 
     double calculateCloseness2(int[] closeNeigborIndices)
@@ -221,4 +222,62 @@ public class RelativeDistance
         return Math.abs(dist[twoEnds[0]] - dist[twoEnds[1]]);
     }
 
+    public void generateRelativeDistGPU(byte[][] msa)
+    {
+        int N = msa[0].length;
+        byte[][] countResult = new byte[msa.length][N];
+        final Kernel kernel = new PairwiseDist2D(msa, countResult, N, refId);
+        kernel.execute(N * msa.length);
+        for (int i = 0; i < msa.length; i++)
+        {
+            for (int j = 0; j < msa[i].length; j++)
+            {
+                dist[i] += countResult[i][j];
+            }
+            if (dist[i] < min)
+            {
+                min = dist[i];
+            }
+
+            if (dist[i] > max)
+            {
+                max = dist[i];
+            }
+        }
+    }
+
+}
+
+class PairwiseDist2D extends Kernel
+{
+
+    byte[][] A;
+
+    byte[][] B;
+
+    byte[][] C;
+
+    int N;
+    int R;
+
+    public PairwiseDist2D(byte[][] A, byte[][] C, int N, int R)
+    {
+        this.A = A;
+        this.B = B;
+        this.C = C;
+        this.N = N;
+        this.R = R;
+    }
+
+    @Override
+    public void run()
+    {
+        int id = getGlobalId();
+        int i = id / N;
+        int j = id % N;
+        C[i][j] = (byte) ((A[R][j] == A[i][j]) ? 1 : 0);
+//      for (int k = 0; k < N; k++) {
+//         C[i][j] += (byte) (A[i][k] * B[k][j]);
+//      }
+    }
 }

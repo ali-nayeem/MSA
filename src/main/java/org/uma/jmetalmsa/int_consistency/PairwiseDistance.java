@@ -12,7 +12,7 @@ package org.uma.jmetalmsa.int_consistency;
 public class PairwiseDistance
 {
 
-    public double getDistance(char[] A, char[] B)
+    public double getDistance(byte[] A, byte[] B)
     {
         double distance = 0;
         for (int j = 0; j < A.length; j++)
@@ -30,7 +30,7 @@ class transversion extends PairwiseDistance
 {
 
     @Override
-    public double getDistance(char[] A, char[] B)
+    public double getDistance(byte[] A, byte[] B)
     {
         double distance = 0;
         for (int j = 0; j < A.length; j++)
@@ -58,7 +58,7 @@ class Similarity extends PairwiseDistance
 {
 
     @Override
-    public double getDistance(char[] A, char[] B)
+    public double getDistance(byte[] A, byte[] B)
     {
         double distance = 0;
         for (int j = 0; j < A.length; j++)

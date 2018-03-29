@@ -21,16 +21,16 @@ import org.uma.jmetalmsa.stat.CalculateObjetivesFromVAR;
  */
 public class CalculateIntConsistency
 {
-    char[][] msa;
+    byte[][] msa;
     int taxaCount;
     RelativeDistance [] relDistArray;
     List<RelativeDistance.Neighbor> refTaxaNeighbors;
     PairwiseDistance pd = new Similarity();
-    Closeness criteria = new Farness(this, 3);
+    Closeness criteria = new Closeness(this, 3);
     int refTaxaId;
     public CalculateIntConsistency(MSASolution msa)
     {
-        this.msa = msa.decodeToMatrix();
+        this.msa = convertToByteArray(msa.decodeToMatrix());
         taxaCount = msa.getMSAProblem().getNumberOfVariables();
         relDistArray = new RelativeDistance[taxaCount];
         int max = -1, maxId=-1;
@@ -49,12 +49,27 @@ public class CalculateIntConsistency
         this(msa);
         this.pd = pd;
     }
+    public byte[][] convertToByteArray(char [][] ca)
+    {
+        byte[][] ba = new byte[ca.length][ca[0].length];
+        
+        for (int i = 0; i < ca.length; i++)
+        {
+            for (int j = 0; j < ca[0].length; j++)
+            {
+                ba[i][j] = (byte)ca[i][j];
+            }
+        }
+        return ba;
+    }
     void generateAllRetaiveDistances()
     {
         for (int i = 0; i < taxaCount; i++)
         {
             relDistArray[i] = new RelativeDistance(i, taxaCount);
-            relDistArray[i].generateRelativeDist(msa, pd);
+            //relDistArray[i].generateRelativeDist(msa, pd);
+            relDistArray[i].generateRelativeDistGPU(msa);
+            System.out.println("Taxa: "+i);
         }
         refTaxaNeighbors = relDistArray[refTaxaId].calculateSortedNeighbor();
     }
