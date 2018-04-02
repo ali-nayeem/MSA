@@ -1,0 +1,19 @@
+instance: BB12012 ML trees for precomputed alignmnet
+Tree for ./aligned/RV12/BB12012.fasta_aln
+(1bqb_A:0.60905,PRZN_RENSA:1.04349,(1ezm_:1.19360,PRT1_ERWCA:0.75533)0.604:0.07818);
+Tree for ./aligned/RV12/BB12012.tfa_clu
+(1ezm_:1.24534,PRZN_RENSA:1.33042,(1bqb_A:0.73556,PRT1_ERWCA:0.72248)0.865:0.25867);
+Tree for ./aligned/RV12/BB12012.tfa_fsa
+(1bqb_A:0.58507,PRT1_ERWCA:0.61993,(1ezm_:0.92109,PRZN_RENSA:0.76682)0.721:0.15706);
+Tree for ./aligned/RV12/BB12012.tfa_kalign
+(1bqb_A:0.66790,PRT1_ERWCA:0.64618,(1ezm_:1.17581,PRZN_RENSA:1.06179)0.862:0.23619);
+Tree for ./aligned/RV12/BB12012.tfa_mafft
+(1ezm_:0.89145,PRZN_RENSA:0.91805,(1bqb_A:0.62628,PRT1_ERWCA:0.54011)0.913:0.24911);
+Tree for ./aligned/RV12/BB12012.tfa_muscle
+(1ezm_:1.16116,PRT1_ERWCA:0.73101,(1bqb_A:0.50881,PRZN_RENSA:1.02797)0.868:0.20586);
+Tree for ./aligned/RV12/BB12012.tfa_pasta
+(1bqb_A:0.57043,PRZN_RENSA:1.02285,(PRT1_ERWCA:0.57091,1ezm_:0.93964)0.973:0.35065);
+Tree for ./aligned/RV12/BB12012.tfa_probcons
+(1bqb_A:0.54475,PRZN_RENSA:1.05226,(PRT1_ERWCA:0.77738,1ezm_:1.17128)0.747:0.12600);
+Tree for ./aligned/RV12/BB12012.tfa_retalign
+(1bqb_A:0.71281,PRT1_ERWCA:0.55177,(1ezm_:0.85303,PRZN_RENSA:0.81904)0.862:0.18098);

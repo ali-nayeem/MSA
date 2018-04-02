@@ -1,0 +1,19 @@
+instance: BB12025 ML trees for precomputed alignmnet
+Tree for ./aligned/RV12/BB12025.fasta_aln
+(1etz_A:0.80004,TCB1_MOUSE:0.95841,(12e8_H:0.84090,1adq_A:1.40238)0.798:0.22270);
+Tree for ./aligned/RV12/BB12025.tfa_clu
+(TCB1_MOUSE:2.52021,1etz_A:0.80418,(1adq_A:2.15311,12e8_H:1.88845)0.162:0.00080);
+Tree for ./aligned/RV12/BB12025.tfa_fsa
+(12e8_H:0.87617,1adq_A:0.45613,(1etz_A:0.58347,TCB1_MOUSE:0.70094)0.871:0.28694);
+Tree for ./aligned/RV12/BB12025.tfa_kalign
+(12e8_H:0.71000,1adq_A:1.20118,(1etz_A:0.77039,TCB1_MOUSE:0.93004)0.963:0.58345);
+Tree for ./aligned/RV12/BB12025.tfa_mafft
+(1etz_A:0.72916,TCB1_MOUSE:0.75420,(12e8_H:1.05979,1adq_A:1.23162)0.808:0.22835);
+Tree for ./aligned/RV12/BB12025.tfa_muscle
+(1etz_A:0.71862,TCB1_MOUSE:0.70855,(12e8_H:1.13349,1adq_A:1.12616)0.722:0.13945);
+Tree for ./aligned/RV12/BB12025.tfa_pasta
+(12e8_H:0.99082,1adq_A:1.16776,(1etz_A:0.69797,TCB1_MOUSE:0.71407)0.947:0.49656);
+Tree for ./aligned/RV12/BB12025.tfa_probcons
+(1etz_A:0.68384,TCB1_MOUSE:0.91641,(12e8_H:0.93504,1adq_A:1.32984)0.857:0.28420);
+Tree for ./aligned/RV12/BB12025.tfa_retalign
+(12e8_H:0.88558,1etz_A:0.70707,(1adq_A:0.74750,TCB1_MOUSE:1.28314)0.915:0.35393);

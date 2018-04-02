@@ -1,0 +1,19 @@
+instance: BB11037 ML trees for precomputed alignmnet
+Tree for ./aligned/RV11/BB11037.fasta_aln
+(put3_yeast:1.16039,cat8_yeast:1.15043,(s50366:1.35819,(yhx8_yeast:0.97658,YB00_YEAST:1.42693)0.805:0.22314)0.767:0.16309);
+Tree for ./aligned/RV11/BB11037.tfa_clu
+(s50366:2.62470,(yhx8_yeast:1.26541,YB00_YEAST:1.78044)0.845:0.52214,(cat8_yeast:1.54296,put3_yeast:1.16002)0.646:0.21512);
+Tree for ./aligned/RV11/BB11037.tfa_fsa
+(cat8_yeast:0.92146,(YB00_YEAST:0.94920,put3_yeast:1.05845)0.055:0.12097,(s50366:0.78925,yhx8_yeast:1.02604)0.841:0.22059);
+Tree for ./aligned/RV11/BB11037.tfa_kalign
+(put3_yeast:0.65854,cat8_yeast:1.48176,(YB00_YEAST:1.54364,(yhx8_yeast:1.04820,s50366:1.43578)0.774:0.20770)0.786:0.24485);
+Tree for ./aligned/RV11/BB11037.tfa_mafft
+(YB00_YEAST:1.39375,(yhx8_yeast:0.86891,s50366:1.07572)0.964:0.47138,(put3_yeast:1.02028,cat8_yeast:0.84301)0.889:0.25238);
+Tree for ./aligned/RV11/BB11037.tfa_muscle
+(put3_yeast:1.22513,cat8_yeast:1.11043,(s50366:1.41984,(yhx8_yeast:0.76674,YB00_YEAST:1.03301)0.977:0.55442)0.870:0.27880);
+Tree for ./aligned/RV11/BB11037.tfa_pasta
+(YB00_YEAST:1.17521,(put3_yeast:0.86820,cat8_yeast:0.93509)1.000:1.05598,(yhx8_yeast:0.88520,s50366:1.05626)0.755:0.15155);
+Tree for ./aligned/RV11/BB11037.tfa_probcons
+(yhx8_yeast:1.14634,YB00_YEAST:1.46073,(cat8_yeast:1.20376,(put3_yeast:1.39991,s50366:1.24171)0.843:0.25262)0.527:0.13044);
+Tree for ./aligned/RV11/BB11037.tfa_retalign
+(cat8_yeast:1.01149,YB00_YEAST:0.85083,(put3_yeast:0.78198,(yhx8_yeast:0.78912,s50366:0.86878)0.982:0.41833)0.911:0.23694);

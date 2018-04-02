@@ -1,0 +1,19 @@
+instance: BB11017 ML trees for precomputed alignmnet
+Tree for ./aligned/RV11/BB11017.fasta_aln
+(1qi7_A:0.94157,1mrj_:1.18273,(1lln_A:0.53174,1dm0_A:1.82583)0.808:0.25848);
+Tree for ./aligned/RV11/BB11017.tfa_clu
+(1mrj_:1.17561,1dm0_A:1.93806,(1lln_A:0.69005,1qi7_A:1.34090)0.591:0.29351);
+Tree for ./aligned/RV11/BB11017.tfa_fsa
+(1qi7_A:0.88601,1lln_A:0.74723,(1dm0_A:1.08693,1mrj_:0.90779)0.793:0.18233);
+Tree for ./aligned/RV11/BB11017.tfa_kalign
+(1qi7_A:0.64241,1dm0_A:1.27639,(1lln_A:0.84480,1mrj_:1.23603)0.932:0.43699);
+Tree for ./aligned/RV11/BB11017.tfa_mafft
+(1qi7_A:1.01356,1lln_A:0.67165,(1dm0_A:1.45093,1mrj_:0.98070)0.864:0.36474);
+Tree for ./aligned/RV11/BB11017.tfa_muscle
+(1lln_A:0.64496,1dm0_A:1.54123,(1qi7_A:0.91833,1mrj_:1.18874)0.841:0.30664);
+Tree for ./aligned/RV11/BB11017.tfa_pasta
+(1qi7_A:1.11194,1lln_A:0.72432,(1dm0_A:1.28288,1mrj_:0.76463)0.991:0.74625);
+Tree for ./aligned/RV11/BB11017.tfa_probcons
+(1dm0_A:1.51084,1mrj_:1.11852,(1qi7_A:0.77652,1lln_A:0.91296)0.610:0.19944);
+Tree for ./aligned/RV11/BB11017.tfa_retalign
+(1qi7_A:0.75716,1mrj_:1.20979,(1dm0_A:1.41286,1lln_A:0.48723)0.955:0.42276);

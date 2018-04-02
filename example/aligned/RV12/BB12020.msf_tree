@@ -1,0 +1,19 @@
+instance: BB12020 ML trees for precomputed alignmnet
+Tree for ./aligned/RV12/BB12020.fasta_aln
+(1ckl_A:1.58770,1nwv_A:0.75247,(1vvc_:0.50522,1ghq_B:1.06635)0.988:1.08935);
+Tree for ./aligned/RV12/BB12020.tfa_clu
+(1ckl_A:1.62235,1nwv_A:0.78933,(1vvc_:0.42578,1ghq_B:1.09879)0.984:1.15185);
+Tree for ./aligned/RV12/BB12020.tfa_fsa
+(1vvc_:0.65122,1ghq_B:0.86378,(1ckl_A:1.52270,1nwv_A:0.68309)0.859:0.39054);
+Tree for ./aligned/RV12/BB12020.tfa_kalign
+(1vvc_:0.61663,1ghq_B:0.90998,(1ckl_A:1.15415,1nwv_A:1.03593)0.974:0.93257);
+Tree for ./aligned/RV12/BB12020.tfa_mafft
+(1ckl_A:1.46738,1nwv_A:0.63091,(1vvc_:0.57829,1ghq_B:0.93920)0.983:1.02084);
+Tree for ./aligned/RV12/BB12020.tfa_muscle
+(1ckl_A:1.27518,1nwv_A:0.91116,(1vvc_:0.53817,1ghq_B:1.04523)0.997:1.14587);
+Tree for ./aligned/RV12/BB12020.tfa_pasta
+(1ckl_A:1.43635,1nwv_A:0.63418,(1vvc_:0.49420,1ghq_B:1.04460)0.992:1.20467);
+Tree for ./aligned/RV12/BB12020.tfa_probcons
+(1ckl_A:1.54714,1nwv_A:0.72544,(1vvc_:0.55202,1ghq_B:0.98641)0.989:1.10075);
+Tree for ./aligned/RV12/BB12020.tfa_retalign
+(1vvc_:0.72409,1ghq_B:0.83250,(1ckl_A:1.14710,1nwv_A:0.69500)0.978:0.79961);

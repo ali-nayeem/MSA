@@ -32,12 +32,18 @@ public class ReadTreePerf {
 
         double FP;
         double FN;
-        double RF;
+        double RF=-1;
 
         public Error(double FP, double FN, double RF) {
             this.FP = FP;
             this.FN = FN;
             this.RF = RF;
+        }
+        
+        public Error(String []num) {
+            this.FP = Double.parseDouble(num[0]);
+            this.FN = Double.parseDouble(num[1]);
+            //this.RF = RF;
         }
 
         @Override
@@ -63,6 +69,7 @@ public class ReadTreePerf {
             String oneLine = br.readLine();
             String[] FP_FN_RF = oneLine.split(", ");
             perfList.add(new Error(Double.parseDouble(FP_FN_RF[0]), Double.parseDouble(FP_FN_RF[1]), Double.parseDouble(FP_FN_RF[2])));
+            //perfList.add(new Error(FP_FN_RF));
             //System.out.println("");
         }
         return perfList;
