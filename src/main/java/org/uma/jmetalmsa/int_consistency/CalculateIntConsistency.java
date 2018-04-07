@@ -5,8 +5,10 @@
  */
 package org.uma.jmetalmsa.int_consistency;
 
+import com.aparapi.Kernel;
 import java.util.ArrayList;
 import java.util.List;
+import org.uma.jmetalmsa.problem.BAliBASE_MSAProblem;
 import org.uma.jmetalmsa.problem.MSAProblem;
 import org.uma.jmetalmsa.problem.SATE_MSAProblem;
 import org.uma.jmetalmsa.score.Score;
@@ -21,22 +23,24 @@ import org.uma.jmetalmsa.stat.CalculateObjetivesFromVAR;
  */
 public class CalculateIntConsistency
 {
+
     byte[][] msa;
     int taxaCount;
-    RelativeDistance [] relDistArray;
+    RelativeDistance[] relDistArray;
     List<RelativeDistance.Neighbor> refTaxaNeighbors;
     PairwiseDistance pd = new Similarity();
     Closeness criteria = new Closeness(this, 3);
     int refTaxaId;
+
     public CalculateIntConsistency(MSASolution msa)
     {
         this.msa = convertToByteArray(msa.decodeToMatrix());
         taxaCount = msa.getMSAProblem().getNumberOfVariables();
         relDistArray = new RelativeDistance[taxaCount];
-        int max = -1, maxId=-1;
+        int max = -1, maxId = -1;
         for (int i = 0; i < taxaCount; i++)
         {
-            if (msa.getAlignmentLength(i)>max)
+            if (msa.getAlignmentLength(i) > max)
             {
                 max = msa.getAlignmentLength(i);
                 maxId = i;
@@ -44,50 +48,89 @@ public class CalculateIntConsistency
         }
         refTaxaId = maxId;
     }
+    
+    public CalculateIntConsistency(MSASolution msa, char[][] decoded )
+    {
+        this.msa = convertToByteArray(decoded);
+        taxaCount = msa.getMSAProblem().getNumberOfVariables();
+        relDistArray = new RelativeDistance[taxaCount];
+        int max = -1, maxId = -1;
+        for (int i = 0; i < taxaCount; i++)
+        {
+            if (msa.getAlignmentLength(i) > max)
+            {
+                max = msa.getAlignmentLength(i);
+                maxId = i;
+            }
+        }
+        refTaxaId = maxId;
+    }
+
     public CalculateIntConsistency(MSASolution msa, PairwiseDistance pd)
     {
         this(msa);
         this.pd = pd;
     }
-    public byte[][] convertToByteArray(char [][] ca)
+
+    public byte[][] convertToByteArray(char[][] ca)
     {
         byte[][] ba = new byte[ca.length][ca[0].length];
-        
+
         for (int i = 0; i < ca.length; i++)
         {
             for (int j = 0; j < ca[0].length; j++)
             {
-                ba[i][j] = (byte)ca[i][j];
+                ba[i][j] = (byte) ca[i][j];
             }
         }
         return ba;
     }
-    void generateAllRetaiveDistances()
+
+    public void generateAllRetaiveDistances()
     {
-        for (int i = 0; i < taxaCount; i++)
+        byte[][] countResult = new byte[msa.length][msa[0].length];
+        //int N = msa[0].length;
+        
+        int i=0;
+        //final Kernel kernel = new PairwiseDist2D(msa, countResult, N, i);
+        //kernel.setExplicit(true);
+        //kernel2.execute(dist.length);
+        for ( i = 0; i < taxaCount; i++)
         {
             relDistArray[i] = new RelativeDistance(i, taxaCount);
-            //relDistArray[i].generateRelativeDist(msa, pd);
-            relDistArray[i].generateRelativeDistGPU(msa);
-            System.out.println("Taxa: "+i);
+           
+            //if (i==0)
+           // {
+                //kernel.put(msa);
+          //  }
+            //kernel.put(N);
+            //kernel.put(i);
+           // kernel.execute(N * msa.length);
+           // kernel.get(countResult);
+//            final Kernel kernel2 = new Summary(countResult, relDistArray[i].dist);
+//            kernel2.setExplicit(true);
+//            kernel2.execute(relDistArray[i].dist.length);
+//            kernel.get(relDistArray[i].dist);
+            relDistArray[i].generateRelativeDist(msa, pd);
+            //relDistArray[i].generateRelativeDistGPU(msa, countResult);
+            //System.out.print("Taxa: " + i + ", ");
         }
         refTaxaNeighbors = relDistArray[refTaxaId].calculateSortedNeighbor();
     }
-    
-    double mainCalculation()
+
+    public double mainCalculation()
     {
         return criteria.calculate();
     }
-    
-    
+
     public static void main(String[] arg) throws Exception
     {
-        String instancePath = "dataset/100S";
-        String instanceName = "23S.E"; //23S.E
-        String inputFilePath =  "F:\\Phd@CSE,BUET\\Com. Biology\\MSA\\Dataset\\scripts\\input\\NumGaps_SOP\\precomputedInit\\uniqueCombined_"+instanceName;
+        String instancePath = "example";
+        String instanceName = "BB50010"; //23S.E
+        String inputFilePath = "F:\\Phd@CSE,BUET\\Com. Biology\\MSA\\Dataset\\scripts\\input\\NumGaps_SOP\\precomputedInit\\Balibase\\uniqueCombined_" + instanceName ; //+ "Small"
         List<Score> scoreList = new ArrayList<>();
         scoreList.add(new EntropyScore());
-        MSAProblem problem = new SATE_MSAProblem(instanceName, instancePath, scoreList);
+        MSAProblem problem = new BAliBASE_MSAProblem(instanceName, instancePath, scoreList);
         //numOfSeq = problem.getNumberOfVariables();
         CalculateObjetivesFromVAR ob = new CalculateObjetivesFromVAR();
         List<MSASolution> pop = ob.createPopulationFromEncodedVarFile(inputFilePath, problem);
@@ -98,8 +141,8 @@ public class CalculateIntConsistency
             self.generateAllRetaiveDistances();
             System.out.println(self.mainCalculation());
         }
-        
+
         //System.out.println(neighborList.get(3));
     }
-    
+
 }

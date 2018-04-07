@@ -87,6 +87,7 @@ public class NSGAIIStudyBalibase {
     scoreList.add(new NumberOfGapsScore()); //5 Gap
     scoreList.add(new GapConcentrationScore()); //6
     scoreList.add(new SumOfPairsScore(new Blosum62(-4))); //7 SOP
+    scoreList.add(new InternalConsistencyScore()); //8 InCon
     //scoreList.add(new WeightedSumOfPairsScore(new Blosum62(-4))); //8 wSOP
     //double weightGapExtend, weightGapOpen;
     //scoreList.add(new SumOfPairMinusAffineGapPenaltyScore(new NUC44_V1(),  weightGapOpen=10,  weightGapExtend=1)); //9
