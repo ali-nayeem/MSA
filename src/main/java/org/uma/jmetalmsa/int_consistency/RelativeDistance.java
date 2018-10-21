@@ -41,11 +41,11 @@ public class RelativeDistance
     {
         for (int i = 0; i < dist.length; i++)
         {
-            if (i == refId)
-            {
-                dist[i] = 0;
-            } else
-            {
+//            if (i == refId)
+//            {
+//                dist[i] = 0;
+//            } else
+//            {
                 dist[i] = getDist.getDistance(msa[refId], msa[i]);
                 if (dist[i] < min)
                 {
@@ -56,7 +56,7 @@ public class RelativeDistance
                 {
                     max = dist[i];
                 }
-            }
+            //}
         }
 
         //normalize
@@ -222,13 +222,13 @@ public class RelativeDistance
         return Math.abs(dist[twoEnds[0]] - dist[twoEnds[1]]);
     }
 
-    public void generateRelativeDistGPU(byte[][] msa, byte[][] countResult)
+    public void generateRelativeDistGPU(byte[][] msa)
     {
         int N = msa[0].length;
-        //byte[][] countResult = new byte[msa.length][N];
+        byte[][] countResult = new byte[msa.length][N];
         //Device device = Device.firstGPU();
         //Range range = device.createRange(N * msa.length);
-        Kernel kernel = new PairwiseDist2D(msa, dist, N, refId);
+        Kernel kernel = new PairwiseDist2D(msa, countResult, N, refId);
         //kernel.setExecutionMode(Kernel.EXECUTION_MODE.GPU);
         //kernel.setAutoCleanUpArrays(true);
         kernel.execute(N * msa.length);
@@ -238,10 +238,10 @@ public class RelativeDistance
         //kernel2.execute(dist.length);
         for (int i = 0; i < dist.length; i++)
         {
-//            for (int j = 0; j < msa[i].length; j++)
-//            {
-//                dist[i] += countResult[i][j];
-//            }
+            for (int j = 0; j < msa[i].length; j++)
+            {
+                dist[i] += countResult[i][j];
+            }
             if (dist[i] < min)
             {
                 min = dist[i];
@@ -267,8 +267,8 @@ class PairwiseDist2D extends Kernel
 
     byte[][] A;
 
-    //byte[][] B;
-    double[] D;
+    byte[][] B;
+    //double[] D;
     byte[][] C;
 
     int N;
@@ -277,8 +277,8 @@ class PairwiseDist2D extends Kernel
     public PairwiseDist2D(byte[][] A, double[] d, int N, int R)
     {
         this.A = A;
-        //this.B = B;
-        this.D = d;
+        this.B = B;
+        //this.D = d;
         this.C = new byte[A.length][A[0].length];
         this.N = N;
         this.R = R;
@@ -297,6 +297,14 @@ class PairwiseDist2D extends Kernel
         this.N = N;
         this.R = R;
     }
+    public PairwiseDist2D(byte[][] A, byte[][] C, int N, int R)
+    {
+        this.A = A;
+        //this.B = B;
+        this.C = C;
+        this.N = N;
+        this.R = R;
+    }
 
     @Override
     public void run()
@@ -305,14 +313,14 @@ class PairwiseDist2D extends Kernel
         int i = id / N;
         int j = id % N;
         C[i][j] = (byte) ((A[R][j] == A[i][j]) ? 1 : 0);
-        localBarrier();
-        if (id < D.length)
-        {
-            for (int k = 0; k < C[id].length; k++)
-            {
-                D[id] += C[id][k];
-            }
-        }
+//        localBarrier();
+//        if (id < D.length)
+//        {
+//            for (int k = 0; k < C[id].length; k++)
+//            {
+//                D[id] += C[id][k];
+//            }
+//        }
 
 //      for (int k = 0; k < N; k++) {
 //         C[i][j] += (byte) (A[i][k] * B[k][j]);

@@ -88,32 +88,12 @@ public class CalculateIntConsistency
 
     public void generateAllRetaiveDistances()
     {
-        byte[][] countResult = new byte[msa.length][msa[0].length];
-        //int N = msa[0].length;
-        
-        int i=0;
-        //final Kernel kernel = new PairwiseDist2D(msa, countResult, N, i);
-        //kernel.setExplicit(true);
-        //kernel2.execute(dist.length);
-        for ( i = 0; i < taxaCount; i++)
+        for (int i = 0; i < taxaCount; i++)
         {
             relDistArray[i] = new RelativeDistance(i, taxaCount);
-           
-            //if (i==0)
-           // {
-                //kernel.put(msa);
-          //  }
-            //kernel.put(N);
-            //kernel.put(i);
-           // kernel.execute(N * msa.length);
-           // kernel.get(countResult);
-//            final Kernel kernel2 = new Summary(countResult, relDistArray[i].dist);
-//            kernel2.setExplicit(true);
-//            kernel2.execute(relDistArray[i].dist.length);
-//            kernel.get(relDistArray[i].dist);
-            relDistArray[i].generateRelativeDist(msa, pd);
-            //relDistArray[i].generateRelativeDistGPU(msa, countResult);
-            //System.out.print("Taxa: " + i + ", ");
+            //relDistArray[i].generateRelativeDist(msa, pd);
+            relDistArray[i].generateRelativeDistGPU(msa);
+            //System.out.println("Taxa: "+i);
         }
         refTaxaNeighbors = relDistArray[refTaxaId].calculateSortedNeighbor();
     }
@@ -127,7 +107,7 @@ public class CalculateIntConsistency
     {
         String instancePath = "example";
         String instanceName = "BB50010"; //23S.E
-        String inputFilePath = "F:\\Phd@CSE,BUET\\Com. Biology\\MSA\\Dataset\\scripts\\input\\NumGaps_SOP\\precomputedInit\\Balibase\\uniqueCombined_" + instanceName ; //+ "Small"
+        String inputFilePath = "uniqueCombined_" + instanceName ; //+ "Small"
         List<Score> scoreList = new ArrayList<>();
         scoreList.add(new EntropyScore());
         MSAProblem problem = new BAliBASE_MSAProblem(instanceName, instancePath, scoreList);
