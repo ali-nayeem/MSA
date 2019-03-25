@@ -8,6 +8,7 @@ echo "Error: Provide no. of cores, Exiting..."
 exit
 fi
 
+echo "Started working" > log
 for input in `cat input_ref_tree`
 do
  inputFile=`find ./aligned/ -name "$input".msf_tfa -type f | sort -V`
@@ -16,7 +17,7 @@ do
  outFile2=""$inputFile"_tt2"
  #echo $outFile
  echo "################## $instance ########################"
- 
+ echo "Starting $instance" >> log
 ./raxmlHPC-PTHREADS-AVX -f a -m PROTGAMMAAUTO -s $inputFile  -n ref_bs  -p 1234 -x 1234 -#100 -T $core
  
  mv RAxML_bestTree.ref_bs $outFile1
@@ -24,5 +25,5 @@ do
  
  rm *ref_bs*
 
- break
+# break
 done

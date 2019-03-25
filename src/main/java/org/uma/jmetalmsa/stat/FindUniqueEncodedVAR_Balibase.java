@@ -6,12 +6,14 @@
 package org.uma.jmetalmsa.stat;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -39,10 +41,11 @@ public class FindUniqueEncodedVAR_Balibase
 
     static int approxLineLength = 1200;
     static String instancePath = "example";
-    static String instanceName = "BB40001";
-    static String root = "RV40/";
-    static String encodedVarFileName = "/media/ali_nayeem/secondary/UBUNTU/precomputedInit/Balibase/" + root + instanceName +"/combinedVAR";
-    static String uniqueVarFileName = "/media/ali_nayeem/secondary/UBUNTU/precomputedInit/Balibase/" + root  +"/uniqueCombined"+"_"+instanceName;
+    //static String instanceName = "BB40001";
+    static String root = "RV11/";
+    static String dir = "/media/ali_nayeem/secondary/UBUNTU/randInit/Balibase_SimG_SimNG/" + root ; 
+    //static String encodedVarFileName = "/media/ali_nayeem/secondary/UBUNTU/precomputedInit/Balibase/" + root + instanceName +"/combinedVAR";
+    //static String uniqueVarFileName = "/media/ali_nayeem/secondary/UBUNTU/precomputedInit/Balibase/" + root  +"/uniqueCombined"+"_"+instanceName;
     //static String shuffledVarFileName = "/home/ali_nayeem/MSA/experiment/shuffledVAR";
 
     public Set<String> getUniqueEncodedVarFile(String encodedVarFilePath, MSAProblem problem) throws Exception
@@ -142,18 +145,31 @@ public class FindUniqueEncodedVAR_Balibase
 
     public static void main(String[] arg) throws Exception
     {
-        List<Score> scoreList = new ArrayList<>();
-        scoreList.add(new EntropyScore());
-        //scoreList.add(new NumberOfAlignedColumnsScore());
-        //scoreList.add(new NumberOfGapsScore());
-        //scoreList.add(new SimilarityGapsScore());
-        //scoreList.add(new SimilarityNonGapsScore());
-        //scoreList.add(new GapConcentrationScore());
+        File f = new File(dir);
+        ArrayList<String> names = new ArrayList<>(Arrays.asList(f.list()));
+        //ArrayList<File> files = new ArrayList<File>(Arrays.asList(f.listFiles()));
+     
+        for(String instanceName : names)
+        {
+             if (!instanceName.matches("BB.....")) 
+             {
+                 continue;
+             }
+             String encodedVarFileName = dir  + instanceName +"/combinedVAR";
+             String uniqueVarFileName = dir  +"uniqueCombined"+"_"+instanceName;
+            List<Score> scoreList = new ArrayList<>();
+            scoreList.add(new EntropyScore());
+            //scoreList.add(new NumberOfAlignedColumnsScore());
+            //scoreList.add(new NumberOfGapsScore());
+            //scoreList.add(new SimilarityGapsScore());
+            //scoreList.add(new SimilarityNonGapsScore());
+            //scoreList.add(new GapConcentrationScore());
 
-        MSAProblem problem = new BAliBASE_MSAProblem(instanceName, instancePath, scoreList);
-        FindUniqueEncodedVAR_Balibase selfObj = new FindUniqueEncodedVAR_Balibase();
-        Set<String> uniqueVar = selfObj.getUniqueEncodedVarFile(encodedVarFileName, problem);
-        selfObj.printUniqueEncodedVarToFile(uniqueVar, uniqueVarFileName);
+            MSAProblem problem = new BAliBASE_MSAProblem(instanceName, instancePath, scoreList);
+            FindUniqueEncodedVAR_Balibase selfObj = new FindUniqueEncodedVAR_Balibase();
+            Set<String> uniqueVar = selfObj.getUniqueEncodedVarFile(encodedVarFileName, problem);
+            selfObj.printUniqueEncodedVarToFile(uniqueVar, uniqueVarFileName);
+        }
 
         //List<String> listOfVar = new ArrayList<>(uniqueVar);
         //Collections.shuffle(listOfVar);

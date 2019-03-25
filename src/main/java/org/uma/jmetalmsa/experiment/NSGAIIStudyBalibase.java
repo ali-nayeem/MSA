@@ -66,7 +66,7 @@ import org.uma.jmetalmsa.util.distancematrix.impl.*;
  */
 public class NSGAIIStudyBalibase {
     static String experimentBaseDirectory = "experiment/NSGAII" ;
-    static String problemName[] = {"BB40001", "BB40010", "BB40020", "BB40030", "BB40040", "BB40049"} ; //, "R4", "R9", "R14", "R19"}; 
+    static String problemName[] = {"BB11005"} ; //, "R4", "R9", "R14", "R19"}; 
     static String dataDirectory = "example";
     static Integer maxEvaluations = 50000; //50000
     static Integer populationSize = 100; //100
@@ -152,7 +152,7 @@ public class NSGAIIStudyBalibase {
     CrossoverOperator<MSASolution> crossover = new SPXMSACrossover(0.8);
     MutationOperator<MSASolution> mutation = new ShiftClosedGapsMSAMutation(0.2);
     SelectionOperator selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
-    int numberOfCores = 12;//Runtime.getRuntime().availableProcessors();
+    int numberOfCores = 4;//Runtime.getRuntime().availableProcessors();
     SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();;
    
 
