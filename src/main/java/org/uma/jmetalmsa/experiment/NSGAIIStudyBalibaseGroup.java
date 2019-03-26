@@ -200,14 +200,15 @@ public class NSGAIIStudyBalibaseGroup {
     MutationOperator<MSASolution> mutation = new ShiftClosedGapsMSAMutation(0.2);
     SelectionOperator selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
     //int numberOfCores = 12;//Runtime.getRuntime().availableProcessors();
-    SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();;
    
 
-    for (int i = 0; i < problemList.size(); i++) {
+    for (int i = 0; i < problemList.size(); i++) 
+    {
 //       if (numberOfCores > 1)
 //       {
 //           evaluator = new MultithreadedSolutionListEvaluator(numberOfCores, problemList.get(i).getProblem());
 //       }
+       SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();
        Algorithm<List<MSASolution>> algorithm = new NSGAIIMSABuilder(problemList.get(i).getProblem(), crossover, mutation, NSGAIIBuilder.NSGAIIVariant.NSGAII)
             .setSelectionOperator(selection)
             .setMaxEvaluations(maxEvaluations)
