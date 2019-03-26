@@ -1,8 +1,10 @@
 package org.uma.jmetalmsa.problem;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.uma.jmetal.operator.MutationOperator;
@@ -137,6 +139,25 @@ public class BAliBASE_MSAProblem extends MSAProblem {
 
         }
         return population;
+    }
+    
+    public static void appendAllProblemsFromGroup(String dataBaseDirectory, String Group, ArrayList<String> problemList)
+    {
+        //Balibase Directory
+        String BalibasePath = dataBaseDirectory + "/bb3_release/" + Group + "/";
+        File f = new File(BalibasePath);
+        ArrayList<String> names = new ArrayList<>(Arrays.asList(f.list()));
+        //ArrayList<File> files = new ArrayList<File>(Arrays.asList(f.listFiles()));
+        for(String instanceName : names)
+        {
+             if (instanceName.matches("BB[0-9]*\\.tfa")) 
+             {
+                 int endIndex = instanceName.indexOf('.');
+                 problemList.add(instanceName.substring(0, endIndex));
+             }
+        }
+        //String [] problems = problemList.toArray(new String[problemList.size()]);
+        //return problems;
     }
 
  

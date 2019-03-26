@@ -19,6 +19,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetalmsa.problem.BAliBASE_MSAProblem;
 import org.uma.jmetalmsa.problem.MSAProblem;
 import org.uma.jmetalmsa.problem.SATE_MSAProblem;
@@ -53,7 +54,7 @@ public class FindUniqueEncodedVAR_Balibase
         int allCount = 0;
         BufferedReader br = new BufferedReader(new FileReader(encodedVarFilePath));
         Set<String> uniqueAlignments = new LinkedHashSet<>();
-
+        JMetalLogger.logger.info("Collecting unique solutions for " + problem.getName() + ". ");
         while (br.ready())
         {
             allCount++;
@@ -88,7 +89,7 @@ public class FindUniqueEncodedVAR_Balibase
             
             if (uniqueAlignments.contains(encodedAlignmentStr))
             {
-                System.out.println(allCount);
+                //System.out.println(allCount);
             } 
             else
             {
@@ -96,8 +97,8 @@ public class FindUniqueEncodedVAR_Balibase
             }
         }
         br.close();
-        System.out.println("Total: " + allCount);
-        System.out.println("Unique:" + uniqueAlignments.size());
+        JMetalLogger.logger.info("Total: " + allCount + ", ");
+        JMetalLogger.logger.info("Unique:" + uniqueAlignments.size());
         return uniqueAlignments;
     }
 
