@@ -182,7 +182,7 @@ public class NSGAIIStudyBalibaseGroupV2 {
     CrossoverOperator<MSASolution> crossover = new SPXMSACrossover(0.8);
     MutationOperator<MSASolution> mutation = new ShiftClosedGapsMSAMutation(0.2);
     SelectionOperator selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
-    int numberOfCores = 6;//Runtime.getRuntime().availableProcessors();
+    int numberOfCores = 1;//Runtime.getRuntime().availableProcessors();
    
 
     for (int i = 0; i < problemList.size(); i++) {
