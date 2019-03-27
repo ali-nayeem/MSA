@@ -73,11 +73,11 @@ import org.uma.jmetalmsa.util.distancematrix.impl.*;
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
 public class NSGAIIStudyBalibaseGroupV2 {
-    static String experimentBaseDirectory = "experiment" ;
-    static String groupName[]  = {"RV11"};
-    static String dataDirectory = "example";
-    static Integer maxEvaluations = 50000; //50000
-    static Integer populationSize = 100; //100
+    static final String experimentBaseDirectory = "experiment" ;
+    static final String groupName[]  = {"RV11"};
+    static final String dataDirectory = "example";
+    static final Integer maxEvaluations = 50000; //50000
+    static final Integer populationSize = 100; //100
     private static final int INDEPENDENT_RUNS = 20 ;
 
   public static void main(String[] args) throws Exception {
@@ -182,7 +182,7 @@ public class NSGAIIStudyBalibaseGroupV2 {
     CrossoverOperator<MSASolution> crossover = new SPXMSACrossover(0.8);
     MutationOperator<MSASolution> mutation = new ShiftClosedGapsMSAMutation(0.2);
     SelectionOperator selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
-    int numberOfCores = 1;//Runtime.getRuntime().availableProcessors();
+    int numberOfCores = 6;//Runtime.getRuntime().availableProcessors();
    
 
     for (int i = 0; i < problemList.size(); i++) {
