@@ -1,5 +1,7 @@
 package org.uma.jmetalmsa.experiment;
 
+import java.io.File;
+import java.nio.file.Files;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 //import org.uma.jmetal.operator.impl.crossover.SBXCrossover;
@@ -20,40 +22,33 @@ import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 import java.util.ArrayList;
 //import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
-//import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
+import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 //import org.uma.jmetal.util.pseudorandom.PseudoRandomGenerator;
 import org.uma.jmetal.util.pseudorandom.impl.MersenneTwisterGenerator;
 import org.uma.jmetalmsa.algorithm.nsgaii.NSGAIIMSABuilder;
 import org.uma.jmetalmsa.crossover.SPXMSACrossover;
+import static org.uma.jmetalmsa.experiment.NSGAIIStudyBalibaseGroup.experimentBaseDirectory;
+import static org.uma.jmetalmsa.experiment.NSGAIIStudyBalibaseGroup.groupName;
 import org.uma.jmetalmsa.mutation.ShiftClosedGapsMSAMutation;
 import org.uma.jmetalmsa.problem.BAliBASE_MSAProblem;
-//import org.uma.jmetalmsa.problem.SATE_MSAProblem;
+import org.uma.jmetalmsa.problem.MSAProblem;
+import org.uma.jmetalmsa.problem.SATE_MSAProblem;
 import org.uma.jmetalmsa.score.Score;
 import org.uma.jmetalmsa.score.impl.*;
 import org.uma.jmetalmsa.solution.MSASolution;
-//import org.uma.jmetalmsa.util.SynchronizedMersenneTwister;
-import org.uma.jmetalmsa.util.distancematrix.impl.*;
-//import org.apache.commons.io.IOUtils;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.util.Properties;
-import java.util.Set;
 import org.uma.jmetalmsa.stat.FindUniqueEncodedVAR_Balibase;
 import org.uma.jmetalmsa.util.IOCopier;
-import org.uma.jmetalmsa.problem.MSAProblem;
-import org.uma.jmetal.util.JMetalLogger;
-import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
-
+//import org.uma.jmetalmsa.util.SynchronizedMersenneTwister;
+import org.uma.jmetalmsa.util.distancematrix.impl.*;
 
 
 /**
@@ -77,38 +72,26 @@ import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class NSGAIIStudyBalibaseGroup {
+public class NSGAIIStudyBalibaseGroupV2 {
     static String experimentBaseDirectory = "experiment" ;
-    static String experimentTitle = "IEEE_TEVC_Study_Balibase_GapSOP";
     static String groupName[]  = {"RV11"};
-    //static String problemName[]; //= {"BB40001", "BB40010", "BB40020", "BB40030", "BB40040", "BB40049"} ; //, "R4", "R9", "R14", "R19"}; 
     static String dataDirectory = "example";
-    static Integer maxEvaluations = 500; //50000
-    static Integer populationSize = 50; //100
+    static Integer maxEvaluations = 50000; //50000
+    static Integer populationSize = 100; //100
     private static final int INDEPENDENT_RUNS = 20 ;
-    static int numOfCores = 5;
-    static long seed = 123456789;
-    
+
   public static void main(String[] args) throws Exception {
 //    if (args.length != 1) {
 //      throw new JMetalException("Needed arguments: experimentBaseDirectory") ;
 //    }
-  
-    /*Properties prop = new Properties();
-    OutputStream output = new FileOutputStream("config.properties");
-    prop.setProperty("java.util.logging.FileHandler.pattern", experimentBaseDirectory + "/" + experimentTitle + "/jMetal.log");
-    //prop.setProperty("java.util.logging.SimpleFormatter.format", "");
-    prop.store(output, null);
-    output.close();
-    File propFile = new File("config.properties");
-    JMetalLogger.configureLoggers(propFile);*/
-    JMetalRandom.getInstance().setRandomGenerator(new MersenneTwisterGenerator(seed));
+    JMetalRandom.getInstance().setRandomGenerator(new MersenneTwisterGenerator(1234));
     
     List<Score> scoreList = new ArrayList<>();
+
     scoreList.add(new EntropyScore()); //1
     scoreList.add(new NumberOfAlignedColumnsScore()); //2 TC
-    scoreList.add(new SimilarityGapsScore()); //3 SimG
-    scoreList.add(new SimilarityNonGapsScore()); //4 SimNG
+    scoreList.add(new SimilarityGapsScore()); //3
+    scoreList.add(new SimilarityNonGapsScore()); //4
     scoreList.add(new NumberOfGapsScore()); //5 Gap
     scoreList.add(new GapConcentrationScore()); //6
     scoreList.add(new SumOfPairsScore(new Blosum62(-4))); //7 SOP
@@ -120,8 +103,6 @@ public class NSGAIIStudyBalibaseGroup {
     
     int scoreCombination[ ][ ] = { { 5, 7 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
 
-    /********************************NO PARAMETER BELOW THIS LINE*********************************************************/
-    
     ArrayList<String> problemName = new ArrayList<>();
     for(int gi = 0; gi < groupName.length; gi++)
     {
@@ -159,14 +140,14 @@ public class NSGAIIStudyBalibaseGroup {
                 //new PISAHypervolume<DoubleSolution>(),
                 //new InvertedGenerationalDistance<DoubleSolution>(), new InvertedGenerationalDistancePlus<DoubleSolution>()))
             .setIndependentRuns(INDEPENDENT_RUNS)
-            .setNumberOfCores(4)
+            .setNumberOfCores(10)
             .build();
 
     new ExecuteAlgorithms<>(experiment).run();
     
     for(ExperimentAlgorithm<MSASolution, List<MSASolution>> algo : algorithmList)
     {
-        String path1 = experimentBaseDirectory + "/" + experimentTitle + "/data/" + algo.getAlgorithmTag() + "/";
+        String path1 = experimentBaseDirectory + "/" + experiment.getExperimentName() + "/data/" + algo.getAlgorithmTag() + "/";
         for(ExperimentProblem<MSASolution> prob : problemList)
         {
             String path2 = path1 + prob.getTag() + "/";
@@ -184,6 +165,7 @@ public class NSGAIIStudyBalibaseGroup {
             selfObj.printUniqueEncodedVarToFile(uniqueVar, path2 + "uniqueCombined");
         }
     }
+    
   }
 
   /**
@@ -200,16 +182,15 @@ public class NSGAIIStudyBalibaseGroup {
     CrossoverOperator<MSASolution> crossover = new SPXMSACrossover(0.8);
     MutationOperator<MSASolution> mutation = new ShiftClosedGapsMSAMutation(0.2);
     SelectionOperator selection = new BinaryTournamentSelection(new RankingAndCrowdingDistanceComparator());
-    //int numberOfCores = 12;//Runtime.getRuntime().availableProcessors();
+    int numberOfCores = 1;//Runtime.getRuntime().availableProcessors();
    
 
-    for (int i = 0; i < problemList.size(); i++) 
-    {
-//       if (numberOfCores > 1)
-//       {
-//           evaluator = new MultithreadedSolutionListEvaluator(numberOfCores, problemList.get(i).getProblem());
-//       }
-       SolutionListEvaluator<MSASolution> evaluator = new MultithreadedSolutionListEvaluator(5, problemList.get(i).getProblem());//new SequentialSolutionListEvaluator<>();
+    for (int i = 0; i < problemList.size(); i++) {
+       SolutionListEvaluator<MSASolution> evaluator = new SequentialSolutionListEvaluator<>();;
+       if (numberOfCores > 1)
+       {
+           evaluator = new MultithreadedSolutionListEvaluator(numberOfCores, problemList.get(i).getProblem());
+       }
        Algorithm<List<MSASolution>> algorithm = new NSGAIIMSABuilder(problemList.get(i).getProblem(), crossover, mutation, NSGAIIBuilder.NSGAIIVariant.NSGAII)
             .setSelectionOperator(selection)
             .setMaxEvaluations(maxEvaluations)
@@ -221,7 +202,41 @@ public class NSGAIIStudyBalibaseGroup {
 
     return algorithms;
   }
- 
 
 }
 
+//    problemList.add(new ExperimentProblem<>(new ZDT1()));
+//    problemList.add(new ExperimentProblem<>(new ZDT2()));
+//    problemList.add(new ExperimentProblem<>(new ZDT3()));
+//    problemList.add(new ExperimentProblem<>(new ZDT4()));
+//    problemList.add(new ExperimentProblem<>(new ZDT6()));
+
+
+//    for (int i = 0; i < problemList.size(); i++) {
+//      Algorithm<List<DoubleSolution>> algorithm = new NSGAIIBuilder<>(
+//              problemList.get(i).getProblem(),
+//              new SBXCrossover(1.0, 20.0),
+//              new PolynomialMutation(1.0 / problemList.get(i).getProblem().getNumberOfVariables(), 20.0))
+//              .setMaxEvaluations(25000)
+//              .setPopulationSize(100)
+//              .build();
+//      algorithms.add(new ExperimentAlgorithm<>(algorithm, "NSGAIIb", problemList.get(i).getTag()));
+//    }
+//
+//    for (int i = 0; i < problemList.size(); i++) {
+//      Algorithm<List<DoubleSolution>> algorithm = new NSGAIIBuilder<>(problemList.get(i).getProblem(), new SBXCrossover(1.0, 40.0),
+//              new PolynomialMutation(1.0 / problemList.get(i).getProblem().getNumberOfVariables(), 40.0))
+//              .setMaxEvaluations(25000)
+//              .setPopulationSize(100)
+//              .build();
+//      algorithms.add(new ExperimentAlgorithm<>(algorithm, "NSGAIIc", problemList.get(i).getTag()));
+//    }
+//
+//    for (int i = 0; i < problemList.size(); i++) {
+//      Algorithm<List<DoubleSolution>> algorithm = new NSGAIIBuilder<>(problemList.get(i).getProblem(), new SBXCrossover(1.0, 80.0),
+//              new PolynomialMutation(1.0 / problemList.get(i).getProblem().getNumberOfVariables(), 80.0))
+//              .setMaxEvaluations(25000)
+//              .setPopulationSize(100)
+//              .build();
+//      algorithms.add(new ExperimentAlgorithm<>(algorithm, "NSGAIId", problemList.get(i).getTag()));
+//    }
