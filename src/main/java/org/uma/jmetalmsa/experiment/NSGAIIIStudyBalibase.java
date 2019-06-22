@@ -31,11 +31,13 @@ import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 //import org.uma.jmetal.util.pseudorandom.PseudoRandomGenerator;
 import org.uma.jmetal.util.pseudorandom.impl.MersenneTwisterGenerator;
-import org.uma.jmetalmsa.algorithm.nsgaii.NSGAIIMSABuilder;
+import org.uma.jmetalmsa.algorithm.nsgaIII.NSGAIIIYYMSA;
+//import org.uma.jmetalmsa.algorithm.nsgaii.NSGAIIMSABuilder;
 import org.uma.jmetalmsa.crossover.SPXMSACrossover;
+//import static org.uma.jmetalmsa.experiment.NSGAIIIStudy.maxEvaluations;
 import org.uma.jmetalmsa.mutation.ShiftClosedGapsMSAMutation;
 import org.uma.jmetalmsa.problem.BAliBASE_MSAProblem;
-import org.uma.jmetalmsa.problem.SATE_MSAProblem;
+//import org.uma.jmetalmsa.problem.SATE_MSAProblem;
 import org.uma.jmetalmsa.score.Score;
 import org.uma.jmetalmsa.score.impl.*;
 import org.uma.jmetalmsa.solution.MSASolution;
@@ -64,13 +66,17 @@ import org.uma.jmetalmsa.util.distancematrix.impl.*;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class NSGAIIStudyBalibase {
+public class NSGAIIIStudyBalibase {
     static String experimentBaseDirectory = "experiment/Balibase_runtime" ;
-    static String problemName[] = {"BB12001", "BB12013", "BB12022", "BB12035", "BB12044"} ; //"BB20001", "BB20010" ,"BB20022", "BB20033", "BB20041"    "BB11005", "BB11018", "BB11020", "BB11033"
+    static String problemName[] = {"BB11005", "BB11018", "BB11020", "BB11033"} ; //, "R4", "R9", "R14", "R19"}; 
     static String dataDirectory = "example";
-    static Integer maxEvaluations = 50000; //50000
-    static Integer populationSize = 100; //100
-    private static final int INDEPENDENT_RUNS = 10 ;
+    static Integer maxEvaluations = 60000; //39000;
+    //static Integer populationSize = 78; //106
+    //static int div1 = 3;
+    //static int div2 = 2;
+    //static int div[ ][ ] = { { 3, 2}, { 4, 3}};
+    static int div[ ] = { 7, 0}; //{ 3, 2}
+    private static final int INDEPENDENT_RUNS = 25 ;
 
   public static void main(String[] args) throws Exception {
 //    if (args.length != 1) {
@@ -93,7 +99,7 @@ public class NSGAIIStudyBalibase {
     //scoreList.add(new SumOfPairMinusAffineGapPenaltyScore(new NUC44_V1(),  weightGapOpen=10,  weightGapExtend=1)); //9
     //scoreList.add(new SumOfPairMinusAffineGapPenaltyScore(new NUC44_V1(),  weightGapOpen=8,  weightGapExtend=12)); //10
     
-    int scoreCombination[ ][ ] = { { 5, 7 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
+    int scoreCombination[ ][ ] = { { 3,4,5, 7 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
 
     List<ExperimentProblem<MSASolution>> problemList = new ArrayList<>();
     for(int probIndex = 0; probIndex < problemName.length; probIndex++)
@@ -161,13 +167,8 @@ public class NSGAIIStudyBalibase {
        {
            evaluator = new MultithreadedSolutionListEvaluator(numberOfCores, problemList.get(i).getProblem());
        }
-       Algorithm<List<MSASolution>> algorithm = new NSGAIIMSABuilder(problemList.get(i).getProblem(), crossover, mutation, NSGAIIBuilder.NSGAIIVariant.NSGAII)
-            .setSelectionOperator(selection)
-            .setMaxEvaluations(maxEvaluations)
-            .setPopulationSize(populationSize)
-            .setSolutionListEvaluator(evaluator)
-            .build();
-       algorithms.add(new ExperimentAlgorithmMSA(algorithm, "NSGAII", problemList.get(i).getTag()));
+       Algorithm<List<MSASolution>> algorithm = new NSGAIIIYYMSA(problemList.get(i).getProblem(), maxEvaluations, div[0], div[1], true, crossover, mutation, selection, evaluator );
+       algorithms.add(new ExperimentAlgorithmMSA(algorithm, "NSGAIII", problemList.get(i).getTag()));
     }
 
     return algorithms;
