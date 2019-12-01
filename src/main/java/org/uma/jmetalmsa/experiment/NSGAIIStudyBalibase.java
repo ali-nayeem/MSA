@@ -24,6 +24,7 @@ import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
+import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
@@ -66,24 +67,31 @@ import org.uma.jmetalmsa.util.distancematrix.impl.*;
  */
 public class NSGAIIStudyBalibase {
     static String experimentBaseDirectory = "experiment/Balibase_runtime" ;
-    static String problemName[] = {"BB12001", "BB12013", "BB12022", "BB12035", "BB12044"} ; //"BB20001", "BB20010" ,"BB20022", "BB20033", "BB20041"    "BB11005", "BB11018", "BB11020", "BB11033"
+    static String problemName[] = {"BB20001", "BB20010", "BB20022", "BB20033", "BB20041"} ; //"BB20001", "BB20010" ,"BB20022", "BB20033", "BB20041"    "BB11005", "BB11018", "BB11020", "BB11033"
+    //"BB12001", "BB12013", "BB12022", "BB12035", "BB12044"
     static String dataDirectory = "example";
     static Integer maxEvaluations = 50000; //50000
     static Integer populationSize = 100; //100
-    private static final int INDEPENDENT_RUNS = 10 ;
+    private static final int INDEPENDENT_RUNS = 5 ;
 
   public static void main(String[] args) throws Exception {
-//    if (args.length != 1) {
-//      throw new JMetalException("Needed arguments: experimentBaseDirectory") ;
-//    }
+    if (args.length > 0) 
+    {
+      //throw new JMetalException("Needed arguments: experimentBaseDirectory") ;
+      problemName = new String[args.length-1];
+        for (int i = 1; i < args.length; i++) 
+        {
+            problemName[i-1] = args[i];
+        }
+    }
     JMetalRandom.getInstance().setRandomGenerator(new MersenneTwisterGenerator(1234));
     
     List<Score> scoreList = new ArrayList<>();
 
     scoreList.add(new EntropyScore()); //1
     scoreList.add(new NumberOfAlignedColumnsScore()); //2 TC
-    scoreList.add(new SimilarityGapsScore()); //3
-    scoreList.add(new SimilarityNonGapsScore()); //4
+    scoreList.add(new SimilarityGapsScore()); //3 SimG
+    scoreList.add(new SimilarityNonGapsScore()); //4 SimNG
     scoreList.add(new NumberOfGapsScore()); //5 Gap
     scoreList.add(new GapConcentrationScore()); //6
     scoreList.add(new SumOfPairsScore(new Blosum62(-4))); //7 SOP
@@ -92,9 +100,23 @@ public class NSGAIIStudyBalibase {
     //double weightGapExtend, weightGapOpen;
     //scoreList.add(new SumOfPairMinusAffineGapPenaltyScore(new NUC44_V1(),  weightGapOpen=10,  weightGapExtend=1)); //9
     //scoreList.add(new SumOfPairMinusAffineGapPenaltyScore(new NUC44_V1(),  weightGapOpen=8,  weightGapExtend=12)); //10
-    
-    int scoreCombination[ ][ ] = { { 5, 7 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
-
+    int scoreCombination[ ][ ];
+    if (args.length == 0)
+    {
+        int gapSop [ ][ ] = { { 5, 7} }; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
+        scoreCombination = gapSop;
+    }
+    else if (args[0].toLowerCase().contains("gap")) 
+    {
+        int gapSop [ ][ ] = { { 5, 7 } }; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
+        scoreCombination = gapSop;
+    }
+    else
+    {
+        int simgSimng [ ][ ] = { { 3, 4 } };
+        scoreCombination = simgSimng;
+    }
+    System.out.println("Score: " + scoreCombination[0][0] + ", " + scoreCombination[0][1]);
     List<ExperimentProblem<MSASolution>> problemList = new ArrayList<>();
     for(int probIndex = 0; probIndex < problemName.length; probIndex++)
     {
@@ -136,6 +158,7 @@ public class NSGAIIStudyBalibase {
     //new GenerateWilcoxonTestTablesWithR<>(experiment).run() ;
     //new GenerateFriedmanTestTables<>(experiment).run();
     //new GenerateBoxplotsWithR<>(experiment).setRows(3).setColumns(3).run() ;
+    JMetalLogger.logger.info("All exp ended.");
   }
 
   /**

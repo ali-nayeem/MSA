@@ -55,6 +55,7 @@ public class EntropyScore implements Score
         //NonGapIndexList = new ArrayList<>();
         //List <HashMap< Character, Integer>> NonGapColumnMapList = new ArrayList<>();
         double similarityNG = 0;
+        int nonGapColumnCount = 0;
         for (int i = 0; i < numberOfColumns; i++)
         {
             HashMap< Character, Integer> columnMap = new HashMap<>();
@@ -73,6 +74,7 @@ public class EntropyScore implements Score
 
             if (isNonGapColumn)
             {
+                nonGapColumnCount++;
                 //NonGapIndexList.add(i);
                 hasNonGapColumn = true;
                 for (int freq : columnMap.values())
@@ -94,6 +96,7 @@ public class EntropyScore implements Score
         solution.setAttribute("GapIndexList", GapIndexList);
         //solution.setAttribute("NonGapColumnMapList", NonGapColumnMapList);
         solution.setAttribute("similarityNG", similarityNG);
+        solution.setAttribute("nonGapColumnCount", nonGapColumnCount);
         if (hasNonGapColumn)
         {
             double result = totalEntropy ;

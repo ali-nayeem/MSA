@@ -24,6 +24,7 @@ import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.operator.SelectionOperator;
 import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
+import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
 import org.uma.jmetal.util.evaluator.impl.MultithreadedSolutionListEvaluator;
@@ -68,7 +69,7 @@ import org.uma.jmetalmsa.util.distancematrix.impl.*;
  */
 public class NSGAIIIStudyBalibase {
     static String experimentBaseDirectory = "experiment/Balibase_runtime" ;
-    static String problemName[] = {"BB11005", "BB11018", "BB11020", "BB11033"} ; //, "R4", "R9", "R14", "R19"}; 
+    static String problemName[] = {"BB20001", "BB20010", "BB20022", "BB20033", "BB20041"} ; //, "R4", "R9", "R14", "R19"}; 
     static String dataDirectory = "example";
     static Integer maxEvaluations = 60000; //39000;
     //static Integer populationSize = 78; //106
@@ -76,12 +77,18 @@ public class NSGAIIIStudyBalibase {
     //static int div2 = 2;
     //static int div[ ][ ] = { { 3, 2}, { 4, 3}};
     static int div[ ] = { 7, 0}; //{ 3, 2}
-    private static final int INDEPENDENT_RUNS = 25 ;
+    private static final int INDEPENDENT_RUNS = 5 ;
 
   public static void main(String[] args) throws Exception {
-//    if (args.length != 1) {
-//      throw new JMetalException("Needed arguments: experimentBaseDirectory") ;
-//    }
+    if (args.length > 0) 
+    {
+      //throw new JMetalException("Needed arguments: experimentBaseDirectory") ;
+      problemName = new String[args.length];
+        for (int i = 0; i < args.length; i++) 
+        {
+            problemName[i] = args[i];
+        }
+    }
     JMetalRandom.getInstance().setRandomGenerator(new MersenneTwisterGenerator(1234));
     
     List<Score> scoreList = new ArrayList<>();
@@ -99,7 +106,7 @@ public class NSGAIIIStudyBalibase {
     //scoreList.add(new SumOfPairMinusAffineGapPenaltyScore(new NUC44_V1(),  weightGapOpen=10,  weightGapExtend=1)); //9
     //scoreList.add(new SumOfPairMinusAffineGapPenaltyScore(new NUC44_V1(),  weightGapOpen=8,  weightGapExtend=12)); //10
     
-    int scoreCombination[ ][ ] = { { 3,4,5, 7 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
+    int scoreCombination[ ][ ] = { { 3, 4, 5, 7 }}; //{ 1, 5, 6 }, { 1, 2, 5, 6 }, { 1, 3, 5, 6 }, { 1, 4, 5, 6 }, { 1, 2, 3, 4 }
 
     List<ExperimentProblem<MSASolution>> problemList = new ArrayList<>();
     for(int probIndex = 0; probIndex < problemName.length; probIndex++)
@@ -142,6 +149,7 @@ public class NSGAIIIStudyBalibase {
     //new GenerateWilcoxonTestTablesWithR<>(experiment).run() ;
     //new GenerateFriedmanTestTables<>(experiment).run();
     //new GenerateBoxplotsWithR<>(experiment).setRows(3).setColumns(3).run() ;
+    JMetalLogger.logger.info("All exp ended.");
   }
 
   /**

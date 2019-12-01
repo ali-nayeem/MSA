@@ -8,6 +8,7 @@ package org.uma.jmetalmsa.experiment;
 import java.io.File;
 import java.util.List;
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.experiment.Experiment;
 import org.uma.jmetal.util.experiment.util.ExperimentAlgorithm;
@@ -21,7 +22,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
  */
 public class ExperimentAlgorithmMSA extends ExperimentAlgorithm<MSASolution, List<MSASolution>>
 {
-
+    private static double totalSeonds = 0;
     public ExperimentAlgorithmMSA(Algorithm algorithm, String algorithmTag, String problemTag)
     {
         super(algorithm, algorithmTag, problemTag);
@@ -36,15 +37,15 @@ public class ExperimentAlgorithmMSA extends ExperimentAlgorithm<MSASolution, Lis
             + "/"
             + getProblemTag();
 
-    File outputDirectory = new File(outputDirectoryName);
-    if (!outputDirectory.exists()) {
-      boolean result = new File(outputDirectoryName).mkdirs();
-      if (result) {
-        JMetalLogger.logger.info("Creating " + outputDirectoryName);
-      } else {
-        JMetalLogger.logger.severe("Creating " + outputDirectoryName + " failed");
-      }
-    }
+//    File outputDirectory = new File(outputDirectoryName);
+//    if (!outputDirectory.exists()) {
+//      boolean result = new File(outputDirectoryName).mkdirs();
+//      if (result) {
+//        JMetalLogger.logger.info("Creating " + outputDirectoryName);
+//      } else {
+//        JMetalLogger.logger.severe("Creating " + outputDirectoryName + " failed");
+//      }
+//    }
 
     String funFileName = outputDirectoryName + "/FUN" + id + ".tsv";
     DefaultFileOutputContext funFile = new  DefaultFileOutputContext(funFileName);
@@ -63,10 +64,10 @@ public class ExperimentAlgorithmMSA extends ExperimentAlgorithm<MSASolution, Lis
     getAlgorithm().run();
     List<MSASolution> population = getAlgorithm().getResult();
 
-    new SolutionListOutputMSA(population)
-            .setVarFileOutputContext(varFile)
-            .setFunFileOutputContext(funFile)
-            .print();
+//    new SolutionListOutputMSA(population)
+//            .setVarFileOutputContext(varFile)
+//            .setFunFileOutputContext(funFile)
+//            .print();
     }
     
     
