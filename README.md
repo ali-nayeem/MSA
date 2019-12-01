@@ -31,19 +31,19 @@ given MSA scoring function.
 ## Summary of features
 Here we summarize different features that we used in this study
 
-## Evolutionary algorithm
+### Evolutionary algorithm
 In our study, we used the following algorithms:
 * NSGA-II (`org.uma.jmetalmsa.algorithm.nsgaii`)
 * NSGA-III (`org.uma.jmetalmsa.algorithm.algoyy.NSGAIIIYY`)
 
 For NSGA-III, we adopt the Java implementation of Dr. Yuan Yuan avilable at https://github.com/yyxhdy/ManyEAs
 
-## Crossover Operator
+### Crossover Operator
 The crossover operator is the Single-Point Crossover adapted to alignments, randomly selects a position from the parent A
 by splitting it into two blocks and the parent B is tailored so that the right piece can be joined to the left piece of
 the first parent (PA1) and vice versa. Selected blocks are crossed between these two parents
 
-## Mutation Operators
+### Mutation Operators
 The list of mutation operators included in jMetalMSA are:
 * Shift-closed gaps: Closed gaps are randomly chosen and shifted to another position.
 * Non-gap group splitting: a non-gap group is selected randomly, and it is split into two groups.
@@ -51,7 +51,7 @@ The list of mutation operators included in jMetalMSA are:
 * Two adjacent gap groups merging: Selects a random group of gaps and merge with its nearest group of gaps.
 * Multiple mutation
 
-## Scores
+### Objective function
 The scores that are currently available in jMetalMSA are:
 * Sum of Pairs
 * Weighted Sum of Pairs with Affine Gaps
@@ -59,24 +59,23 @@ The scores that are currently available in jMetalMSA are:
 * Percentage of Totally Conserved Columns.
 * Percentage of Non-Gaps
 
-## Datasets
+### Datasets
 We used three datasets listed below:
  * 100-taxon simulated dataset (inside `dataset/100S/`)
  * Biological rRNA datasets (`dataset/100S/23S.E` and `dataset/100S/23S.E.aa_ag`)
  * BAliBASE 3.0 Benchmark (inside `example/bb3_release/`)
 
-## Experiementation
+### Experiementation
 To experiment with NSGA-II and NSGA-III on three datasets we implemented the three Java classes in package `org.uma.jmetalmsa.experiment` as follows:
  * NSGAIIStudy 
  * NSGAIIStudyBalibase
  * NSGAIIIStudy
 
 
-
-## Runing experiment
+### Running experiment
 
 To execute the class named `NSGAIIStudy`, run the following command in terminal from the project root:
 
-````
+```
 java -cp target/jmetalmsa-1.0-SNAPSHOT-jar-with-dependencies.jar org.uma.jmetalmsa.experiment.NSGAIIStudy
 ```
