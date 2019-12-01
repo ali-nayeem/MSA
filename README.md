@@ -1,5 +1,5 @@
 # Multi-objective formulation of MSA for phylogeny estimation (Do application-aware measures guide towards better phylogenetic tree?)
-This is a Java Netbeans project built on top of [jMetalMSA](https://github.com/jMetal/jMetalMSA), an open source software tool, where we have added necessary codes to compute multiple sequence problem (MSA) using evolutionary multi-objective (EMO) algorithms and necessary datasets. All dependencies (i.e., required modules) of this project are managed by [Apache Maven](https://maven.apache.org/), so it is very easy to install and run. Below we describe different features of this repository. This work was published in the journal. 
+This is a Java Netbeans project built on top of [jMetalMSA](https://github.com/jMetal/jMetalMSA), an open source software tool, which we extended to compute multiple sequence problem (MSA) using evolutionary multi-objective (EMO) algorithms guided by an application-aware measure and added necessary datasets. All dependencies (i.e., required modules) of this project are managed by [Apache Maven](https://maven.apache.org/), so it is very easy to install and run. Below we describe its different aspects. 
 
 ## Requirements
 To use this project, the following software tools are required:
@@ -39,12 +39,11 @@ In our study, we used the following algorithms:
 For NSGA-III, we adopt the Java implementation of Dr. Yuan Yuan avilable at https://github.com/yyxhdy/ManyEAs
 
 ### Crossover Operator
-The crossover operator is the Single-Point Crossover adapted to alignments, randomly selects a position from the parent A
-by splitting it into two blocks and the parent B is tailored so that the right piece can be joined to the left piece of
+The crossover operator (`org.uma.jmetalmsa.crossover.SPXMSACrossover`) is the Single-Point Crossover adapted to alignments, randomly selects a position from the parent A by splitting it into two blocks and the parent B is tailored so that the right piece can be joined to the left piece of
 the first parent (PA1) and vice versa. Selected blocks are crossed between these two parents
 
 ### Mutation Operators
-The list of mutation operators included in jMetalMSA are:
+The list of mutation operators included here in package `org.uma.jmetalmsa.mutation` are:
 * Shift-closed gaps: Closed gaps are randomly chosen and shifted to another position.
 * Non-gap group splitting: a non-gap group is selected randomly, and it is split into two groups.
 * One gap insertion: Inserts a gap in a random position for each sequence.
@@ -52,12 +51,11 @@ The list of mutation operators included in jMetalMSA are:
 * Multiple mutation
 
 ### Objective function
-The scores that are currently available in jMetalMSA are:
-* Sum of Pairs
-* Weighted Sum of Pairs with Affine Gaps
-* Single sTRucture Induced Evaluation (STRIKE).
-* Percentage of Totally Conserved Columns.
-* Percentage of Non-Gaps
+To conduct this study we added the following objectives in package `org.uma.jmetalmsa.score.impl`
+* Entropy
+* Similarity based on gap containing columns
+* Similarity based on non-gap columns
+* Concentration of gaps
 
 ### Datasets
 We used three datasets listed below:
