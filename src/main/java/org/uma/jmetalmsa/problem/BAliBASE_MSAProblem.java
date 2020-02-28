@@ -138,6 +138,10 @@ public class BAliBASE_MSAProblem extends MSAProblem {
             population.add(children.get(1));
 
         }
+        if(population.size() > Size)
+        {
+            population.remove(population.size()-1);
+        }
         return population;
     }
     

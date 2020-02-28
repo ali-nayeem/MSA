@@ -37,15 +37,15 @@ public class ExperimentAlgorithmMSA extends ExperimentAlgorithm<MSASolution, Lis
             + "/"
             + getProblemTag();
 
-//    File outputDirectory = new File(outputDirectoryName);
-//    if (!outputDirectory.exists()) {
-//      boolean result = new File(outputDirectoryName).mkdirs();
-//      if (result) {
-//        JMetalLogger.logger.info("Creating " + outputDirectoryName);
-//      } else {
-//        JMetalLogger.logger.severe("Creating " + outputDirectoryName + " failed");
-//      }
-//    }
+    File outputDirectory = new File(outputDirectoryName);
+    if (!outputDirectory.exists()) {
+      boolean result = new File(outputDirectoryName).mkdirs();
+      if (result) {
+        JMetalLogger.logger.info("Creating " + outputDirectoryName);
+      } else {
+        JMetalLogger.logger.severe("Creating " + outputDirectoryName + " failed");
+      }
+    }
 
     String funFileName = outputDirectoryName + "/FUN" + id + ".tsv";
     DefaultFileOutputContext funFile = new  DefaultFileOutputContext(funFileName);
@@ -64,10 +64,10 @@ public class ExperimentAlgorithmMSA extends ExperimentAlgorithm<MSASolution, Lis
     getAlgorithm().run();
     List<MSASolution> population = getAlgorithm().getResult();
 
-//    new SolutionListOutputMSA(population)
-//            .setVarFileOutputContext(varFile)
-//            .setFunFileOutputContext(funFile)
-//            .print();
+    new SolutionListOutputMSA(population)
+            .setVarFileOutputContext(varFile)
+            .setFunFileOutputContext(funFile)
+            .print();
     }
     
     

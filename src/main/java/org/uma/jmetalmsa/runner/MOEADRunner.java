@@ -42,6 +42,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.uma.jmetal.algorithm.multiobjective.moead.AbstractMOEAD;
 import org.uma.jmetalmsa.problem.BAliBASE_MSAProblem;
 import org.uma.jmetalmsa.score.Score;
 
@@ -63,14 +64,14 @@ public class MOEADRunner {
     MutationOperator<MSASolution> mutation;
     SelectionOperator selection;
 
-    if (args.length != 4) {
-      throw new JMetalException("Wrong number of arguments") ;
-    }
+//    if (args.length != 4) {
+//      throw new JMetalException("Wrong number of arguments") ;
+//    }
 
-    String problemName = args[0];
-    String dataDirectory = args[1];
-    Integer maxEvaluations = Integer.parseInt(args[2]);
-    Integer populationSize = Integer.parseInt(args[3]);
+    String problemName = "BB12001";//args[0];
+    String dataDirectory = "example";//args[1];
+    Integer maxEvaluations = 50;//Integer.parseInt(args[2]);
+    Integer populationSize = 16;//Integer.parseInt(args[3]);
 
     crossover = new SPXMSACrossover(0.8);
     mutation = new ShiftClosedGapsMSAMutation(0.2);
@@ -93,6 +94,8 @@ public class MOEADRunner {
             .setMaxEvaluations(maxEvaluations)
             .setPopulationSize(populationSize)
             .setDataDirectory("MOEAD_Weights")
+            .setNeighborSize(2)
+            .setFunctionType(AbstractMOEAD.FunctionType.TCHE)
             .build() ;
 
     AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
