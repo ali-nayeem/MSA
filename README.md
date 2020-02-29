@@ -10,7 +10,7 @@ To use this project, the following software tools are required:
 ## Downloading and compiling
 To download this project, just clone the Git repository hosted in GitHub:
 ```
-git clone https://github.com/ali-nayeem/JMetal4.5_Netbeans.git
+git clone https://github.com/ali-nayeem/MSA.git
 ```
 Once cloned, you can compile the software and generate a jar file with the following command:
 ```
