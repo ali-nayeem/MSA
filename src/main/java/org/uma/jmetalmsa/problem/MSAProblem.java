@@ -126,10 +126,13 @@ public class MSAProblem extends DynamicallyComposedProblem<MSASolution> {
 
     LinkedHashMap<String, ProteinSequence>
             sequences = FastaReaderHelper.readFastaProteinSequence(new File(dataFile));
-
-    for (Map.Entry<String, ProteinSequence> entry : sequences.entrySet()) {
-      sequenceList.add(new ArrayChar(entry.getValue().getSequenceAsString()));
+    for (StringBuilder seqName : listOfSequenceNames)
+    {
+        sequenceList.add( new ArrayChar(sequences.get(seqName.toString()).getSequenceAsString()) );
     }
+//    for (Map.Entry<String, ProteinSequence> entry : sequences.entrySet()) {
+//      sequenceList.add(new ArrayChar(entry.getValue().getSequenceAsString()));
+//    }
 
     return sequenceList;
   }

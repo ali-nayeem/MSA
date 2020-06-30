@@ -23,14 +23,17 @@ import org.uma.jmetalmsa.solution.MSASolution;
 public class ExperimentAlgorithmMSA extends ExperimentAlgorithm<MSASolution, List<MSASolution>>
 {
     private static double totalSeonds = 0;
-    public ExperimentAlgorithmMSA(Algorithm algorithm, String algorithmTag, String problemTag)
+    private int run;
+    public ExperimentAlgorithmMSA(Algorithm algorithm, String algorithmTag, String problemTag, int run)
     {
         super(algorithm, algorithmTag, problemTag);
+       this.run = run;
     }
     
     
     @Override
     public void runAlgorithm(int id, Experiment<?, ?> experimentData) {
+        id = run;
         String outputDirectoryName = experimentData.getExperimentBaseDirectory()
             + "/data/"
             + getAlgorithmTag()

@@ -30,7 +30,7 @@ import org.uma.jmetalmsa.solution.MSASolution;
  * @version 1.0
  */
 public class MOEADMSABuilder implements AlgorithmBuilder<AbstractMOEAD<MSASolution>> {
-  public enum Variant {MOEAD} ;
+  public enum Variant {MOEAD, HYBRID} ;
 
   protected Problem<MSASolution> problem ;
 
@@ -55,6 +55,7 @@ public class MOEADMSABuilder implements AlgorithmBuilder<AbstractMOEAD<MSASoluti
   protected int numberOfThreads ;
 
   protected Variant moeadVariant ;
+  protected int div1, div2;
 
   /** Constructor */
   public MOEADMSABuilder(Problem<MSASolution> problem, Variant variant) {
@@ -184,6 +185,13 @@ public class MOEADMSABuilder implements AlgorithmBuilder<AbstractMOEAD<MSASoluti
 
     return this ;
   }
+  
+  public MOEADMSABuilder setDiv(int div1, int div2)
+  {
+      this.div1 = div1;
+      this.div2 =  div2;
+      return this;
+  }
 
   public AbstractMOEAD<MSASolution> build() {
     AbstractMOEAD<MSASolution> algorithm = null ;
@@ -191,6 +199,11 @@ public class MOEADMSABuilder implements AlgorithmBuilder<AbstractMOEAD<MSASoluti
       algorithm = new MOEADMSA(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
           crossover, functionType, dataDirectory, neighborhoodSelectionProbability,
           maximumNumberOfReplacedSolutions, neighborSize);
+    }
+    else if (moeadVariant.equals(Variant.HYBRID)) {
+      algorithm = new HybridMOEAD(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
+          crossover, functionType, dataDirectory, neighborhoodSelectionProbability,
+          maximumNumberOfReplacedSolutions, neighborSize, div1, div2);
     }
 
     return algorithm ;
