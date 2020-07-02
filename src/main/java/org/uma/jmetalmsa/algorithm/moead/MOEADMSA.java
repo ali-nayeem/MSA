@@ -160,7 +160,7 @@ public class MOEADMSA extends AbstractMOEAD<MSASolution> {
         else if (FunctionType.AGG.equals(functionType)) {
             double sum = 0.0;
             for (int n = 0; n < problem.getNumberOfObjectives(); n++) {
-                sum += (lambda[n]) * individual.getObjective(n);
+                sum += (lambda[n]) * ((individual.getObjective(n) - idealPoint[n]) / (nadirPoint[n] - idealPoint[n]));
             }
 
             fitness = sum;
