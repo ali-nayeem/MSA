@@ -5,7 +5,7 @@
  */
 package org.uma.jmetalmsa.int_consistency;
 
-import com.aparapi.Kernel;
+//import com.aparapi.Kernel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -222,132 +222,132 @@ public class RelativeDistance
         return Math.abs(dist[twoEnds[0]] - dist[twoEnds[1]]);
     }
 
-    public void generateRelativeDistGPU(byte[][] msa)
-    {
-        int N = msa[0].length;
-        byte[][] countResult = new byte[msa.length][N];
-        //Device device = Device.firstGPU();
-        //Range range = device.createRange(N * msa.length);
-        Kernel kernel = new PairwiseDist2D(msa, countResult, N, refId);
-        //kernel.setExecutionMode(Kernel.EXECUTION_MODE.GPU);
-        //kernel.setAutoCleanUpArrays(true);
-        kernel.execute(N * msa.length);
-        kernel.dispose();
-
-        //final Kernel kernel2 = new Summary(countResult, dist);
-        //kernel2.execute(dist.length);
-        for (int i = 0; i < dist.length; i++)
-        {
-            for (int j = 0; j < msa[i].length; j++)
-            {
-                dist[i] += countResult[i][j];
-            }
-            if (dist[i] < min)
-            {
-                min = dist[i];
-            }
-
-            if (dist[i] > max)
-            {
-                max = dist[i];
-            }
-        }
-        double del = max - min;
-        for (int i = 0; i < dist.length; i++)
-        {
-            dist[i] = (dist[i] - min) / del;
-          
-        }
-    }
-
-}
-
-class PairwiseDist2D extends Kernel
-{
-
-    byte[][] A;
-
-    byte[][] B;
-    //double[] D;
-    byte[][] C;
-
-    int N;
-    int R;
-
-    public PairwiseDist2D(byte[][] A, double[] d, int N, int R)
-    {
-        this.A = A;
-        this.B = B;
-        //this.D = d;
-        this.C = new byte[A.length][A[0].length];
-        this.N = N;
-        this.R = R;
-        //this.setExplicit(true);
-//        if (R == 0)
+//    public void generateRelativeDistGPU(byte[][] msa)
+//    {
+//        int N = msa[0].length;
+//        byte[][] countResult = new byte[msa.length][N];
+//        //Device device = Device.firstGPU();
+//        //Range range = device.createRange(N * msa.length);
+//        Kernel kernel = new PairwiseDist2D(msa, countResult, N, refId);
+//        //kernel.setExecutionMode(Kernel.EXECUTION_MODE.GPU);
+//        //kernel.setAutoCleanUpArrays(true);
+//        kernel.execute(N * msa.length);
+//        kernel.dispose();
+//
+//        //final Kernel kernel2 = new Summary(countResult, dist);
+//        //kernel2.execute(dist.length);
+//        for (int i = 0; i < dist.length; i++)
 //        {
-//            this.put(A);
-//        }
-
-    }
-
-    public PairwiseDist2D(byte[][] A, int N, int R)
-    {
-        this.A = A;
-        this.C = new byte[A.length][A[0].length];
-        this.N = N;
-        this.R = R;
-    }
-    public PairwiseDist2D(byte[][] A, byte[][] C, int N, int R)
-    {
-        this.A = A;
-        //this.B = B;
-        this.C = C;
-        this.N = N;
-        this.R = R;
-    }
-
-    @Override
-    public void run()
-    {
-        int id = getGlobalId();
-        int i = id / N;
-        int j = id % N;
-        C[i][j] = (byte) ((A[R][j] == A[i][j]) ? 1 : 0);
-//        localBarrier();
-//        if (id < D.length)
-//        {
-//            for (int k = 0; k < C[id].length; k++)
+//            for (int j = 0; j < msa[i].length; j++)
 //            {
-//                D[id] += C[id][k];
+//                dist[i] += countResult[i][j];
+//            }
+//            if (dist[i] < min)
+//            {
+//                min = dist[i];
+//            }
+//
+//            if (dist[i] > max)
+//            {
+//                max = dist[i];
 //            }
 //        }
-
-//      for (int k = 0; k < N; k++) {
-//         C[i][j] += (byte) (A[i][k] * B[k][j]);
-//      }
-    }
-}
-
-class Summary extends Kernel
-{
-
-    byte[][] C;
-    double[] dist;
-
-    public Summary(byte[][] C, double[] dist)
-    {
-        this.C = C;
-        this.dist = dist;
-    }
-
-    @Override
-    public void run()
-    {
-        int id = getGlobalId();
-        for (int i = 0; i < C[id].length; i++)
-        {
-            dist[id] += C[id][i];
-        }
-    }
+//        double del = max - min;
+//        for (int i = 0; i < dist.length; i++)
+//        {
+//            dist[i] = (dist[i] - min) / del;
+//          
+//        }
+//    }
 
 }
+
+//class PairwiseDist2D extends Kernel
+//{
+//
+//    byte[][] A;
+//
+//    byte[][] B;
+//    //double[] D;
+//    byte[][] C;
+//
+//    int N;
+//    int R;
+//
+//    public PairwiseDist2D(byte[][] A, double[] d, int N, int R)
+//    {
+//        this.A = A;
+//        this.B = B;
+//        //this.D = d;
+//        this.C = new byte[A.length][A[0].length];
+//        this.N = N;
+//        this.R = R;
+//        //this.setExplicit(true);
+////        if (R == 0)
+////        {
+////            this.put(A);
+////        }
+//
+//    }
+//
+//    public PairwiseDist2D(byte[][] A, int N, int R)
+//    {
+//        this.A = A;
+//        this.C = new byte[A.length][A[0].length];
+//        this.N = N;
+//        this.R = R;
+//    }
+//    public PairwiseDist2D(byte[][] A, byte[][] C, int N, int R)
+//    {
+//        this.A = A;
+//        //this.B = B;
+//        this.C = C;
+//        this.N = N;
+//        this.R = R;
+//    }
+//
+//    @Override
+//    public void run()
+//    {
+//        int id = getGlobalId();
+//        int i = id / N;
+//        int j = id % N;
+//        C[i][j] = (byte) ((A[R][j] == A[i][j]) ? 1 : 0);
+////        localBarrier();
+////        if (id < D.length)
+////        {
+////            for (int k = 0; k < C[id].length; k++)
+////            {
+////                D[id] += C[id][k];
+////            }
+////        }
+//
+////      for (int k = 0; k < N; k++) {
+////         C[i][j] += (byte) (A[i][k] * B[k][j]);
+////      }
+//    }
+//}
+//
+//class Summary extends Kernel
+//{
+//
+//    byte[][] C;
+//    double[] dist;
+//
+//    public Summary(byte[][] C, double[] dist)
+//    {
+//        this.C = C;
+//        this.dist = dist;
+//    }
+//
+//    @Override
+//    public void run()
+//    {
+//        int id = getGlobalId();
+//        for (int i = 0; i < C[id].length; i++)
+//        {
+//            dist[id] += C[id][i];
+//        }
+//    }
+//
+//}

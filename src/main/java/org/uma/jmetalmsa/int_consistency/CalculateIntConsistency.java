@@ -5,7 +5,7 @@
  */
 package org.uma.jmetalmsa.int_consistency;
 
-import com.aparapi.Kernel;
+//import com.aparapi.Kernel;
 import java.util.ArrayList;
 import java.util.List;
 import org.uma.jmetalmsa.problem.BAliBASE_MSAProblem;
@@ -92,7 +92,7 @@ public class CalculateIntConsistency
         {
             relDistArray[i] = new RelativeDistance(i, taxaCount);
             //relDistArray[i].generateRelativeDist(msa, pd);
-            relDistArray[i].generateRelativeDistGPU(msa);
+            //relDistArray[i].generateRelativeDistGPU(msa);
             //System.out.println("Taxa: "+i);
         }
         refTaxaNeighbors = relDistArray[refTaxaId].calculateSortedNeighbor();
