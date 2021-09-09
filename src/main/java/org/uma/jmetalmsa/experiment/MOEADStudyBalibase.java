@@ -70,10 +70,10 @@ public class MOEADStudyBalibase {
     static String problemName[] = {"BB20022"} ; //"BB20001", "BB20010" ,"BB20022", "BB20033", "BB20041"    "BB11005", "BB11018", "BB11020", "BB11033" "BB40001", "BB40013", "BB40025", "BB40038", "BB40048" "BB12001", "BB12013", "BB12022", "BB12035", "BB12044"
     //"BB12001", "BB12013", "BB12022", "BB12035", "BB12044"
     static String dataDirectory = "example";
-    static Integer maxEvaluations = 24120; //50000 60120
-    static Integer populationSize = 100; //100
-    private static final int INDEPENDENT_RUNS = 4 ;
-    static Integer neighborSize = 10; //100
+    static Integer maxEvaluations = 1530; //50000 60120
+    static Integer populationSize = 30; //100
+    private static final int INDEPENDENT_RUNS = 1 ;
+    static Integer neighborSize = 3; //100
     static Double neighborhoodSelectionProbability = 0.7;
     static Integer maximumNumberOfReplacedSolutions = 2;
     static int div1=7, div2=0;
@@ -140,7 +140,7 @@ public class MOEADStudyBalibase {
             configureAlgorithmList(problemList);
 
     Experiment<MSASolution, List<MSASolution>> experiment =
-        new ExperimentBuilder<MSASolution, List<MSASolution>>("Hybrid_MOEADStudy_Balibase")
+        new ExperimentBuilder<MSASolution, List<MSASolution>>("MUSCLE_MOEAD_Balibase")
             .setAlgorithmList(algorithmList)
             .setProblemList(problemList)
             .setExperimentBaseDirectory(experimentBaseDirectory)

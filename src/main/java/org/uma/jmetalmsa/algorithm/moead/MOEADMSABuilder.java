@@ -201,7 +201,7 @@ public class MOEADMSABuilder implements AlgorithmBuilder<AbstractMOEAD<MSASoluti
           maximumNumberOfReplacedSolutions, neighborSize);
     }
     else if (moeadVariant.equals(Variant.HYBRID)) {
-      algorithm = new HybridMOEAD(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
+      algorithm = new HybridMOEAD2(problem, populationSize, resultPopulationSize, maxEvaluations, mutation,
           crossover, functionType, dataDirectory, neighborhoodSelectionProbability,
           maximumNumberOfReplacedSolutions, neighborSize, div1, div2);
     }
